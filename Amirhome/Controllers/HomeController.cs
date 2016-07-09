@@ -10,6 +10,7 @@ namespace Amirhome.Controllers
     public class HomeController : Controller
     {
         UserManager _userManager = new UserManager();
+        EstateManager _estateManager = new EstateManager();
         public ActionResult Index()
         {
             if (Session["UserID"] != null)
@@ -38,6 +39,12 @@ namespace Amirhome.Controllers
                 }
             }
             return View();
+        }
+
+        public JsonResult GetOccasionEstates()
+        {
+            List<State> occasions = _estateManager.getOccasions();
+            return Json(occasions.OrderByDescending(E => E.Date).Take(5));
         }
 
         public ActionResult About()
