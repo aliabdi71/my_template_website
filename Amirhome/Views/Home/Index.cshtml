@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "مشاورین مسکن امیر";
+}
+
+<div class="banner">
+    <div class="banner-content">
+        <h1>مشاورین املاک امیر</h1>
+        <div class="row banner-panel">
+            <div class="col-md-1"></div>
+            <div class="col-md-5">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h2>جستجوی ملک</h2>
+                        <p style="margin:0;">(برای خرید یا اجاره)</p>
+                    </div>
+                    <div class="panel-body">
+                        <table>
+                            <tr>
+                                <td>
+                                    <select id="states">
+                                        <option value="0">استان</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="city">
+                                        <option value="0">شهر</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="district">
+                                        <option value="0">محله</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="condition">
+                                        <option value="0">نوع واگذاری</option>
+                                        <option value="1">فروش</option>
+                                        <option value="2">رهن</option>
+                                        <option value="3">اجاره</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="usage">
+                                        <option value="0">نوع کاربری ملک</option>
+                                        <option value="1">مسکونی</option>
+                                        <option value="2">کلنگی و مشارکتی</option>
+                                        <option value="3">تجاری و اداری</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="type">
+                                        <option value="0">نوع ملک</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="text-align:center;">
+                                    <input id="search_estate" style="min-width:100px;" type="button" class="btn btn-primary" value="جستجو" />
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h2>سپردن ملک</h2>
+                        <p style="margin:0;">(برای خرید یا اجاره)</p>
+                    </div>
+                    <div class="panel-body">
+                        <table>
+                            <tr>
+                                <td>
+                                    <select id="states">
+                                        <option value="0">استان</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="city">
+                                        <option value="0">شهر</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="district">
+                                        <option value="0">محله</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="condition">
+                                        <option value="0">نوع واگذاری</option>
+                                        <option value="1">فروش</option>
+                                        <option value="2">رهن</option>
+                                        <option value="3">اجاره</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="usage">
+                                        <option value="0">نوع کاربری ملک</option>
+                                        <option value="1">مسکونی</option>
+                                        <option value="2">کلنگی و مشارکتی</option>
+                                        <option value="3">تجاری و اداری</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="type">
+                                        <option value="0">نوع ملک</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="text-align:center;">
+                                    <input style="min-width:100px;" id="submit_estate" type="button" class="btn btn-primary" value="سپردن ملک" />
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+</div>
+
+<section id="occasion" class="slider">
+    <div class="occasion row">
+        <div class="col-md-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <label>فروش</label>
+                    <h3>گیشا</h3>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
+    </div>
+</section>
+
+<section id="about" class="about-section">
+    <div class="about-banner"></div>
+</section>
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/jquery.backstretch.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/slick.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //attach banner image to banner section
+            $(".banner").backstretch('/Content/banner_images/bg1.jpg');
+            //attach plane image to plane section
+            $(".about-banner").backstretch('/Content/banner_images/pelan.jpg');
+        });
+
+    </script>
+}

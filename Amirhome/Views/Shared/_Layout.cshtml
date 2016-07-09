@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link href="~/Content/slick-theme.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/" >صفحه اصلی</a></li>
+                    <li><a href="/#occasion">موارد ویژه</a></li>
+                    <li><a href="/#about">درباره ما</a></li>
+                    <li><a href="/#addvertise">آگهی</a></li>
+                    <li><a href="/#contact">تماس با ما</a></li>
+                </ul>
+                <a href="#" class="brand-image-link navbar-brand"><img src="~/Content/shared_images/logo1.png" /></a>
+                <ul class="nav navbar-nav navbar-nav-left">
+                    @{
+                        if (ViewData["user_name"] == null)
+                        {
+                            <li><a href="#loginModal" class="navbar-signin" data-toggle="modal" role="button"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;ورود</a></li>
+                             <li><a href='@Url.Action("RegisterView", "Account")' class="navbar-register"><i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;ثبت نام</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="javascript:void(0)" style="text-align:left"><img  src='@ViewData["user_image_src"].ToString()' style="width:10%"/>
+                                &nbsp;
+                                @ViewData["user_name"].ToString()
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    @RenderBody()   
+    <footer>
+        <div class="row">
+            <h4>
+                اطلاعات موجود در این وب سایت اطلاعاتی است که از طریق کاربران عمومی سایت اعلام و ثبت شده و لذا وبسایت مسکن امیر هیچگونه مسئولیتی در صحت و سقم اطلاعات مذکور ندارد.
+            </h4>
+        </div>
+        <section id="contact">
+            <div class="row blue">
+                <div class="col-md-4">
+                    <h1><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;آدرس</h1>
+                    <h4>گیشا، بین خیابان پنجم و هفتم، پلاک ۲۲</h4>
+                </div>
+                <div class="col-md-4">
+                    <h1><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;پست الکترونیک</h1>
+                    <h4>amir.home.ir@gmail.com</h4>
+                </div>
+                <div class="col-md-4">
+                    <h1><i class="glyphicon glyphicon-phone-alt"></i>&nbsp;&nbsp;شماره تماس</h1>
+                    <h4>۰۲۱-۸۸۲۸۰۶۱۰</h4>
+                </div>
+                @*persianNumbers = ["۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰"];*@
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="javascript:void(0)"><img src="~/Content/shared_images/Social.png" /></a>
+                </div>
+                <div class="col-md-3">
+                    <a href="javascript:void(0)"><img src="~/Content/shared_images/DownloadApp.png" /></a>
+                </div>
+                <div class="col-md-3">
+                    <a href="javascript:void(0)"><img src="~/Content/shared_images/Insta.png" /></a>
+                </div>
+                <div class="col-md-3">
+                    <a href="javascript:void(0)"><img src="~/Content/shared_images/JoinTelegram.png" /></a>
+                </div>
+            </div>
+        </section>
+        <div class="row">
+            <p>Copyright 2015 © <a href="http://www.namaadarya.com">Namaade Tose'e Arya</a></p>
+        </div>
+    </footer>
+
+
+    <div id="loginView">
+        @Html.Partial("LoginPartialView")
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/custom_scripts")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

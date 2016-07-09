@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="modal fade login-modal" id="loginModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                ورود
+            </div>
+            <div class="modal-body" style="overflow-x:auto;">
+                <form id="loginForm">
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <label id="message" class="text-danger"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">
+                                <label>ایمیل: &nbsp;</label>
+                            </td>
+                            <td>
+                                <input type="text" name="email" id="email" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">
+                                <label>کلمه عبور: &nbsp;</label>
+                            </td>
+                            <td>
+                                <input type="password" name="password" id="password" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-primary" style="min-width:100px;" id="login_btn" value="ورود" />
+                                <img src="~/Content/shared_images/loading_button.gif" id="loading_button" style="display:none; height: 40%;"/>
+                                <label><input type="checkbox" name="remember" style="margin:10px;" />مرا به خاطر بسپار</label>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,216 @@
+﻿@font-face {
+  font-family: "B Yekan";
+  src: url("fonts/BYekan.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Entezaar";
+  src: url("fonts/EntezareZohoor2.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Navbar style starts */
+.navbar-inverse{
+    background-color:#00578f;
+}
+.navbar-inverse .navbar-nav{
+    padding-top: 20px;
+}
+.navbar-inverse .navbar-nav > li > a{
+    color: white !important;
+}
+.navbar-inverse .navbar-nav > li > a:hover{
+    color: yellow !important;
+}
+.navbar-brand{
+    float:left;
+}
+.navbar-nav-left{
+    float:left;
+    padding-top: 20px;
+}
+.navbar-register:before{
+    
+}
+.navbar-signin:before{
+
+}
+/* Navbar style ends */
+
+/*********************************************/
+
+/* Login Modal styles starts */
+.login-modal .modal-header{
+    background-color:#00578f;
+    color: white;
+    font-size:large;
+    border-radius:4px 4px;
+}
+.login-modal .modal-body tr{
+    height:40px;
+}
+.login-modal .modal-body td.left{
+    min-width:120px;
+}
+.login-modal .modal-body td > input{
+    width:auto;
+}
+.login-modal .modal-body span{
+    padding: 20px;
+}
+/* Login Modal styles ends */
+
+/*********************************************/
+
+/* Footer styles starts */
+footer > .row{
+    background-color:#D8D8D8;
+    color: black;
+    padding:20px 0 20px 0;
+    text-align:center;
+}
+footer > .row.blue{
+    background-color:#1F1448;
+    color: white;
+}
+
+/* Footer styles ends */
+
+/*********************************************/
+
+/* Banner styles starts */
+.banner{
+    width: 100%;
+	height: 100%;
+	min-height: 550px;
+	position: relative;
+}
+.banner-content {
+	position: absolute;
+	width: 100%;
+	z-index: 2;
+}
+.banner-content > h1{
+    text-align:center;
+    font-family:Entezaar;
+    font-size:70px;
+    color:#00578f;
+}
+.banner-panel{
+    padding-top:20px;
+}
+.banner-panel .panel{
+    background-color:rgba(255, 255, 255, 0.7);
+    /*border:2px solid #00578f;*/
+}
+.banner-panel div.panel-heading{
+    text-align:center;
+    background-color:rgba(217, 237, 247, 0.5);
+    /*border-bottom:2px solid #00578f;*/
+}
+.banner-panel div.panel-heading > h2{
+    margin: 0 !important;
+    line-height:1.6;
+    font-weight:bold;
+}
+.banner-panel table{
+    min-width: 487px;
+    background: rgba(21, 198, 255, 0.2);
+}
+.banner-panel table td{
+    padding:10px;
+}
+.banner-panel table td > select{
+    width: 150px;
+    min-height:35px;
+}
+@media only screen and (max-width: 1265px){
+    .banner-panel table{
+        min-width: 467px;
+    }
+    .banner-panel table td > select{
+        width: 120px;
+    }
+}
+@media only screen and (max-width: 985px) {
+    .banner{
+	    min-height: 750px;
+    }
+}
+@media only screen and (max-width: 765px){
+    .banner-content > h1{
+        font-family:Entezaar;
+        font-size:50px;
+    }
+    .banner-panel table{
+        min-width: 287px;
+    }
+    .banner-panel table td > select{
+        width: 90px;
+    }
+}
+/* Banner styles ends */
+
+/*********************************************/
+
+/* Occasion styles starts */
+.occasion .panel{
+    text-align:center;
+}
+/* Occasion styles ends */
+
+/*********************************************/
+
+/* Plan Banner styles starts */
+.about-banner{
+    width: 100%;
+	height: 100%;
+	min-height: 680px;
+	position: relative;
+}
+/* Plan Banner styles ends */
+
+body {
+    margin-top: 88px;
+    padding-bottom: 20px;
+    font-family:'B Yekan';
+    background-color:#C7DBF4;
+    height:100%;
+}
+
+@media only screen and (max-width: 765px){
+    body{
+        margin-top: 38px;
+    }
+}
+
+
+.body-content{
+    background-color:white;
+}
+
+h1, h2, h3, h4, h5, h6, a, span, label, input{
+    font-family:'B Yekan';
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}

@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "RegisterView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Amirhome.Models.UserAccouunt
+
+<style>
+    .register-form .row{
+        margin:20px;
+    }
+</style>
+
+
+<div class="container body-content" style=" margin-top: 50px;">
+    <h2>ثبت نام</h2>
+    <hr />
+    <div class="row wrap">
+        <div class="col-lg-6 register-form">
+            <form id="registerForm" action="/Account/RegisterView" method="post" enctype="multipart/form-data">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @{
+                    if (ViewBag.Message != null)
+                    {
+                        <label class="text-success"> @ViewBag.Message </label><br />
+                    }
+                }
+                <label class="text-info">موارد الزامی با * مشخص شده اند</label>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>ایمیل:* &nbsp;</label>
+                    </div>
+                    <div class="col-lg-8">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "requierd", @type = "email" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>کلمه عبور:* &nbsp;</label>
+                    </div>
+                    <div class="col-lg-8">
+                        @Html.TextBoxFor(m => m.Passkey, new { @class = "requierd", @type = "password" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>تکرار کلمه عبور:* &nbsp;</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <input type="password" class="requierd" id="pass_confirm" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>نام:* &nbsp;</label>
+                    </div>
+                    <div class="col-lg-8">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "requierd" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>شماره تماس: &nbsp;</label>
+                    </div>
+                    <div class="col-lg-8">
+                        @Html.TextBoxFor(m => m.Phone)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>عکس پروفایل: &nbsp;</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <input type="file" name="profilePic" />
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" class="btn btn-primary" style="min-width:100px; float:left;" id="registerBtn" value="ثبت نام" />
+                    <label class="error-message text-danger" style="display:none"></label>
+                    <img src="~/Content/shared_images/loading.gif" id="loading_gif" style="display:none; width:10%;" />
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-6">
+            <h3>قوانین و مقررات سایت</h3>
+            <p>متن قوانین و مقررات سایت</p>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#registerBtn").click(function () {
+            var flag = true;
+            $(".register-form input.requierd").each(function () {
+                if ($(this).val() === '') {
+                    flag = false;
+                }
+            });
+            if (!flag) {
+                $(".error-message").css('display', 'block').html("لطفاً همه فیلدهای ضروری را پر نمایید");
+                return flag;
+            }
+            else {
+                var email = $("input[name='Email']").val();
+                if(validateEmail(email)){
+                    var pass_conf = $("#pass_confirm").val(),
+                        pass = $("input[name='Passkey']").val();
+                    if(pass_conf === pass){
+                        $(".error-message").css('display', 'none');
+                        $("#loading_gif").css('display', 'block');
+                        registerToServer();
+                        return true;
+                    }
+                    else{
+                        $(".error-message").css('display', 'block').html("مقادیر کلمه عبور یکسان نیستند.");
+                        return false;
+                    }
+                }
+                else{
+                    $(".error-message").css('display', 'block').html("لطفاً ایمیل معتبر وارد نمایید");
+                    return false;
+                }
+            }
+        });
+    });
+
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@('@')"]+(\.[^<>()\[\]\\.,;:\s@('@')"]+)*)|(".+"))@('@')((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+    function registerToServer() {
+        var success = false;
+        var form_data = $("#registerForm").serialize();
+        $.ajax({
+            url: '@Url.Action("RegisterUser", "Account")',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(({ 'model': form_data })  ),
+            success: function(data) {
+                $("#loading_gif").css('display', 'none');
+                if(data){
+                    $(".error-message").removeClass('text-danger')
+                        .addClass('text-success')
+                        .html('ثبت نام شما با موفقیت انجام شد')
+                        .css('display', 'block');
+                }
+                else{
+                    $(".error-message").html('متأسفانه خطایی در عملیات ثبت نام روی داده است')
+                        .css('display', 'block');
+                }
+            }
+        });
+        return success;
+    }
+</script>
+}
+

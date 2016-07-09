@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="86364575db604b139232fafb7bf42b6d" Name="Diagram1">
+        <EntityTypeShape EntityType="AmirhomeModel.Agent" Width="1.5" PointX="1.375" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.District" Width="1.5" PointX="3.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.Feature" Width="1.5" PointX="3.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.Feedback" Width="1.5" PointX="8.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.FreeAdvertise" Width="1.5" PointX="10.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.GoogleMap" Width="1.5" PointX="8.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.Image" Width="1.5" PointX="8.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.Owner" Width="1.5" PointX="3.75" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.Plan" Width="1.5" PointX="8.25" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.province" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.State" Width="1.5" PointX="6" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.StateType" Width="1.5" PointX="3.75" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.StreetView" Width="1.5" PointX="8.25" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.tbl_cities" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.UserAccouunt" Width="1.5" PointX="13" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="AmirhomeModel.UserAccouuntsRole" Width="1.5" PointX="10.75" PointY="1.5" IsExpanded="true" />
+        <AssociationConnector Association="AmirhomeModel.FK_States_Districts" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_Feedback_States" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_GoogleMap_States" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_Images_States" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_States_Owners" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_Plans_States" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_States_province" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_tbl_cities_province" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_States_StateTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_StreetView_States1" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.FK_UARole" ManuallyRouted="false" />
+        <AssociationConnector Association="AmirhomeModel.Features_jnc" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AmirhomeModel.Affiliate" Width="1.5" PointX="17.875" PointY="146.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.AnonymousUser" Width="1.5" PointX="15.625" PointY="81.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.aspnet_Applications" Width="1.5" PointX="3.375" PointY="22.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.aspnet_Membership" Width="1.5" PointX="7.875" PointY="24.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.aspnet_SchemaVersions" Width="1.5" PointX="16.375" PointY="6.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.aspnet_Users" Width="1.5" PointX="5.625" PointY="28.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.Assembly" Width="1.5" PointX="11.875" PointY="70.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.Authentication" Width="1.5" PointX="11.875" PointY="32.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.Banner" Width="1.5" PointX="17.875" PointY="152.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.Classification" Width="1.5" PointX="18.625" PointY="142.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.ContentItem" Width="1.5" PointX="14.125" PointY="59.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.ContentItems_MetaData" Width="1.5" PointX="21.375" PointY="65.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.ContentItems_Tags" Width="1.5" PointX="20.125" PointY="36.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.ContentType" Width="1.5" PointX="11.875" PointY="58.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.ContentWorkflowLog" Width="1.5" PointX="16.375" PointY="66.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.ContentWorkflow" Width="1.5" PointX="9.625" PointY="61.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.ContentWorkflowStatePermission" Width="1.5" PointX="20.125" PointY="31.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.ContentWorkflowState" Width="1.5" PointX="11.875" PointY="60.875" />
+        <EntityTypeShape EntityType="AmirhomeModel.CoreMessaging_MessageAttachments" Width="1.5" PointX="18.625" PointY="160.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.CoreMessaging_MessageRecipients" Width="1.5" PointX="18.625" PointY="163.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.CoreMessaging_Messages" Width="1.5" PointX="16.375" PointY="161.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.CoreMessaging_NotificationTypeActions" Width="1.5" PointX="16.375" PointY="168" />
+        <EntityTypeShape EntityType="AmirhomeModel.CoreMessaging_NotificationTypes" Width="1.5" PointX="14.125" PointY="164.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.CoreMessaging_Subscriptions" Width="1.5" PointX="18.625" PointY="49.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.CoreMessaging_SubscriptionTypes" Width="1.5" PointX="16.375" PointY="39" />
+        <EntityTypeShape EntityType="AmirhomeModel.CoreMessaging_UserPreferences" Width="1.5" PointX="18.375" PointY="7.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.Dashboard_Controls" Width="1.5" PointX="11.875" PointY="28.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.DesktopModulePermission" Width="1.5" PointX="20.125" PointY="55.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.DesktopModule" Width="1.5" PointX="11.875" PointY="51.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.EventLog" Width="1.5" PointX="24.875" PointY="12.875" />
+        <EntityTypeShape EntityType="AmirhomeModel.EventLogConfig" Width="1.5" PointX="22.625" PointY="14.875" />
+        <EntityTypeShape EntityType="AmirhomeModel.EventLogType" Width="1.5" PointX="20.375" PointY="11" />
+        <EntityTypeShape EntityType="AmirhomeModel.EventQueue" Width="1.5" PointX="9.375" PointY="17.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.ExtensionUrlProviderConfiguration" Width="1.5" PointX="20.375" PointY="7.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.ExtensionUrlProvider" Width="1.5" PointX="5.375" PointY="18.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.ExtensionUrlProviderSetting" Width="1.5" PointX="22.375" PointY="7.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.ExtensionUrlProviderTab" Width="1.5" PointX="11.375" PointY="19.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.File" Width="1.5" PointX="21.625" PointY="80.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.FileVersion" Width="1.5" PointX="23.875" PointY="82.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.FolderMapping" Width="1.5" PointX="15.625" PointY="113.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.FolderMappingsSetting" Width="1.5" PointX="17.875" PointY="120" />
+        <EntityTypeShape EntityType="AmirhomeModel.FolderPermission" Width="1.5" PointX="23.125" PointY="58.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.Folder" Width="1.5" PointX="17.875" PointY="95" />
+        <EntityTypeShape EntityType="AmirhomeModel.HostSetting" Width="1.5" PointX="20.375" PointY="19.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.HtmlText" Width="1.5" PointX="25.625" PointY="54.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.HtmlTextLog" Width="1.5" PointX="27.875" PointY="53.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.HtmlTextUser" Width="1.5" PointX="27.875" PointY="57" />
+        <EntityTypeShape EntityType="AmirhomeModel.IPFilter" Width="1.5" PointX="22.375" PointY="19.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.JavaScriptLibrary" Width="1.5" PointX="11.875" PointY="36.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.Journal" Width="1.5" PointX="20.625" PointY="1.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.Journal_Access" Width="1.5" PointX="24.375" PointY="7.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.Journal_Comments" Width="1.5" PointX="22.875" PointY="1.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.Journal_Data" Width="1.5" PointX="22.875" PointY="4.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.Journal_Security" Width="1.5" PointX="24.375" PointY="19.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.Journal_TypeFilters" Width="1.5" PointX="25.375" PointY="0.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.Journal_Types" Width="1.5" PointX="18.375" PointY="2" />
+        <EntityTypeShape EntityType="AmirhomeModel.LanguagePack" Width="1.5" PointX="11.875" PointY="66.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.Language" Width="1.5" PointX="13.375" PointY="90.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.List" Width="1.5" PointX="24.375" PointY="22.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.Messaging_Messages" Width="1.5" PointX="26.375" PointY="3.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.MetaData" Width="1.5" PointX="19.125" PointY="69.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.Mobile_PreviewProfiles" Width="1.5" PointX="15.625" PointY="123.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.Mobile_RedirectionRules" Width="1.5" PointX="17.875" PointY="136.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.Mobile_Redirections" Width="1.5" PointX="15.625" PointY="135.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.ModuleControl" Width="1.5" PointX="16.375" PointY="33.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.ModuleDefinition" Width="1.5" PointX="14.125" PointY="52.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.ModulePermission" Width="1.5" PointX="23.125" PointY="53.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.Module" Width="1.5" PointX="16.375" PointY="55" />
+        <EntityTypeShape EntityType="AmirhomeModel.ModuleSetting" Width="1.5" PointX="18.625" PointY="66.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.PackageDependency" Width="1.5" PointX="11.875" PointY="39.875" />
+        <EntityTypeShape EntityType="AmirhomeModel.Package" Width="1.5" PointX="9.625" PointY="50.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.PackageType" Width="1.5" PointX="7.375" PointY="53.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.PasswordHistory" Width="1.5" PointX="3" PointY="12" />
+        <EntityTypeShape EntityType="AmirhomeModel.Permission" Width="1.5" PointX="17.875" PointY="61.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.PortalAlia" Width="1.5" PointX="15.625" PointY="127.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.PortalDesktopModule" Width="1.5" PointX="15.625" PointY="84.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.PortalGroup" Width="1.5" PointX="26.375" PointY="17.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.PortalLanguage" Width="1.5" PointX="15.625" PointY="88.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.PortalLocalization" Width="1.5" PointX="15.625" PointY="72.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.Portal" Width="1.5" PointX="13.375" PointY="78.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.PortalSetting" Width="1.5" PointX="15.625" PointY="117.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.Profile" Width="1.5" PointX="15.625" PointY="42.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.ProfilePropertyDefinition" Width="1.5" PointX="15.625" PointY="140.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.Relationship" Width="1.5" PointX="15.625" PointY="45.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.RelationshipType" Width="1.5" PointX="13.375" PointY="46" />
+        <EntityTypeShape EntityType="AmirhomeModel.RoleGroup" Width="1.5" PointX="15.625" PointY="131.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.Role" Width="1.5" PointX="17.875" PointY="102.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.RoleSetting" Width="1.5" PointX="26.375" PointY="21.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.RolesMng" Width="1.5" PointX="3" PointY="15.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.Schedule" Width="1.5" PointX="15.375" PointY="17.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.ScheduleHistory" Width="1.5" PointX="17.625" PointY="17.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.ScheduleItemSetting" Width="1.5" PointX="17.625" PointY="20.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.SearchCommonWord" Width="1.5" PointX="26.375" PointY="9.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.SearchIndexer" Width="1.5" PointX="16.375" PointY="23.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.SearchStopWord" Width="1.5" PointX="27.375" PointY="12.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.SearchType" Width="1.5" PointX="27.375" PointY="0.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.SiteLog" Width="1.5" PointX="15.625" PointY="155.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.SkinControl" Width="1.5" PointX="11.875" PointY="73.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.SkinPackage" Width="1.5" PointX="11.875" PointY="24.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.Skin" Width="1.5" PointX="14.125" PointY="25.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.SQLQuery" Width="1.5" PointX="28.375" PointY="3.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.SynonymsGroup" Width="1.5" PointX="28.375" PointY="7.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.sysdiagram" Width="1.5" PointX="3.375" PointY="25.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.SystemMessage" Width="1.5" PointX="15.625" PointY="78.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.TabAliasSkin" Width="1.5" PointX="28.375" PointY="16.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.TabModule" Width="1.5" PointX="26.875" PointY="80.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.TabModuleSetting" Width="1.5" PointX="29.125" PointY="82.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.TabPermission" Width="1.5" PointX="25.875" PointY="60.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.Tab" Width="1.5" PointX="18.625" PointY="79.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.TabSetting" Width="1.5" PointX="20.875" PointY="93.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.TabUrl" Width="1.5" PointX="20.875" PointY="89.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.Taxonomy_ScopeTypes" Width="1.5" PointX="13.375" PointY="17.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.Taxonomy_Terms" Width="1.5" PointX="17.875" PointY="11" />
+        <EntityTypeShape EntityType="AmirhomeModel.Taxonomy_Vocabularies" Width="1.5" PointX="15.625" PointY="11.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.Taxonomy_VocabularyTypes" Width="1.5" PointX="13.375" PointY="12.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.UrlLog" Width="1.5" PointX="17.875" PointY="110" />
+        <EntityTypeShape EntityType="AmirhomeModel.Url" Width="1.5" PointX="15.625" PointY="121" />
+        <EntityTypeShape EntityType="AmirhomeModel.UrlTracking" Width="1.5" PointX="15.625" PointY="109.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.UserAuthentication" Width="1.5" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="AmirhomeModel.UserPortal" Width="1.5" PointX="18.625" PointY="41.875" />
+        <EntityTypeShape EntityType="AmirhomeModel.UserProfile" Width="1.5" PointX="17.875" PointY="73.875" />
+        <EntityTypeShape EntityType="AmirhomeModel.UserRelationshipPreference" Width="1.5" PointX="17.875" PointY="25.875" />
+        <EntityTypeShape EntityType="AmirhomeModel.UserRelationship" Width="1.5" PointX="20.875" PointY="25.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.UserRole" Width="1.5" PointX="20.125" PointY="60.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.User" Width="1.5" PointX="0.75" PointY="5.375" />
+        <EntityTypeShape EntityType="AmirhomeModel.UsersOnline" Width="1.5" PointX="18.625" PointY="46.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.VendorClassification" Width="1.5" PointX="20.875" PointY="149.25" />
+        <EntityTypeShape EntityType="AmirhomeModel.Vendor" Width="1.5" PointX="15.625" PointY="147.125" />
+        <EntityTypeShape EntityType="AmirhomeModel.Version" Width="1.5" PointX="28.375" PointY="20.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.WebServer" Width="1.5" PointX="28.375" PointY="23.75" />
+        <EntityTypeShape EntityType="AmirhomeModel.Workflow" Width="1.5" PointX="21.125" PointY="49.625" />
+        <EntityTypeShape EntityType="AmirhomeModel.WorkflowState" Width="1.5" PointX="23.375" PointY="49.375" />
+        <AssociationConnector Association="AmirhomeModel.FK_Affiliates_Vendors" />
+        <AssociationConnector Association="AmirhomeModel.FK_AnonymousUsers_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK__aspnet_Me__Appli__08012052" />
+        <AssociationConnector Association="AmirhomeModel.FK__aspnet_Us__Appli__73FA27A5" />
+        <AssociationConnector Association="AmirhomeModel.FK__aspnet_Me__UserI__08F5448B" />
+        <AssociationConnector Association="AmirhomeModel.FK_PackageAssemblies_PackageAssemblies" />
+        <AssociationConnector Association="AmirhomeModel.FK_Authentication_Packages" />
+        <AssociationConnector Association="AmirhomeModel.FK_Banner_Vendor" />
+        <AssociationConnector Association="AmirhomeModel.FK_Classification_Classification" />
+        <AssociationConnector Association="AmirhomeModel.FK_VendorClassification_Classification" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentItems_ContentTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentItems_ContentWorkflowStates" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentItems_MetaData_ContentItems" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentItems_Tags_ContentItems" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentWorkflowLogs_ContentItems" />
+        <AssociationConnector Association="AmirhomeModel.FK_Files_ContentItems" />
+        <AssociationConnector Association="AmirhomeModel.FK_Modules_ContentItems" />
+        <AssociationConnector Association="AmirhomeModel.FK_Tabs_ContentItems" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentItems_MetaDataMetaData" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentItems_Tags_Taxonomy_Terms" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentWorkflowLogs_ContentWorkflows" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentWorkflowStates_ContentWorkflows" />
+        <AssociationConnector Association="AmirhomeModel.FK_Folders_ContentWorkflows" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentWorkflowStatePermission_ContentWorkflowStates" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentWorkflowStatePermission_Permission" />
+        <AssociationConnector Association="AmirhomeModel.FK_ContentWorkflowStatePermission_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_CoreMessaging_MessageAttachments_CoreMessaging_Messages" />
+        <AssociationConnector Association="AmirhomeModel.FK_CoreMessaging_MessageRecipients_CoreMessaging_Messages" />
+        <AssociationConnector Association="AmirhomeModel.FK_CoreMessaging_Messages_CoreMessaging_NotificationTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_CoreMessaging_NotificationTypeActions_CoreMessaging_NotificationTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_CoreMessaging_NotificationTypes_DesktopModules" />
+        <AssociationConnector Association="AmirhomeModel.FK_CoreMessaging_Subscriptions_Modules" />
+        <AssociationConnector Association="AmirhomeModel.FK_CoreMessaging_Subscriptions_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_CoreMessaging_Subscriptions_Subscriptions_Type" />
+        <AssociationConnector Association="AmirhomeModel.FK_CoreMessaging_Subscriptions_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_Dashboard_Controls_Packages" />
+        <AssociationConnector Association="AmirhomeModel.FK_DesktopModulePermission_Permission" />
+        <AssociationConnector Association="AmirhomeModel.FK_DesktopModulePermission_PortalDesktopModules" />
+        <AssociationConnector Association="AmirhomeModel.FK_DesktopModulePermission_Roles" />
+        <AssociationConnector Association="AmirhomeModel.FK_DesktopModulePermission_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_DesktopModules_Packages" />
+        <AssociationConnector Association="AmirhomeModel.FK_ModuleDefinitions_DesktopModules" />
+        <AssociationConnector Association="AmirhomeModel.FK_PortalDesktopModules_DesktopModules" />
+        <AssociationConnector Association="AmirhomeModel.FK_EventLog_EventLogConfig" />
+        <AssociationConnector Association="AmirhomeModel.FK_EventLog_EventLogTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_EventLogConfig_EventLogTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_Files_Folders" />
+        <AssociationConnector Association="AmirhomeModel.FK_Files_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_FileVersions_Files" />
+        <AssociationConnector Association="AmirhomeModel.FK_FolderMappings_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_FolderMappingsSettings_FolderMappings" />
+        <AssociationConnector Association="AmirhomeModel.FK_Folders_FolderMappings" />
+        <AssociationConnector Association="AmirhomeModel.FK_FolderPermission_Folders" />
+        <AssociationConnector Association="AmirhomeModel.FK_FolderPermission_Permission" />
+        <AssociationConnector Association="AmirhomeModel.FK_FolderPermission_Roles" />
+        <AssociationConnector Association="AmirhomeModel.FK_FolderPermission_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_Folders_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_HtmlText_Modules" />
+        <AssociationConnector Association="AmirhomeModel.FK_HtmlText_WorkflowStates" />
+        <AssociationConnector Association="AmirhomeModel.FK_HtmlTextLog_HtmlText" />
+        <AssociationConnector Association="AmirhomeModel.FK_HtmlTextUsers_HtmlText" />
+        <AssociationConnector Association="AmirhomeModel.FK_HtmlTextLog_WorkflowStates" />
+        <AssociationConnector Association="AmirhomeModel.FK_JavaScriptLibrariesPackages" />
+        <AssociationConnector Association="AmirhomeModel.FK_Journal_Data_Journal" />
+        <AssociationConnector Association="AmirhomeModel.FK_Journal_JournalTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_JournalComments_Journal" />
+        <AssociationConnector Association="AmirhomeModel.FK_LanguagePacks_Packages" />
+        <AssociationConnector Association="AmirhomeModel.FK_PortalLanguages_PortalLanguages" />
+        <AssociationConnector Association="AmirhomeModel.FK_Mobile_PreviewProfiles_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_Mobile_RedirectionRules_Mobile_Redirections" />
+        <AssociationConnector Association="AmirhomeModel.FK_Mobile_Redirections_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_ModuleControls_ModuleDefinitions" />
+        <AssociationConnector Association="AmirhomeModel.FK_Modules_ModuleDefinitions" />
+        <AssociationConnector Association="AmirhomeModel.FK_ModulePermission_Modules" />
+        <AssociationConnector Association="AmirhomeModel.FK_ModulePermission_Permission" />
+        <AssociationConnector Association="AmirhomeModel.FK_ModulePermission_Roles" />
+        <AssociationConnector Association="AmirhomeModel.FK_ModulePermission_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_ModuleSettings_Modules" />
+        <AssociationConnector Association="AmirhomeModel.FK_TabModules_Modules" />
+        <AssociationConnector Association="AmirhomeModel.FK_PackageDependencies_Packages" />
+        <AssociationConnector Association="AmirhomeModel.FK_Packages_PackageTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_SkinControls_Packages" />
+        <AssociationConnector Association="AmirhomeModel.FK_SkinPackages_Packages" />
+        <AssociationConnector Association="AmirhomeModel.FK_PasswordHistory_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_TabPermission_Permission" />
+        <AssociationConnector Association="AmirhomeModel.FK_PortalAlias_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_PortalDesktopModules_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_PortalLanguages_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_PortalLocalization_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_PortalSettings_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_Profile_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_ProfilePropertyDefinition_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_Relationships_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_RoleGroups_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_Roles_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_SiteLog_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_SystemMessages_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_Tabs_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_Urls_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_UrlTracking_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserPortals_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_UsersOnline_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_Vendor_Portals" />
+        <AssociationConnector Association="AmirhomeModel.FK_Profile_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserProfile_ProfilePropertyDefinition" />
+        <AssociationConnector Association="AmirhomeModel.FK_Relationships_RelationshipTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_Relationships_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserRelationshipPreferences_Relationships" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserRelationships_Relationships" />
+        <AssociationConnector Association="AmirhomeModel.FK_Roles_RoleGroups" />
+        <AssociationConnector Association="AmirhomeModel.FK_TabPermission_Roles" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserRoles_Roles" />
+        <AssociationConnector Association="AmirhomeModel.FK_RolesMng_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_ScheduleHistory_Schedule" />
+        <AssociationConnector Association="AmirhomeModel.FK_ScheduleItemSettings_Schedule" />
+        <AssociationConnector Association="AmirhomeModel.FK_Skins_SkinPackages" />
+        <AssociationConnector Association="AmirhomeModel.FK_States_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_TabModules_Tabs" />
+        <AssociationConnector Association="AmirhomeModel.FK_TabModuleSettings_TabModules" />
+        <AssociationConnector Association="AmirhomeModel.FK_TabPermission_Tabs" />
+        <AssociationConnector Association="AmirhomeModel.FK_TabPermission_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_Tabs_Tabs" />
+        <AssociationConnector Association="AmirhomeModel.FK_TabSettings_Tabs" />
+        <AssociationConnector Association="AmirhomeModel.FK_TabUrls_Tabs" />
+        <AssociationConnector Association="AmirhomeModel.FK_Taxonomy_Vocabularies_Taxonomy_ScopeTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_Taxonomy_Terms_Taxonomy_Terms" />
+        <AssociationConnector Association="AmirhomeModel.FK_Taxonomy_Terms_Taxonomy_Vocabularies" />
+        <AssociationConnector Association="AmirhomeModel.FK_Taxonomy_Vocabularies_Taxonomy_VocabularyTypes" />
+        <AssociationConnector Association="AmirhomeModel.FK_UrlLog_UrlTracking" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserAuthentication_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserPortals_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserProfile_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserRelationshipPreferences_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserRelationships_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserRelationships_Users_OnRelatedUser" />
+        <AssociationConnector Association="AmirhomeModel.FK_UserRoles_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_UsersOnline_Users" />
+        <AssociationConnector Association="AmirhomeModel.FK_VendorClassification_Vendors" />
+        <AssociationConnector Association="AmirhomeModel.FK_WorkflowStates_Workflow" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
