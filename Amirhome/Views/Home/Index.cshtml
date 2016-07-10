@@ -130,20 +130,88 @@
     </div>
 </div>
 
-<section id="occasion" class="slider">
-    <div class="occasion row">
+<section id="occasion" class="slider fade-animate">
+    <h1 class="text-center" style="color:#00578f; font-weight:bold; margin-bottom:30px;">ویژه های مسکن</h1>
+    <div class="occasion row" style="margin:20px 20px 0 20px;">
+        <div class="col-md-3 ">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <label>فروش - ۱۵۰ متر</label>
+                    <h3>گیشا</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="occasion-desc">
+                        <p>موقعیت عالی</p>
+                    </div>
+                    <img src="~/Content/estate_images/sample.jpg" />
+                    <div class="img-count">۸ عکس</div>
+                </div>
+                <div class="panel-footer">
+                    <p class="main-price">قیمت پیش: ۱۰۰۰۰۰۰۰۰ تومان</p>
+                    <p class="second-price">&nbsp;</p>
+                    <p class="date">28/8/1395</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <a href="#">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <label>فروش - ۱۵۰ متر</label>
+                        <h3>گیشا</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="occasion-desc">
+                            <p>نورگیر عالی - خوش نقشه - فول امکانات </p>
+                        </div>
+                        <img src="~/Content/estate_images/sample.jpg" />
+                        <div class="img-count">۸ عکس</div>
+                    </div>
+                    <div class="panel-footer">
+                        <p class="main-price">قیمت پیش: ۱۰۰۰۰۰۰۰۰ تومان</p>
+                        <p class="second-price">&nbsp;</p>
+                        <p class="date">28/8/1395</p>
+                    </div>
+                </div>
+            </a>
+        </div>
         <div class="col-md-3">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <label>فروش</label>
+                    <label>فروش - ۱۵۰ متر</label>
                     <h3>گیشا</h3>
                 </div>
-                
+                <div class="panel-body">
+                    <img src="~/Content/estate_images/sample.jpg" />
+                    <div class="img-count">۸ عکس</div>
+                </div>
+                <div class="panel-footer">
+                    <p class="main-price">قیمت پیش: ۱۰۰۰۰۰۰۰۰ تومان</p>
+                    <p class="second-price">&nbsp;</p>
+                    <p class="date">28/8/1395</p>
+                </div>
             </div>
         </div>
-        <div class="col-md-3"></div>
-        <div class="col-md-3"></div>
-        <div class="col-md-3"></div>
+        <div class="col-md-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <label>فروش - ۱۵۰ متر</label>
+                    <h3>گیشا</h3>
+                </div>
+                <div class="panel-body">
+                    <img src="~/Content/estate_images/sample.jpg" />
+                    <div class="img-count">۸ عکس</div>
+                </div>
+                <div class="panel-footer">
+                    <p class="main-price">قیمت پیش: ۱۰۰۰۰۰۰۰۰ تومان</p>
+                    <p class="second-price">قیمت اجاره: ۱۰۰۰۰۰۰۰۰ تومان</p>
+                    <p class="date">28/8/1395</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center" style="margin-bottom:20px;">
+        <a class="btn btn-primary text-center" style="font-size:larger">مشاهده موارد بیشتر</a>
     </div>
 </section>
 
@@ -155,11 +223,39 @@
     <script type="text/javascript" src="~/Scripts/jquery.backstretch.min.js"></script>
     <script type="text/javascript" src="~/Scripts/slick.js"></script>
     <script type="text/javascript">
+        function getOccasionsFromServer() {
+            var data;
+
+        }
         $(document).ready(function () {
             //attach banner image to banner section
-            $(".banner").backstretch('/Content/banner_images/bg1.jpg');
+            $(".banner").backstretch(['/Content/banner_images/bg1.jpg', '/Content/banner_images/bg2.jpg', '/Content/banner_images/bg3.jpg'], { fade: 550, duration: 4000 });
+            $(".banner-panel").fadeIn(550);
             //attach plane image to plane section
             $(".about-banner").backstretch('/Content/banner_images/pelan.jpg');
+            //occasion panels style
+            $(".occasion .panel").hover(function () {
+                $(this).find('.occasion-desc').fadeIn(450);
+            }, function () {
+                $(this).find('.occasion-desc').fadeOut(450);
+            });
+
+
+        });
+
+        $(window).on("load", function () {
+            $(window).scroll(function () {
+                $(".fade-animate").each(function () {
+                    /* Check the location of each desired element */
+                    var objectBottom = $(this).offset().top + $(this).outerHeight();
+                    var windowBottom = $(window).scrollTop() + $(window).innerHeight();
+
+                    /* If the element is completely within bounds of the window, fade it in */
+                    if (objectBottom - 200 < windowBottom) { //object comes into view (scrolling down)
+                        if ($(this).css("opacity") == 0) { $(this).fadeTo(500, 1); }
+                    }
+                });
+            }); $(window).scroll(); //invoke scroll-handler on page-load
         });
 
     </script>
