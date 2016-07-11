@@ -69,17 +69,12 @@ namespace Amirhome.Models
             State _state = null;
             using (var context = new AmirhomeEntities())
             {
-                /*.Include("tbl_cities").Include("province").Include("GoogleMap")
-                              .Include("Districts").Include("StateTypes").Include("Images").Include("Features")*/
                 IEnumerable<State> data = (from E in context.States.Include("Images").Include("Features")
-                          /*join ci in context.tbl_cities on E.City equals ci.id.ToString()
-                          join pr in context.provinces on E.Province equals pr.id
-                          join gm in context.GoogleMaps on E.ID equals gm.StateID
-                          join di in context.Districts on E.District equals di.ID
-                          join st in context.StateTypes on E.StateType equals st.ID.ToString()*/
+                                           .Include("Owner").Include("Plans").Include("GoogleMaps")
+                                           .Include("StreetViews").Include("StateType1").Include("District1")
                           where E.ID == id
                           select E);
-               // data = data.Join(context.tbl_cities, d => d.City, c => c.id.ToString(),);
+                _state = data.FirstOrDefault();
             }
             return _state;
         }
@@ -88,8 +83,8 @@ namespace Amirhome.Models
             List<State> _states = null;
             using (var context = new AmirhomeEntities())
             {
-                
-                _states =  (from E in context.States.Include("Images")
+
+                _states = (from E in context.States.Include("Images").Include("District1")
                            where E.OccasionFlag == true
                            select E).ToList();
             }

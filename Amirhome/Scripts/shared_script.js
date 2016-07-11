@@ -1,8 +1,36 @@
-﻿$(document).ready(function(){
+﻿function turn2PersianNumber(value) {
+    if (!value) {
+        return;
+    }
+    value = value.toString();
+    var englishNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+        persianNumbers = ["۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰"];
+
+    for (var i = 0, numbersLen = englishNumbers.length; i < numbersLen; i++) {
+        value = value.replace(new RegExp(englishNumbers[i], "g"), persianNumbers[i]);
+    }
+    return value;
+}
+
+function numberWithCommas(x) {
+    var res = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return turn2PersianNumber(res) + ' تومان';
+}
+
+$(document).ready(function () {
     /*var height = $(window).height();
     var body_height = $(".wrap").height();
     if (body_height < height)
         $(".wrap").css('height', height - 250);*/
+
+    $(".price").each(function () {
+        var val = $(this).html();
+        $(this).html(numberWithCommas(val));
+    });
+    $(".number").each(function () {
+        var val = $(this).html();
+        $(this).html(turn2PersianNumber(val));
+    });
 
     $("#login_btn").click(function () {
 

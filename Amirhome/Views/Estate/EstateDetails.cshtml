@@ -11,19 +11,21 @@
         .container.body-content {
             min-height: 550px;
         }
-        .row.details > .content.left{
+        .row.details .content.left, .row.details .nav-tabs, .row.details .tab-content{
             margin-right:40px;
         }
     }
      @@media only screen and (max-width: 985px) {
-        .row.details > .content.left{
+        .row.details > .col{
             margin-top:30px;
         }
     }
-    .row.details > .content{
+     .row.details .col{
+         padding: 0 !important;
+     }
+    .row.details .content{
         border: 2px solid #003765;
         border-radius:5px;
-        padding: 0 !important;
     }
     .row.details .caption{
         height:25px;
@@ -41,55 +43,213 @@
     }
     .detailTbl td{
         padding:6px;
+        font-size:large;
+    }
+    @@media only screen and (max-width: 765px){
+        .detailTbl td{
+        padding:5px;
+        font-size:13px;
+    }
     }
     .detailTbl .title-cell{
         background-color:#00578f;
         color: white;
-        font-size:large;
-        max-width:55px;
+        max-width:75px;
+    }
+    .detailTbl label{
+        font-weight:normal;
     }
     .detailTbl .red{
         font-weight:bold;
         font-size:large;
         color: #C60300;
     }
+    .content .thumb-img{
+        width:100%;
+        min-height:100px;
+        max-height:120px;
+        cursor:pointer;
+    }
+    .content .img-count{
+        width:100%;
+        background-color:rgba(0, 0, 0, 0.6);
+        color: white;
+        font-weight:normal;
+        font:small;
+        padding-right:5px;
+    }
+    .content .red-title{
+        margin-top: 0 !important;
+        margin-bottom:10px;
+        color: red;
+    }
+    .content .red-title:before{
+        content: "★";
+    }
+    .tag{
+        background-color:#00578f;
+        border-radius:9px;
+        min-width:75px;
+        text-align:center;
+        color:white;
+        font-size:12px;
+        font-weight:normal;
+    }
+    .content.left{
+        font-size:17px;
+    }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+        background-color:#003765;
+        color: white;
+    }
+    .tab-content > .tab-pane > img{
+        width:100%;
+    }
 </style>
 
 <div class="container body-content">
+    @*<div class="row items">
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+    </div>*@
     <div class="row details" style="padding:30px;">
-        <div class="col-md-6 content">
-            <div class="text-center caption">مشخصات ملک</div>
-            <div class="inner_content">
-                <table class="detailTbl" border="1">
-                    <tr>
-                        <td class="title-cell">
-                            آدرس
-                        </td>
-                        <td colspan="3">
-                            @Model.Address
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-cell">
-                            قیمت کل
-                        </td>
-                        <td colspan="3" class="red">
-                            @Model.TotalPrice تومان
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-cell">
-                            قیمت هر متر
-                        </td>
-                        <td colspan="3" class="red">
-                            @Model.PricePerMeter تومان
-                        </td>
-                    </tr>
-                </table>
+        <div class="col-md-6 col">
+            <div class="content">
+                <div class="text-center caption">مشخصات ملک</div>
+                <div class="inner_content">
+                    <table class="detailTbl" border="1">
+                        <tr>
+                            <td class="title-cell">
+                                آدرس
+                            </td>
+                            <td colspan="3" style="font-weight:bold">
+                                @Model.Address
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-cell">
+                                قیمت کل
+                            </td>
+                            <td colspan="3" class="red price">
+                                @Model.TotalPrice
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-cell">
+                                قیمت هر متر
+                            </td>
+                            <td colspan="3" class="red price">
+                                @Model.PricePerMeter
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-cell">
+                                نوع کاربری ملک
+                            </td>
+                            <td>
+                                @Model.Usage
+                            </td>
+                            <td class="title-cell">
+                                نوع ملک
+                            </td>
+                            <td>
+                                @Model.StateType1.types
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-cell">
+                                متراژ
+                            </td>
+                            <td class="number">
+                                @Model.Area متر مربع
+                            </td>
+                            <td class="title-cell">
+                                سن بنا
+                            </td>
+                            <td class="number">
+                                @{  if (Model.Age == 0)
+                              {
+                                    <label>نوساز</label>
+                              }
+                              else
+                              {
+                                    <label class="number">@Model.Age ساله</label>
+                                }
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-cell">
+                                تعدد اتاق خواب
+                            </td>
+                            <td class="number">
+                                @Model.Bedrooms
+                            </td>
+                            <td class="title-cell">
+                                طبقه
+                            </td>
+                            <td>
+                                @Model.Floor
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <div class="row extra-info">
+                        <div class="col-md-4">
+                            <img class="thumb-img" src='@string.Format("/Content/estate_images/{0}", Model.Images.FirstOrDefault(i => i.Primary == true).url ?? "no-thumb.png")' />
+                            <label class="img-count number">مشاهده @Model.Images.Count عکس</label>
+                        </div>
+                        <div class="col-md-8">
+                            <h4 class="red-title">امکانات</h4>
+
+                            @{
+                            foreach (var item in Model.Features)
+                            {
+                                <label class="tag">@item.Item</label>
+                            }
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-5 content left">
-            <div class="text-center caption">اطلاعات تماس</div>
+        <div class="col-md-5 col">
+            <div class="content left">
+                <div class="text-center caption">اطلاعات تماس</div>
+                <div class="inner_content">
+                    <span>کد ملک: </span><label class="number">@Model.Serial</label><br />
+                    <span>نام مالک: </span><label class="number">@Model.Owner.Name</label><br />
+                    <span>نام مشاور: </span><label class="number">علی عبدی</label><br />
+                    <span>تلفن: </span><label class="number">@Model.Owner.Telephone - @Model.Owner.Tell2</label><br />
+                    <span>ایمیل: </span><label class="number">@Model.Owner.Email</label><br />
+                </div>
+            </div>
+            <br />
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#google">نقشه گوگل</a></li>
+                <li><a data-toggle="tab" href="#street">نمای خیابان</a></li>
+                <li><a data-toggle="tab" href="#plan">نقشه ساختمان</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="google" class="tab-pane fade in active">
+                </div>
+                <div id="street" class="tab-pane fade">
+                    <img src='@string.Format("/Content/estate_images/{0}", Model.StreetViews.FirstOrDefault().url ?? "no-thumb.png")' />
+                </div>
+                <div id="plan" class="tab-pane fade">
+                    <img src="" />
+                </div>
+            </div>
         </div>
     </div>
 </div>
