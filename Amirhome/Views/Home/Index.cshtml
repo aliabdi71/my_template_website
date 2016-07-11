@@ -133,81 +133,9 @@
 <section id="occasion" class="slider fade-animate">
     <h1 class="text-center" style="color:#00578f; font-weight:bold; margin-bottom:30px;">ویژه های مسکن</h1>
     <div class="occasion row" style="margin:20px 20px 0 20px;">
-        <div class="col-md-3 ">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <label>فروش - ۱۵۰ متر</label>
-                    <h3>گیشا</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="occasion-desc">
-                        <p>موقعیت عالی</p>
-                    </div>
-                    <img src="~/Content/estate_images/sample.jpg" />
-                    <div class="img-count">۸ عکس</div>
-                </div>
-                <div class="panel-footer">
-                    <p class="main-price">قیمت پیش: ۱۰۰۰۰۰۰۰۰ تومان</p>
-                    <p class="second-price">&nbsp;</p>
-                    <p class="date">28/8/1395</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <a href="#">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <label>فروش - ۱۵۰ متر</label>
-                        <h3>گیشا</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="occasion-desc">
-                            <p>نورگیر عالی - خوش نقشه - فول امکانات </p>
-                        </div>
-                        <img src="~/Content/estate_images/sample.jpg" />
-                        <div class="img-count">۸ عکس</div>
-                    </div>
-                    <div class="panel-footer">
-                        <p class="main-price">قیمت پیش: ۱۰۰۰۰۰۰۰۰ تومان</p>
-                        <p class="second-price">&nbsp;</p>
-                        <p class="date">28/8/1395</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <label>فروش - ۱۵۰ متر</label>
-                    <h3>گیشا</h3>
-                </div>
-                <div class="panel-body">
-                    <img src="~/Content/estate_images/sample.jpg" />
-                    <div class="img-count">۸ عکس</div>
-                </div>
-                <div class="panel-footer">
-                    <p class="main-price">قیمت پیش: ۱۰۰۰۰۰۰۰۰ تومان</p>
-                    <p class="second-price">&nbsp;</p>
-                    <p class="date">28/8/1395</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <label>فروش - ۱۵۰ متر</label>
-                    <h3>گیشا</h3>
-                </div>
-                <div class="panel-body">
-                    <img src="~/Content/estate_images/sample.jpg" />
-                    <div class="img-count">۸ عکس</div>
-                </div>
-                <div class="panel-footer">
-                    <p class="main-price">قیمت پیش: ۱۰۰۰۰۰۰۰۰ تومان</p>
-                    <p class="second-price">قیمت اجاره: ۱۰۰۰۰۰۰۰۰ تومان</p>
-                    <p class="date">28/8/1395</p>
-                </div>
-            </div>
+        <div class="text-center">
+            <img src="~/Content/shared_images/loading.gif" />
+            <h4>در حال بارگذاری</h4>
         </div>
     </div>
     <div class="row text-center" style="margin-bottom:20px;">
@@ -224,23 +152,97 @@
     <script type="text/javascript" src="~/Scripts/slick.js"></script>
     <script type="text/javascript">
         function getOccasionsFromServer() {
-            var data;
-
+            $.ajax({
+                url: '@Url.Action("GetOccasionEstates", "Home")',
+                method: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    createOccasionSection(data);
+                },
+                error: function () {
+                    
+                },
+            });
+            return occ_data;
         }
+
+        function turn2PersianNumber(value) {
+            if (!value) {
+                return;
+            }
+            value = value.toString();
+            var englishNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+                persianNumbers = ["۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰"];
+
+            for (var i = 0, numbersLen = englishNumbers.length; i < numbersLen; i++) {
+                value = value.replace(new RegExp(englishNumbers[i], "g"), persianNumbers[i]);
+            }
+            return value;
+        }
+
+        function numberWithCommas(x) {
+            var res = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return turn2PersianNumber(res) + ' تومان';
+        }
+
+        function createOccasionSection(data) {
+            var htmls = [];
+            $(".occasion.row").html("");
+            for (var i = 0 ; i < data.length ; i++) {
+                //Create Basic Elements
+                var $div = $("<div>").addClass("col-md-3").css('display', 'none');
+                var $a = $("<a>").attr('href', '/Estate/EstateDetails?EstateID=' + data[i].ID);
+                var $panel = $("<div>").addClass("panel panel-success");
+
+                //Panel Heading Initialize
+                var $panel_heading = $("<div>").addClass("panel-heading");
+                var $heading_label = $("<label>").html(data[i].Condition + ' - ' + turn2PersianNumber(data[i].Area) + ' متری');
+                var $heading_header = $("<h3>").html(data[i].Address).css('white-space', 'nowrap');
+                $panel_heading.append($heading_label).append($heading_header);
+
+                //Panel Body Initialize
+                var $panel_body = $("<div>").addClass("panel-body");
+                var $body_occ_desc = $("<div>").addClass("occasion-desc");
+                var $occ_desc_p = $("<p>").html(data[i].Occasion);
+                $body_occ_desc.append($occ_desc_p);
+                var $body_image = $("<img>").attr("src", "/Content/estate_images/" + data[i].ImageSrc);
+                var $body_img_count = $("<div>").addClass("img-count").html(turn2PersianNumber(data[i].ImageCount) + ' عکس');
+                $panel_body.append($body_occ_desc).append($body_image).append($body_img_count);
+
+                //Panel Footer Initialize
+                var $panel_footer = $("<div>").addClass("panel-footer");
+                var $footer_main_price = $("<p>").addClass("main-price");
+                var $footer_second_price = $("<p>").addClass("second-price");
+                var $footer_date = $("<p>").addClass("date").html(turn2PersianNumber(data[i].Date));
+                switch (data[i].Condition) {
+                    case 'فروش': $footer_main_price.html('قیمت کل: ' + numberWithCommas(data[i].TotalPrice)); $footer_second_price.html("&nbsp;"); break;
+                    case 'رهن': $footer_main_price.html('قیمت رهن: ' + numberWithCommas(data[i].Prepayment)); $footer_second_price.html("&nbsp;"); break;
+                    case 'اجاره': $footer_main_price.html('پیش پرداخت: ' + numberWithCommas(data[i].Prepayment)); $footer_second_price.html('ماهیانه: ' + numberWithCommas(data[i].Mortage)); break;
+                }
+                $panel_footer.append($footer_main_price).append($footer_second_price).append($footer_date);
+
+                //Finilizing and Fading the content
+                $panel.append($panel_heading).append($panel_body).append($panel_footer);
+                $a.append($panel);
+                $div.append($a);
+                $div.appendTo(".occasion.row").show('slow');
+            }
+            $(".occasion .panel").hover(function () {
+                $(this).find('.occasion-desc').fadeIn(450);
+            }, function () {
+                $(this).find('.occasion-desc').fadeOut(450);
+            });
+        }
+
         $(document).ready(function () {
             //attach banner image to banner section
             $(".banner").backstretch(['/Content/banner_images/bg1.jpg', '/Content/banner_images/bg2.jpg', '/Content/banner_images/bg3.jpg'], { fade: 550, duration: 4000 });
             $(".banner-panel").fadeIn(550);
             //attach plane image to plane section
             $(".about-banner").backstretch('/Content/banner_images/pelan.jpg');
-            //occasion panels style
-            $(".occasion .panel").hover(function () {
-                $(this).find('.occasion-desc').fadeIn(450);
-            }, function () {
-                $(this).find('.occasion-desc').fadeOut(450);
-            });
-
-
+            //Occasion Section
+            getOccasionsFromServer();
         });
 
         $(window).on("load", function () {

@@ -137,6 +137,17 @@ namespace Amirhome.Models
     }
     public class UserManager
     {
+        public Agent getAgentByID(int id)
+        {
+            Agent _agent = null;
+            using (var context = new AmirhomeEntities())
+            {
+                _agent = (from A in context.Agents
+                         where A.ID == id
+                         select A).FirstOrDefault();
+            }
+            return _agent;
+        }
         public UserAccouunt getUserByID(int id)
         {
             UserAccouunt user = null;

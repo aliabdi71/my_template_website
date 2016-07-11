@@ -41,10 +41,25 @@ namespace Amirhome.Controllers
             return View();
         }
 
-        public JsonResult GetOccasionEstates()
+        [HttpGet]
+        public ActionResult GetOccasionEstates()
         {
-            List<State> occasions = _estateManager.getOccasions();
-            return Json(occasions.OrderByDescending(E => E.Date).Take(5));
+            List<State> occasions = _estateManager.getOccasions().OrderByDescending(E => E.Date).Take(4).ToList();
+            var data = occasions.Select(o => new { 
+                ID = o.ID,
+                Area = o.Area,
+                TotalPrice = o.TotalPrice,
+                Date = o.Date.ToString().Replace("PM", "").Replace("AM", ""),
+                Prepayment = o.PrepaymentPrice,
+                Loan = o.Loan,
+                Mortage = o.MortgagePrice,
+                Condition = o.Condition,
+                Address = o.Address,
+                Occasion = o.Occasion,
+                ImageSrc = (o.Images.Count(i => i.Primary == true) == 0 ? "no-thumb.png" : o.Images.FirstOrDefault(i => i.Primary == true).url),
+                ImageCount = o.Images.Count
+            }).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult About()

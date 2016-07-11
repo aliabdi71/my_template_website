@@ -70,13 +70,13 @@
 /*********************************************/
 
 /* Footer styles starts */
-footer > .row{
+footer .row{
     background-color:#D8D8D8;
     color: black;
     padding:20px 0 20px 0;
     text-align:center;
 }
-footer > .row.blue{
+footer .row.blue{
     background-color:#1F1448;
     color: white;
 }

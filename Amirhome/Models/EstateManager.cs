@@ -64,17 +64,27 @@ namespace Amirhome.Models
     
     public class EstateManager
     {
+        public State getStateByID(int id)
+        {
+            State _state = null;
+            using (var context = new AmirhomeEntities())
+            {
+                _state = (from E in context.States.Include("tbl_cities").Include("province").Include("GoogleMap")
+                              .Include("Districts").Include("StateTypes").Include("Images").Include("Features-jnc")
+                          where E.ID == id
+                          select E).FirstOrDefault();
+            }
+            return _state;
+        }
         public List<State> getOccasions()
         {
             List<State> _states = null;
             using (var context = new AmirhomeEntities())
             {
                 
-                _states =  (from E in context.States
+                _states =  (from E in context.States.Include("Images")
                            where E.OccasionFlag == true
                            select E).ToList();
-                /*if (last_five)
-                    _states = _states.Skip(Math.Max(0, _states.Count - 5)).ToList();*/
             }
             return _states;
         }
@@ -147,6 +157,33 @@ namespace Amirhome.Models
             if (_params.Area)
                 query = query.Where(E => E.Area >= _params.AreaFrom && E.Area <= _params.AreaTo);
             return query;
+        }
+        public string SplitInParts(String text, Int32 size)
+        {
+            List<String> ret = new List<String>(((text.Length + size - 1) / size) + 1);
+            if ((text.Length + size) % size != 0)
+                ret.Add(text.Substring(0, (text.Length + size) % size));
+
+            for (int start = (text.Length + size) % size; start < text.Length; start += size)
+            {
+                if ((start + size) <= text.Length)
+                    ret.Add(text.Substring(start, size));
+                else
+                    ret.Add(text.Substring(start, (text.Length + size) % size));
+            }
+            string result = String.Join(",", ret);
+            return turnToPersianNumber(result);
+        }
+
+        public string turnToPersianNumber(string str)
+        {
+            char[] englishNumbers = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+            char[] persianNumbers = { '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۰' };
+            for (int i = 0; i < 10; i++)
+            {
+                str = str.Replace(englishNumbers[i], persianNumbers[i]);
+            }
+            return str;
         }
     }
 }
