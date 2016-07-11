@@ -6,7 +6,93 @@
 
 @model Amirhome.Models.State
 
+<style>
+    @@media only screen and (min-width: 985px) {
+        .container.body-content {
+            min-height: 550px;
+        }
+        .row.details > .content.left{
+            margin-right:40px;
+        }
+    }
+     @@media only screen and (max-width: 985px) {
+        .row.details > .content.left{
+            margin-top:30px;
+        }
+    }
+    .row.details > .content{
+        border: 2px solid #003765;
+        border-radius:5px;
+        padding: 0 !important;
+    }
+    .row.details .caption{
+        height:25px;
+        width:100%;
+        font-size:16px;
+        background-color:#003765;
+        color: white;
+    }
+    .row.details .inner_content{
+        padding: 15px;
+    }
+    .detailTbl{
+       border-color:#51AD94;
+       width:100%;
+    }
+    .detailTbl td{
+        padding:6px;
+    }
+    .detailTbl .title-cell{
+        background-color:#00578f;
+        color: white;
+        font-size:large;
+        max-width:55px;
+    }
+    .detailTbl .red{
+        font-weight:bold;
+        font-size:large;
+        color: #C60300;
+    }
+</style>
 
+<div class="container body-content">
+    <div class="row details" style="padding:30px;">
+        <div class="col-md-6 content">
+            <div class="text-center caption">مشخصات ملک</div>
+            <div class="inner_content">
+                <table class="detailTbl" border="1">
+                    <tr>
+                        <td class="title-cell">
+                            آدرس
+                        </td>
+                        <td colspan="3">
+                            @Model.Address
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title-cell">
+                            قیمت کل
+                        </td>
+                        <td colspan="3" class="red">
+                            @Model.TotalPrice تومان
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title-cell">
+                            قیمت هر متر
+                        </td>
+                        <td colspan="3" class="red">
+                            @Model.PricePerMeter تومان
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-5 content left">
+            <div class="text-center caption">اطلاعات تماس</div>
+        </div>
+    </div>
+</div>
 
 
 

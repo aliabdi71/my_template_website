@@ -16,11 +16,11 @@ namespace Amirhome.Controllers
         {
             int ID = int.Parse(Request.QueryString["EstateID"].ToString());
             State estate_model = _estateManager.getStateByID(ID);
-            if (estate_model.AgentID != null)
+            /*if (estate_model.AgentID != null)
             {
                 Agent estate_agent = _userManager.getAgentByID((int)estate_model.AgentID);
                 ViewData["Agent"] = estate_agent;
-            }
+            }*/
             return View(estate_model);
         }
     }

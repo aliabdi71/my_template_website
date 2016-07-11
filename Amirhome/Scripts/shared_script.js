@@ -1,8 +1,8 @@
 ﻿$(document).ready(function(){
-    var height = $(window).height();
+    /*var height = $(window).height();
     var body_height = $(".wrap").height();
     if (body_height < height)
-        $(".wrap").css('height', height - 250);
+        $(".wrap").css('height', height - 250);*/
 
     $("#login_btn").click(function () {
 

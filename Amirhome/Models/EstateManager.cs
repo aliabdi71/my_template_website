@@ -69,10 +69,17 @@ namespace Amirhome.Models
             State _state = null;
             using (var context = new AmirhomeEntities())
             {
-                _state = (from E in context.States.Include("tbl_cities").Include("province").Include("GoogleMap")
-                              .Include("Districts").Include("StateTypes").Include("Images").Include("Features-jnc")
+                /*.Include("tbl_cities").Include("province").Include("GoogleMap")
+                              .Include("Districts").Include("StateTypes").Include("Images").Include("Features")*/
+                IEnumerable<State> data = (from E in context.States.Include("Images").Include("Features")
+                          /*join ci in context.tbl_cities on E.City equals ci.id.ToString()
+                          join pr in context.provinces on E.Province equals pr.id
+                          join gm in context.GoogleMaps on E.ID equals gm.StateID
+                          join di in context.Districts on E.District equals di.ID
+                          join st in context.StateTypes on E.StateType equals st.ID.ToString()*/
                           where E.ID == id
-                          select E).FirstOrDefault();
+                          select E);
+               // data = data.Join(context.tbl_cities, d => d.City, c => c.id.ToString(),);
             }
             return _state;
         }
