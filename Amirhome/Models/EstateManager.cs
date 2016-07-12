@@ -103,7 +103,7 @@ namespace Amirhome.Models
         }
         private IQueryable<State> EstateQueryBuilder(AmirhomeEntities context, SearchParams _params)
         {
-            IQueryable<State> query = from E in context.States select E;
+            IQueryable<State> query = from E in context.States.Include("Images").Include("District1").Include("StateType1") select E;
             if (_params.EstateCondition)
                 query = query.Where(E => E.Condition == _params.EstateConditionValue);
             if (_params.EstateDistrict)

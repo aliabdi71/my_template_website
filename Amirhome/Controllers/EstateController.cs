@@ -23,5 +23,9 @@ namespace Amirhome.Controllers
             }*/
             return View(estate_model);
         }
+        public ActionResult SearchPage()
+        {
+            return View();
+        }
     }
 }

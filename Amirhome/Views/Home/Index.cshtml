@@ -76,24 +76,24 @@
                         <table>
                             <tr>
                                 <td>
-                                    <select id="states">
+                                    <select id="states_submit">
                                         <option value="0">استان</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select id="city">
+                                    <select id="city_submit">
                                         <option value="0">شهر</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select id="district">
+                                    <select id="district_submit">
                                         <option value="0">محله</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <select id="condition">
+                                    <select id="condition_submit">
                                         <option value="0">نوع واگذاری</option>
                                         <option value="1">فروش</option>
                                         <option value="2">رهن</option>
@@ -101,7 +101,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select id="usage">
+                                    <select id="usage_submit">
                                         <option value="0">نوع کاربری ملک</option>
                                         <option value="1">مسکونی</option>
                                         <option value="2">کلنگی و مشارکتی</option>
@@ -109,7 +109,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select id="type">
+                                    <select id="type_submit">
                                         <option value="0">نوع ملک</option>
                                     </select>
                                 </td>
@@ -222,6 +222,20 @@
             $(".banner-panel").fadeIn(550);
             //attach plane image to plane section
             $(".about-banner").backstretch('/Content/banner_images/pelan.jpg');
+
+            $("#search_estate").click(function () {
+                if ($("#condition").val() === 0) {
+                    $("#condition").css('background-color', '#FF7C7C');
+                    return false;
+                }
+                if ($("#usage").val() === 0) {
+                    $("#usage").css('background-color', '#FF7C7C');
+                    return false;
+                }
+                var cond = $("#condition").val(),
+                    use = $("#usage").val();
+                window.location = "/Estate/SearchPage?cond=" + cond + "&use=" + use;
+            });
             //Occasion Section
             getOccasionsFromServer();
         });
