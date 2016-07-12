@@ -1,8 +1,113 @@
 ﻿
 @{
-    ViewBag.Title = "SearchPage";
+    ViewBag.Title = "جستجوی ملک";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
-<h2>SearchPage</h2>
+<style>
+    .row.search{
+        background-image:url("../../Content/shared_images/background.jpg") !important;
+        background-repeat:repeat;
+    }
+    .search-section{
+        background:white;
+        width:80%;
+        margin: 0 auto;
+    }
+    .row.search-section .content{
+        border: 2px solid #003765;
+        border-radius:5px;
+        min-height:200px;
+    }
+    .row.search-section .caption{
+        height:35px;
+        width:100%;
+        font-size:20px;
+        background-color:#003765;
+        color: white;
+    }
+    .search-fields{
+        padding:15px;
+    }
+    .search-fields select{
+        min-height:35px;
+        min-width:250px;
+        font-size:15px;
+        
+    }
+</style>
 
+<div class="container body-content">
+    <div class="row search">
+        <br />
+        <br />
+        <div class="row search-section">
+            <div class="content">
+                <div class="text-center caption">جستجوی ملک</div>
+                <div class="search-fields">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select id="EstateType">
+                                <option>نوع ملک</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="City">
+                                <option>شهر</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="District">
+                                <option>محله</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function getQueryStringByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        function doSearch(params) {
+            $.ajax({
+                url: '@Url.Action("DoSearch", "Estate")',
+                method: 'POST',
+                dataType: 'json',
+                data: JSON.stringify(params),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    //createOccasionSection(data);
+                    //alert(data.length);
+                },
+                error: function () {
+
+                },
+            });
+        }
+
+        $(document).ready(function () {
+            var condition = getQueryStringByName("cond") === '1' ? "فروش" : (getQueryStringByName("use") === '2' ? "رهن" : "اجاره");
+            var usage = getQueryStringByName("use") === '1' ? "مسکونی" : (getQueryStringByName("use") === '2' ? "کلنگی و مشارکتی" : "تجاری و اداری");
+            var initSearchParams = {
+                EstateUsage: true,
+                EstateUsageValue: usage,
+                EstateCondition: true,
+                EstateConditionValue: condition,
+            }
+            //doSearch(initSearchParams);
+        });
+    </script>
+}

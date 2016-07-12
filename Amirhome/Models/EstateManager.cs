@@ -2,64 +2,89 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel;
 
 namespace Amirhome.Models
 {
     public class SearchParams
     {
+        [DefaultValue(false)]
         public bool EstateCondition { get; set; }
         public string EstateConditionValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateUsage { get; set; }
         public string EstateUsageValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateType { get; set; }
         public string EstateTypeValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateProvince { get; set; }
         public int EstateProvinceValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateCity { get; set; }
         public string EstateCityValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateRegion { get; set; }
         public string EstateRegionValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateDistrict { get; set; }
         public int EstateDistrictValue { get; set; }
+        [DefaultValue(false)]
         public bool TotalPrice { get; set; }
         public long TotalPriceFrom { get; set; }
         public long TotalPriceTo { get; set; }
+        [DefaultValue(false)]
         public bool MortagePrice { get; set; }
         public long MortagePriceFrom { get; set; }
         public long MortagePriceTo { get; set; }
+        [DefaultValue(false)]
         public bool PrepaymentPrice { get; set; }
         public long PrepaymentPriceFrom { get; set; }
         public long PrepaymentPriceTo { get; set; }
+        [DefaultValue(false)]
         public bool Loan { get; set; }
         public long LoanFrom { get; set; }
         public long LoanTo { get; set; }
+        [DefaultValue(false)]
         public bool PricePerMeter { get; set; }
         public long PricePerMeterFrom { get; set; }
         public long PricePerMeterTo { get; set; }
+        [DefaultValue(false)]
         public bool Area { get; set; }
         public long AreaFrom { get; set; }
         public long AreaTo { get; set; }
+        [DefaultValue(false)]
         public bool EstateSerial { get; set; }
         public int EstateSerialValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateAge { get; set; }
         public int EstateAgeValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateBedrooms { get; set; }
         public string EstateBedroomsValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateParkings { get; set; }
         public string EstateParkingsValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateBathrooms { get; set; }
         public string EstateBathroomsValue { get; set; }
+        [DefaultValue(false)]
         public bool EstatePosition { get; set; }
         public string EstatePositionValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateFloor { get; set; }
         public string EstateFloorValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateFloors { get; set; }
         public string EstateFloorsValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateUnits { get; set; }
         public string EstateUnitsValue { get; set; }
+        [DefaultValue(false)]
         public bool EstateTells { get; set; }
         public string EstateTellsValue { get; set; }
-
+        [DefaultValue(false)]
+        public bool hasImage { get; set; }
     }
     
     public class EstateManager

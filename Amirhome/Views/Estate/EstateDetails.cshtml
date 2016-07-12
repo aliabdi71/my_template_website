@@ -188,14 +188,14 @@
 <div class="container body-content">
     <div class="row details" style="padding:30px;">
         <div class="col-md-6 col">
-            <div class="row items text-center">
+            <div class="row items text-center fade-animate">
                 <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ملک قبلی</a></div>
                 <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-envelope"></i>&nbsp;ارسال</a></div>
                 <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-remove-circle"></i>&nbsp;گزارش خرابی</a></div>
                 <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;ملک بعدی</a></div>
             </div>
             <br />
-            <div class="content">
+            <div class="content fade-animate">
                 <div class="text-center caption">مشخصات ملک</div>
                 <div class="inner_content">
                     <table class="detailTbl" border="1">
@@ -249,13 +249,13 @@
                             </td>
                             <td class="number">
                                 @{  if (Model.Age == 0)
-                              {
+                                  {
                                     <label>نوساز</label>
-                              }
-                              else
-                              {
+                                  }
+                                  else
+                                  {
                                     <label class="number">@Model.Age ساله</label>
-                                }
+                                  }
                                 }
                             </td>
                         </tr>
@@ -287,16 +287,15 @@
                                     <img class="thumb-img" src='@string.Format("/Content/estate_images/{0}", Model.Images.FirstOrDefault(i => i.Primary == true).url)' />
                                     <label class="img-count number">مشاهده @Model.Images.Count عکس</label>
                                 }
-}
+                            }
                         </div>
                         <div class="col-md-8">
                             <h4 class="red-title">امکانات</h4>
-
                             @{
-                            foreach (var item in Model.Features)
-                            {
-                                <label class="tag">@item.Item</label>
-                            }
+                                foreach (var item in Model.Features)
+                                {
+                                    <label class="tag">@item.Item</label>
+                                }
                             }
                         </div>
                     </div>
@@ -336,12 +335,12 @@
                 </div>
             </div>
             <br />
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs fade-animate">
                 <li class="active"><a data-toggle="tab" href="#googleMap">نقشه گوگل</a></li>
                 <li><a data-toggle="tab" href="#street">نمای خیابان</a></li>
                 <li><a data-toggle="tab" href="#plan">نقشه ساختمان</a></li>
             </ul>
-            <div class="tab-content">
+            <div class="tab-content fade-animate">
                 <div id="googleMap" class="tab-pane fade active">
                 </div>
                 <div id="street" class="tab-pane fade">
@@ -372,10 +371,10 @@
 
         </div>
         <div class="col-md-5 col">
-            <div class="content left">
+            <div class="content left fade-animate">
                 <div class="text-center caption">اطلاعات تماس</div>
                 <div class="inner_content">
-                    <img class="agent_img" src="~/Content/shared_images/logo3.png"/>
+                    <img class="agent_img" src="~/Content/shared_images/logo3.png" />
                     <span>کد ملک: </span><label class="number">@Model.Serial</label><br />
                     <span>نام مالک: </span><label class="number">@Model.Owner.Name</label><br />
                     <span>نام مشاور: </span><label class="number">علی عبدی</label><br />
@@ -384,7 +383,7 @@
                 </div>
             </div>
             <br />
-            <div class="content left">
+            <div class="content left fade-animate">
                 <div class="text-center caption">ارسال نظرات</div>
                 <div style="background-color:white;">
                     <p style="font-size:small; padding:10px 20px 0 20px">هرگونه نظر یا سوال در رابطه با اطلاعات این ملک را می توانید از طریق فرم زیر با ما در میان بگذارید</p>
@@ -419,12 +418,16 @@
 
     <script type="text/javascript">
 
-        var initLatlng = new google.maps.LatLng(35.688045, 51.392884);
+        /*var initLatlng = new google.maps.LatLng(35.688045, 51.392884);
         var geocoder = new google.maps.Geocoder();
-        var infowindow = new google.maps.InfoWindow();
-        google.maps.event.addDomListener(window, 'load', initializeMap(initLatlng));
+        var infowindow = new google.maps.InfoWindow();*/
+        $(document).ready(function () {
+            $(".fade-animate").each(function (index) {
+                $(this).delay(index * 300).fadeTo(1000, 1);
+            })
+        });
 
-        function initializeMap(laglng) {
+        /*function initializeMap(laglng) {
             var mapOptions = {
                 zoom: 12,
                 center: laglng,
@@ -448,11 +451,7 @@
                     }
                 }
             });
-        }
-
-        $(document).ready(function () {
-
-        });
+        }*/
     </script>
 }
 
