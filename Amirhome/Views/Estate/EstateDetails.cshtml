@@ -7,11 +7,15 @@
 @model Amirhome.Models.State
 
 <style>
+    .details{
+        background-image:url("../../Content/shared_images/background.jpg") !important;
+        background-repeat:repeat;
+    }
     @@media only screen and (min-width: 985px) {
         .container.body-content {
             min-height: 550px;
         }
-        .row.details .content.left, .row.details .nav-tabs, .row.details .tab-content{
+        .row.details .content.left{
             margin-right:40px;
         }
     }
@@ -36,6 +40,7 @@
     }
     .row.details .inner_content{
         padding: 15px;
+        background-color:white;
     }
     .detailTbl{
        border-color:#51AD94;
@@ -47,14 +52,14 @@
     }
     @@media only screen and (max-width: 765px){
         .detailTbl td{
-        padding:5px;
-        font-size:13px;
-    }
+            padding:5px;
+            font-size:13px;
+        }
     }
     .detailTbl .title-cell{
         background-color:#00578f;
         color: white;
-        max-width:75px;
+        max-width:85px;
     }
     .detailTbl label{
         font-weight:normal;
@@ -98,32 +103,98 @@
     .content.left{
         font-size:17px;
     }
+    .nav-tabs > li > a{
+        background-color:white;
+        border: 1px solid #003765;
+    }
     .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
         background-color:#003765;
         color: white;
     }
+    .tab-content{
+        background-color:white;
+    }
     .tab-content > .tab-pane > img{
         width:100%;
+    }
+    .tab-content > div{
+        height:300px;
+    }
+    table.other-features{
+        width: 95%;
+        border-color:#51AD94;
+        font-size:medium;
+        margin:0 auto;
+    }
+    .other-features td{
+        max-width:60px;
+        text-align:center;
+    }
+    .other-features .title > td{
+        background-color:#00578f;
+        color: white;
+    }
+    @@media only screen and (max-width: 765px){
+        table.other-features {
+            font-size:small !important;
+        }
+    }
+    .feedback > table{
+        width:100%;
+    }
+    .feedback > table .fblabel{
+        width:120px;
+    }
+    .feedback td{
+        padding:4px;
+    }
+    .feedback label{
+        font-weight:normal;
+        font-size:small;
+        margin-right:20px;
+    }
+    .feedback input, .feedback textarea{
+        width:100%;
+    }
+    .feedback textarea{
+        min-height:100px;
+    }
+    .agent_img{
+        position:absolute;
+        left:30px
+    }
+    .row.items{
+        background-color:#FCFFE5;
+        margin:0 auto;
+        border-radius:5px;
+        min-height:30px;
+        vertical-align:central;
+        font-style:normal !important;
+        padding-top:5px;
+    }
+    .row.items a{
+        color: black;
+    }
+    .row.items a:hover{
+        text-decoration:none;
+        color:#00578f;
+    }
+    .row.items i{
+        font-size:15px;
+        font-style:normal !important;
     }
 </style>
 
 <div class="container body-content">
-    @*<div class="row items">
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-    </div>*@
     <div class="row details" style="padding:30px;">
         <div class="col-md-6 col">
+            <div class="row items text-center">
+                <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ملک قبلی</a></div>
+                <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-envelope"></i>&nbsp;ارسال</a></div>
+                <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-remove-circle"></i>&nbsp;گزارش خرابی</a></div>
+                <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;ملک بعدی</a></div>
+            </div>
+            <br />
             <div class="content">
                 <div class="text-center caption">مشخصات ملک</div>
                 <div class="inner_content">
@@ -206,8 +277,17 @@
                     <br />
                     <div class="row extra-info">
                         <div class="col-md-4">
-                            <img class="thumb-img" src='@string.Format("/Content/estate_images/{0}", Model.Images.FirstOrDefault(i => i.Primary == true).url ?? "no-thumb.png")' />
-                            <label class="img-count number">مشاهده @Model.Images.Count عکس</label>
+                            @{
+                                if (Model.Images.FirstOrDefault(i => i.Primary == true) == null)
+                                {
+                                    <img class="thumb-img" src='/Content/estate_images/no-thumb.png' />
+                                }
+                                else
+                                {
+                                    <img class="thumb-img" src='@string.Format("/Content/estate_images/{0}", Model.Images.FirstOrDefault(i => i.Primary == true).url)' />
+                                    <label class="img-count number">مشاهده @Model.Images.Count عکس</label>
+                                }
+}
                         </div>
                         <div class="col-md-8">
                             <h4 class="red-title">امکانات</h4>
@@ -220,13 +300,82 @@
                             }
                         </div>
                     </div>
+                    <div class="row">
+                        <h3 style="margin-right:10px; font-size:19px;">سایر مشخصات ملک</h3>
+                        <table class="other-features" border="1">
+                            <tr class="title">
+                                <td>تعداد طبقات</td>
+                                <td>تعداد واحد</td>
+                                <td>کابینت</td>
+                                <td>پارکینگ</td>
+                                <td>خط تلفن</td>
+                            </tr>
+                            <tr>
+                                <td class="number">@Model.Floors</td>
+                                <td class="number">@Model.Units</td>
+                                <td>@Model.Cabinet</td>
+                                <td class="number">@Model.Parking</td>
+                                <td class="number">@Model.Tells</td>
+                            </tr>
+                            <tr class="title">
+                                <td>سرویس بهداشتی</td>
+                                <td>نما</td>
+                                <td>کفپوش</td>
+                                <td>موقعیت</td>
+                                <td>مساحت کل</td>
+                            </tr>
+                            <tr>
+                                <td class="number">@Model.Bathrooms</td>
+                                <td>@Model.Facing</td>
+                                <td>@Model.Flooring</td>
+                                <td>@Model.StatePosition</td>
+                                <td class="number">@Model.Width</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
+            <br />
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#googleMap">نقشه گوگل</a></li>
+                <li><a data-toggle="tab" href="#street">نمای خیابان</a></li>
+                <li><a data-toggle="tab" href="#plan">نقشه ساختمان</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="googleMap" class="tab-pane fade active">
+                </div>
+                <div id="street" class="tab-pane fade">
+                    @{
+                        if (Model.StreetViews.FirstOrDefault() == null)
+                        {
+
+                        }
+                        else
+                        {
+                            <img class="thumb-img" src='@string.Format("/Content/estate_images/{0}", Model.StreetViews.FirstOrDefault().url)' />
+                        }
+                    }
+                </div>
+                <div id="plan" class="tab-pane fade">
+                    @{
+                        if (Model.Plans.FirstOrDefault() == null)
+                        {
+
+                        }
+                        else
+                        {
+                            <img class="thumb-img" src='@string.Format("/Content/estate_images/{0}", Model.Plans.FirstOrDefault().url)' />
+                        }
+                    }
+                </div>
+            </div>
+
         </div>
         <div class="col-md-5 col">
             <div class="content left">
                 <div class="text-center caption">اطلاعات تماس</div>
                 <div class="inner_content">
+                    <img class="agent_img" src="~/Content/shared_images/logo3.png"/>
                     <span>کد ملک: </span><label class="number">@Model.Serial</label><br />
                     <span>نام مالک: </span><label class="number">@Model.Owner.Name</label><br />
                     <span>نام مشاور: </span><label class="number">علی عبدی</label><br />
@@ -235,24 +384,77 @@
                 </div>
             </div>
             <br />
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#google">نقشه گوگل</a></li>
-                <li><a data-toggle="tab" href="#street">نمای خیابان</a></li>
-                <li><a data-toggle="tab" href="#plan">نقشه ساختمان</a></li>
-            </ul>
-            <div class="tab-content">
-                <div id="google" class="tab-pane fade in active">
-                </div>
-                <div id="street" class="tab-pane fade">
-                    <img src='@string.Format("/Content/estate_images/{0}", Model.StreetViews.FirstOrDefault().url ?? "no-thumb.png")' />
-                </div>
-                <div id="plan" class="tab-pane fade">
-                    <img src="" />
+            <div class="content left">
+                <div class="text-center caption">ارسال نظرات</div>
+                <div style="background-color:white;">
+                    <p style="font-size:small; padding:10px 20px 0 20px">هرگونه نظر یا سوال در رابطه با اطلاعات این ملک را می توانید از طریق فرم زیر با ما در میان بگذارید</p>
+                    <form id="feedbackForm" class="feedback">
+                        <table>
+                            <tr>
+                                <td class="fblabel"><label>نام و نام خانوادگی</label></td>
+                                <td><input id="fb_name" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td class="fblabel"><label>شماره تماس</label></td>
+                                <td><input id="fb_phone" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td class="fblabel"><label>ایمیل</label> </td>
+                                <td><input id="fb_email" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td class="fblabel"><label>متن پیام</label></td>
+                                <td><textarea id="fb_text"></textarea></td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section scripts{
+    @*<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>*@
+
+    <script type="text/javascript">
+
+        var initLatlng = new google.maps.LatLng(35.688045, 51.392884);
+        var geocoder = new google.maps.Geocoder();
+        var infowindow = new google.maps.InfoWindow();
+        google.maps.event.addDomListener(window, 'load', initializeMap(initLatlng));
+
+        function initializeMap(laglng) {
+            var mapOptions = {
+                zoom: 12,
+                center: laglng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+
+            marker = new google.maps.Marker({
+                map: map,
+                position: laglng,
+                draggable: true
+            });
+
+            geocoder.geocode({ 'latLng': laglng }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        //$('#address').val(results[0].formatted_address);
+                        infowindow.setContent(results[0].formatted_address);
+                        infowindow.open(map, marker);
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+        });
+    </script>
+}
 
 
 
