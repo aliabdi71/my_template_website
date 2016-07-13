@@ -90,6 +90,47 @@
         border-radius:5px;
         padding:5px;
         background-color:white;
+        min-height:135px;
+        border: 2px ridge black;
+        overflow:hidden;
+        position:relative;
+    }
+    .estate img{
+        width:100%;
+        min-height:90px;
+        max-height: 100px;
+    }
+    .estate .header{
+        font-weight:bold;
+        font-size:21px;
+        color: #c60300;
+    }
+    .estate .sub-header{
+        font-weight:normal;
+        font-size:17px;
+        color: black;
+    }
+    .goto_details{
+        background-color: #428bca;
+        border-color: #357ebd;
+        color: #ffffff;
+        margin: -5px 0 0 -5px;
+        height:100%;
+        position:absolute;
+        left: 0;
+        text-align:center;
+        padding: 25px 14px 0 14px;
+        cursor: pointer;
+    }
+    .goto_details:hover{
+        background-color: #2972b1;
+    }
+    .number.normal{
+        font-weight:normal;
+        font-size:15px;
+    }
+    .favourite:hover{
+        cursor:pointer;
     }
 </style>
 
@@ -189,17 +230,11 @@
                                 <option value="2">متراژ</option>
                                 <option value="3">قیمت</option>
                             </select>
-                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox"><span>&nbsp;&nbsp;نمایش فایل های عکس دار</span></label>
-                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox"><span>&nbsp;&nbsp;نمایش املاک مورد علاقه</span></label>
+                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="only_image"><span>&nbsp;&nbsp;نمایش فایل های عکس دار</span></label>
+                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="only_faves"><span>&nbsp;&nbsp;نمایش املاک مورد علاقه</span></label>
                         </div>
                     </div>
-                    <br />
-                    <div class="estate">
-                        <div class="col-md-3">
-                        </div>
-                        <div class="col-md-5"></div>
-                        <div class="col-md-4"></div>
-                    </div>
+                    <div class="loading text-center"><img src="~/Content/shared_images/loading.gif" /></div>
                 </div>
             </div>
             <div class="col-md-3">
@@ -210,6 +245,10 @@
 
 @section scripts{
     <script type="text/javascript">
+        function go_to_details(id) {
+            window.location = "/Estate/EstateDetails?EstateID=" + id;
+        }
+
         function getQueryStringByName(name, url) {
             if (!url) url = window.location.href;
             name = name.replace(/[\[\]]/g, "\\$&");
@@ -218,6 +257,38 @@
             if (!results) return null;
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        
+        function createSearchResultSection(data) {
+            var htmls = [];
+            for (var i = 0 ; i < data.length ; i++) {
+                var html =  '<br />' + 
+                            '<div class="estate" data-state-id="' + data[i].ID + '">' + 
+	                            '<div class="col-md-3">' + 
+		                            '<img src="/Content/estate_images/' + data[i].ImageSrc + '" />' +
+		                            '<label class="img-count number"> ' + data[i].ImageCount + ' عکس</label>' +
+	                            '</div>' + 
+	                            '<div class="col-md-5">' + 
+		                            '<table></table>' + 
+		                            '<i class="glyphicon glyphicon-usd">&nbsp;</i><label class="price header">' + numberWithCommas(data[i].TotalPrice) + '</label><br />' +
+		                            '<i class="glyphicon glyphicon-pushpin">&nbsp;</i><label class="number sub-header">' + data[i].Address + ' - ' + turn2PersianNumber(data[i].Area) + ' متر - متری <span class="price">' + numberWithCommas("4500000") + '</span></label>' +
+		                            '<p class="number" style="margin-top:8px;">2 خوابه - نوساز - طبقه سوم - 3 واحدی</p>' + 
+	                            '</div>' + 
+	                            '<div class="col-md-3" style="border: 1px outset black; margin-top:4px;">' + 
+		                            '<br />' + 
+		                            '<label class="number normal">کد ملک: ' + turn2PersianNumber(data[i].Serial) + '</label><br />' +
+		                            '<label class="number normal">تاریخ: ' + turn2PersianNumber(data[i].Date) + '</label><br />' +
+		                            '<i class="glyphicon glyphicon-heart-empty favourite" style="font-size:16px;" data-state-id="' + data[i].ID + '"></i> علاقه مندی<br /><br />' +
+	                            '</div>' + 
+	                            '<div class="col-md-1 goto_details" onclick="go_to_details(' + data[i].ID + ')">' +
+		                            '<i class="glyphicon glyphicon-chevron-left"></i> مشاهده جزئیات ملک' + 
+	                            '</div>' + 
+                            '</div>';
+                htmls.push(html);
+            }
+            for (var j = 0 ; j < htmls.length ; j++)
+                $(".summery").after(htmls[j]);
+            $(".loading.text-center").css('display', 'none');
         }
 
         function doSearch(params) {
@@ -228,7 +299,7 @@
                 data: JSON.stringify(params),
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    //createOccasionSection(data);
+                    createSearchResultSection(data);
                     //alert(data.length);
                 },
                 error: function () {
@@ -238,6 +309,25 @@
         }
 
         $(document).ready(function () {
+            $("body").on('click', '.favourite', function () {
+                var $self = $(this);
+                if ($self.hasClass('yes')) {
+                    $self.removeClass('yes').removeClass('glyphicon-heart').addClass('glyphicon-heart-empty').css('color', 'black');
+                }
+                else {
+                    $self.addClass('yes').removeClass('glyphicon-heart-empty').addClass('glyphicon-heart').css('color', 'red');
+                }
+            });
+
+            $("#only_faves").change(function () {
+                if (this.checked) {
+                    $(".estate").each(function () {
+                        if (!$(this).find('.favourite.yes'))
+                            $(this).remove();
+                    });
+                }
+            });
+
             var condition = getQueryStringByName("cond") === '1' ? "فروش" : (getQueryStringByName("use") === '2' ? "رهن" : "اجاره");
             var usage = getQueryStringByName("use") === '1' ? "مسکونی" : (getQueryStringByName("use") === '2' ? "کلنگی و مشارکتی" : "تجاری و اداری");
             var initSearchParams = {
@@ -246,7 +336,8 @@
                 EstateCondition: true,
                 EstateConditionValue: condition,
             }
-            //doSearch(initSearchParams);
+
+            doSearch(initSearchParams);
 
             $(".search-fields").on({
                 keydown: function (e) {

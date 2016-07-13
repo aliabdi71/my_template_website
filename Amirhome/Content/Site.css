@@ -192,10 +192,13 @@ footer .row.blue{
     font-size:18px;
     white-space:normal;
 }
-.occasion .img-count{
-    color:white;
-    width:100%;
-    background-color:rgba(0, 0, 0, 0.5);
+.img-count{
+        width:100%;
+        background-color:rgba(0, 0, 0, 0.6);
+        color: white;
+        font-weight:normal;
+        font:small;
+        padding-right:5px;
 }
 .occasion .panel-footer{
     padding:5px !important;
