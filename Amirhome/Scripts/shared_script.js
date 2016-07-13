@@ -1,4 +1,25 @@
-﻿function turn2PersianNumber(value) {
+﻿function notInRange(x, from, to) {
+    if (x >= from && x <= to)
+        return false;
+    else
+        return true;
+}
+
+function turn2EnglishNumber(value) {
+    if (!value) {
+        return;
+    }
+    value = value.toString();
+    var englishNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+        persianNumbers = ["۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰"];
+
+    for (var i = 0, numbersLen = persianNumbers.length; i < numbersLen; i++) {
+        value = value.replace(new RegExp(persianNumbers[i], "g"), englishNumbers[i]);
+    }
+    return value;
+}
+
+function turn2PersianNumber(value) {
     if (!value) {
         return;
     }
@@ -10,6 +31,11 @@
         value = value.replace(new RegExp(englishNumbers[i], "g"), persianNumbers[i]);
     }
     return value;
+}
+
+function inputNumberWithCommas(x) {
+    var res = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return turn2PersianNumber(res);
 }
 
 function numberWithCommas(x) {

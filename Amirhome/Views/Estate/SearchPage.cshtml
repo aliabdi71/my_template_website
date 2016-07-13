@@ -6,6 +6,7 @@
 }
 
 <style>
+
     .row.search{
         background-image:url("../../Content/shared_images/background.jpg") !important;
         background-repeat:repeat;
@@ -30,17 +31,70 @@
     .search-fields{
         padding:15px;
     }
+    .search-fields > .row{
+        margin-bottom: 25px;
+    }
     .search-fields select{
         min-height:35px;
-        min-width:250px;
+        width:100%;
         font-size:15px;
         
+    }
+    .search-fields span{
+        font-size:16px;
+    }
+    .search-fields input.long_input{
+        width:100%;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        border-bottom: 2px solid #C1C1C1;
+        text-align:right;
+    }
+    .result-section{
+        width:90%;
+        margin:20px 0 0 0;
+        margin: 0 auto;
+    }
+    .summery{
+        background-color:#FCFFE5;
+        margin:0 auto;
+        width:100%;
+        border-radius:5px;
+        min-height:30px;
+        font-size:16px;
+        vertical-align:central;
+        font-style:normal !important;
+        padding:5px;
+    }
+    .show-type{
+        display:inline;
+        float:left;
+    }
+    .show-type > a{
+        color: black;
+    }
+    .show-type > a.active{
+        color:green;
+    }
+    .show-type > a:hover{
+        text-decoration:none;
+        cursor:pointer;
+    }
+    .search-customize{
+        margin-top:12px;
+    }
+    .estate{
+        margin:0 auto;
+        width:100%;
+        border-radius:5px;
+        padding:5px;
+        background-color:white;
     }
 </style>
 
 <div class="container body-content">
     <div class="row search">
-        <br />
         <br />
         <div class="row search-section">
             <div class="content">
@@ -49,21 +103,106 @@
                     <div class="row">
                         <div class="col-md-4">
                             <select id="EstateType">
-                                <option>نوع ملک</option>
+                                <option value="0">نوع ملک</option>
+                                <option value="1">آپارتمان</option>
+                                <option value="2">ویلا</option>
+                                <option value="3">کلنگی</option>
+                                <option value="4">مستغلات</option>
+                                <option value="5">خانه</option>
+                                <option value="6">دفتر کار</option>
+                                <option value="7">مغازه</option>
+                                <option value="8">سوئیت</option>
+                                <option value="9">سایر</option>
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <select id="City">
-                                <option>شهر</option>
+                            <select id="EstateCity">
+                                <option value="0">شهر</option>
+                                <option value="118">تهران</option>
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <select id="District">
-                                <option>محله</option>
+                            <select id="EstateDistrict">
+                                <option value="0">محله</option>
                             </select>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select id="EstateCondition">
+                                <option value="1">فروش</option>
+                                <option value="2">رهن</option>
+                                <option value="3">اجاره</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="EstateAge" class="long_input" placeholder="حداکثر سن بنا (سال)" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="EstateSerial" class="long_input" placeholder="کد ملک"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" id="AreaFrom" class="long_input" placeholder="حداقل متراژ (متر مربع)" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="TotalPriceFrom" class="long_input price-type" placeholder="حداقل قیمت کل (تومان)" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="PricePerMeterFrom" class="long_input price-type" placeholder="حداقل قیمت هر متر(تومان)" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" id="AreaTo" class="long_input" placeholder="حداکثر متراژ (متر مربع)" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="TotalPriceTo" class="long_input price-type" placeholder="حداکثر قیمت کل (تومان)" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="PricePerMeterTo" class="long_input price-type" placeholder="حداکثر قیمت هر متر(تومان)" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <input type="button" id="search_btn" class="btn btn-primary" value="جستجو" style="min-width:120px;" />
+                            &nbsp;
+                            <a href="javascript:void()" id="advancedSearch"><i class="glyphicon glyphicon-chevron-down"></i>جستجوی پیشرفته</a>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row result-section">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="summery">
+                        <label style="font-size:18px;">نتایج جستجو برای املاک فروشی</label>
+                        <div class="show-type"><a href="javascript:void()" class="active"><i class="glyphicon glyphicon-home"></i>&nbsp;تصویر</a>&nbsp;&nbsp;&nbsp;<a><i class="glyphicon glyphicon-align-justify"></i>&nbsp;لیست</a></div>
+                        <div class="search-customize">
+                            <select>
+                                <option value="0">ترتیب بر اساس</option>
+                                <option value="1">تاریخ</option>
+                                <option value="2">متراژ</option>
+                                <option value="3">قیمت</option>
+                            </select>
+                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox"><span>&nbsp;&nbsp;نمایش فایل های عکس دار</span></label>
+                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox"><span>&nbsp;&nbsp;نمایش املاک مورد علاقه</span></label>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="estate">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-5"></div>
+                        <div class="col-md-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
             </div>
         </div>
     </div>
@@ -108,6 +247,45 @@
                 EstateConditionValue: condition,
             }
             //doSearch(initSearchParams);
+
+            $(".search-fields").on({
+                keydown: function (e) {
+                    if ((notInRange(e.keyCode, 48, 57) && notInRange(e.keyCode, 96, 105) && e.keyCode !== 8 && e.keyCode !== 46) || e.shiftKey) {
+                        e.preventDefault();
+                    }
+                    return true;
+                },
+                focus : function () {
+                    $(this).select();
+                },
+                keyup: function () {
+                    var $self = $(this);
+                    var new_val = $self.val().replace(/,/g, '');
+                    if ($self.hasClass('price-type'))
+                    {
+                        $self.val(inputNumberWithCommas(turn2EnglishNumber(new_val)));
+                    }
+                    else
+                        $self.val(turn2PersianNumber(new_val));
+                }
+            }, "input");
+
+            $("#EstateCondition").change(function () {
+                if ($(this).val() === '1') {
+                    $("#PrepaymentPriceFrom").attr('placeholder', 'حداقل قیمت کل (تومان)').attr('id', 'TotalPriceFrom');
+                    $("#PrepaymentPriceTo").attr('placeholder', 'حداکثر قیمت کل (تومان)').attr('id', 'TotalPriceTo');
+                    $("#MortagePriceFrom").attr('placeholder', 'حداقل قیمت هر متر (تومان)').attr('id', 'PricePerMeterFrom');
+                    $("#MortagePriceTo").attr('placeholder', 'حداکثر قیمت هر متر (تومان)').attr('id', 'PricePerMeterTo');
+                }
+                else {
+                    $("#TotalPriceFrom").attr('placeholder', 'حداقل قیمت ودیعه (تومان)').attr('id', 'PrepaymentPriceFrom');
+                    $("#TotalPriceTo").attr('placeholder', 'حداکثر قیمت ودیعه (تومان)').attr('id', 'PrepaymentPriceTo');
+                    $("#PricePerMeterFrom").attr('placeholder', 'حداقل قیمت اجاره (تومان)').attr('id', 'MortagePriceFrom');
+                    $("#PricePerMeterTo").attr('placeholder', 'حداکثر قیمت اجاره (تومان)').attr('id', 'MortagePriceTo');
+                }
+            });
+
+            $("#EstateCondition").val(getQueryStringByName("cond")).trigger('change');
         });
     </script>
 }
