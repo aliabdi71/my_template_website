@@ -24,7 +24,8 @@ namespace Amirhome
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom_scripts").Include(
-                      "~/Scripts/shared_script.js"));
+                      "~/Scripts/shared_script.js",
+                      "~/Scripts/jalaali.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

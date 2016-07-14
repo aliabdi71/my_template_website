@@ -811,6 +811,7 @@
     <Content Include="fonts\BYekan.ttf" />
     <Content Include="fonts\EntezareZohoor2.ttf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jalaali.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

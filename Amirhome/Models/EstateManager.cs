@@ -31,27 +31,39 @@ namespace Amirhome.Models
         public int EstateDistrictValue { get; set; }
         [DefaultValue(false)]
         public bool TotalPrice { get; set; }
+        [DefaultValue(0)]
         public long TotalPriceFrom { get; set; }
+        [DefaultValue(100000000000)]
         public long TotalPriceTo { get; set; }
         [DefaultValue(false)]
         public bool MortagePrice { get; set; }
+        [DefaultValue(0)]
         public long MortagePriceFrom { get; set; }
+        [DefaultValue(1000000000)]
         public long MortagePriceTo { get; set; }
         [DefaultValue(false)]
         public bool PrepaymentPrice { get; set; }
+        [DefaultValue(0)]
         public long PrepaymentPriceFrom { get; set; }
+        [DefaultValue(1000000000)]
         public long PrepaymentPriceTo { get; set; }
         [DefaultValue(false)]
         public bool Loan { get; set; }
+        [DefaultValue(0)]
         public long LoanFrom { get; set; }
+        [DefaultValue(1000000000)]
         public long LoanTo { get; set; }
         [DefaultValue(false)]
         public bool PricePerMeter { get; set; }
+        [DefaultValue(0)]
         public long PricePerMeterFrom { get; set; }
+        [DefaultValue(1000000000)]
         public long PricePerMeterTo { get; set; }
         [DefaultValue(false)]
         public bool Area { get; set; }
+        [DefaultValue(0)]
         public long AreaFrom { get; set; }
+        [DefaultValue(1000000)]
         public long AreaTo { get; set; }
         [DefaultValue(false)]
         public bool EstateSerial { get; set; }
@@ -84,11 +96,12 @@ namespace Amirhome.Models
         public bool EstateTells { get; set; }
         public string EstateTellsValue { get; set; }
         [DefaultValue(false)]
-        public bool hasImage { get; set; }
+        public bool HasImage { get; set; }
     }
     
     public class EstateManager
     {
+
         public State getStateByID(int id)
         {
             State _state = null;
@@ -115,13 +128,24 @@ namespace Amirhome.Models
             }
             return _states;
         }
-        public List<State> doSearch(SearchParams _params, int take = 0)
+        public List<State> doSearch(SearchParams _params, int take = 0, string order = "date")
         {
             List<State> _states = null;
             IQueryable<State> query;
             using (var context = new AmirhomeEntities())
             {
                 query = this.EstateQueryBuilder(context, _params);
+                switch (order)
+                {
+                    case "date": query = query.OrderByDescending(e => e.Date); break;
+                    case "price_1": query = query.OrderBy(e => e.TotalPrice).OrderBy(e => e.PrepaymentPrice); break;
+                    case "price_2": query = query.OrderBy(e => e.PricePerMeter).OrderBy(e => e.MortgagePrice); break;
+                    case "price_1_desc": query = query.OrderByDescending(e => e.TotalPrice).OrderByDescending(e => e.PrepaymentPrice); break;
+                    case "price_2_desc": query = query.OrderByDescending(e => e.PricePerMeter).OrderByDescending(e => e.MortgagePrice); break;
+                    case "area": query = query.OrderBy(e => e.Area); break;
+                    case "area_desc": query = query.OrderByDescending(e => e.Area); break;
+                    default: break;
+                }
                 _states = take == 0 ? query.ToList() : query.Take(take).ToList();
             }
             return _states;
@@ -183,6 +207,8 @@ namespace Amirhome.Models
                 query = query.Where(E => E.PricePerMeter >= _params.PricePerMeterFrom && E.PricePerMeter <= _params.PricePerMeterTo);
             if (_params.Area)
                 query = query.Where(E => E.Area >= _params.AreaFrom && E.Area <= _params.AreaTo);
+            if (_params.HasImage)
+                query = query.Where(E => E.Images.Count > 0);
             return query;
         }
         public string SplitInParts(String text, Int32 size)

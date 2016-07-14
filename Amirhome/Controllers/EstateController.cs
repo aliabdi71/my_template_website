@@ -11,7 +11,7 @@ namespace Amirhome.Controllers
     {
         UserManager _userManager = new UserManager();
         EstateManager _estateManager = new EstateManager();
-        // GET: Estate
+
         public ActionResult EstateDetails()
         {
             int ID = int.Parse(Request.QueryString["EstateID"].ToString());
@@ -29,15 +29,15 @@ namespace Amirhome.Controllers
         }
 
         [HttpPost]
-        public JsonResult DoSearch(SearchParams _params)
+        public JsonResult DoSearch(SearchParams _params, int page)
         {
-            List<State> states = _estateManager.doSearch(_params);
+            List<State> states = _estateManager.doSearch(_params, page * 10);
             var data = states.Select(o => new
             {
                 ID = o.ID,
                 Area = o.Area,
                 TotalPrice = o.TotalPrice,
-                Date = o.Date.ToString().Replace("PM", "").Replace("AM", ""),
+                Date = o.Date.ToString().Split(' ')[0],
                 Prepayment = o.PrepaymentPrice,
                 Loan = o.Loan,
                 Mortage = o.MortgagePrice,
@@ -49,6 +49,16 @@ namespace Amirhome.Controllers
                 ImageSrc = (o.Images.Count(i => i.Primary == true) == 0 ? "no-thumb.png" : o.Images.FirstOrDefault(i => i.Primary == true).url),
                 ImageCount = o.Images.Count
             }).ToList();
+
+            if (data.Count() % 10 == 0)
+            {
+                data = data.Skip(Math.Max(0, data.Count() - 10)).ToList();
+            }
+            else
+            {
+                data = data.Skip(Math.Max(0, data.Count() % 10)).ToList();
+            }
+
             return Json(data);
         }
     }

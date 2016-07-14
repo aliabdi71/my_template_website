@@ -43,20 +43,32 @@ function numberWithCommas(x) {
     return turn2PersianNumber(res) + ' تومان';
 }
 
+function convertToJalaliDate(Gdate) {
+    var g_date = Gdate.split('/');
+    var j_date = toJalaali(parseInt(g_date[2]), parseInt(g_date[0]), parseInt(g_date[1]));
+    return turn2PersianNumber(j_date.jy + "/" + j_date.jm + "/" + j_date.jd);
+}
+
+function fix_numbers() {
+    $(".price").each(function () {
+        var val = $(this).html();
+        $(this).html(numberWithCommas(val));
+        $(this).removeClass("price");
+    });
+    $(".number").each(function () {
+        var val = $(this).html();
+        $(this).html(turn2PersianNumber(val));
+        $(this).removeClass("number");
+    });
+}
+
 $(document).ready(function () {
     /*var height = $(window).height();
     var body_height = $(".wrap").height();
     if (body_height < height)
         $(".wrap").css('height', height - 250);*/
 
-    $(".price").each(function () {
-        var val = $(this).html();
-        $(this).html(numberWithCommas(val));
-    });
-    $(".number").each(function () {
-        var val = $(this).html();
-        $(this).html(turn2PersianNumber(val));
-    });
+    fix_numbers();
 
     $("#login_btn").click(function () {
 

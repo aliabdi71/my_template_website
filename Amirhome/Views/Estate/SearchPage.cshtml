@@ -75,7 +75,7 @@
         color: black;
     }
     .show-type > a.active{
-        color:green;
+        color:#428bca;
     }
     .show-type > a:hover{
         text-decoration:none;
@@ -85,7 +85,7 @@
         margin-top:12px;
     }
     .estate{
-        margin:0 auto;
+        margin-top: 10px;
         width:100%;
         border-radius:5px;
         padding:5px;
@@ -97,8 +97,12 @@
     }
     .estate img{
         width:100%;
-        min-height:90px;
+        min-height:120px;
         max-height: 100px;
+        max-width:190px;
+    }
+    .img-count{
+        max-width:190px;
     }
     .estate .header{
         font-weight:bold;
@@ -124,13 +128,40 @@
     }
     .goto_details:hover{
         background-color: #2972b1;
+        color: white;
+        text-decoration: none;
     }
+     @@media only screen and (max-width: 985px){
+        .goto_details{
+            margin: 5px 0 0 0;
+            max-height: 40px;
+            width:100%;
+            bottom:-5px;
+            padding: 0 14px 0 14px;
+            position: relative
+        }
+        .estate{
+            text-align:center;
+        }
+    }
+     @@media only screen and (max-width: 1265px){
+        .goto_details{
+            padding: 32px 4px 0 14px;
+        }
+     }
     .number.normal{
         font-weight:normal;
         font-size:15px;
     }
     .favourite:hover{
         cursor:pointer;
+    }
+    #fetchMore{
+        min-width:140px;
+        font-size:17px;
+        font-weight:bold;
+        margin:20px;
+        border:2px ridge #00578f;
     }
 </style>
 
@@ -222,7 +253,7 @@
                 <div class="row">
                     <div class="summery">
                         <label style="font-size:18px;">نتایج جستجو برای املاک فروشی</label>
-                        <div class="show-type"><a href="javascript:void()" class="active"><i class="glyphicon glyphicon-home"></i>&nbsp;تصویر</a>&nbsp;&nbsp;&nbsp;<a><i class="glyphicon glyphicon-align-justify"></i>&nbsp;لیست</a></div>
+                        <div class="show-type"><a href="javascript:void(0)" class="active"><i class="glyphicon glyphicon-home"></i>&nbsp;تصویر</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"><i class="glyphicon glyphicon-align-justify"></i>&nbsp;لیست</a></div>
                         <div class="search-customize">
                             <select>
                                 <option value="0">ترتیب بر اساس</option>
@@ -230,11 +261,14 @@
                                 <option value="2">متراژ</option>
                                 <option value="3">قیمت</option>
                             </select>
-                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="only_image"><span>&nbsp;&nbsp;نمایش فایل های عکس دار</span></label>
-                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="only_faves"><span>&nbsp;&nbsp;نمایش املاک مورد علاقه</span></label>
+                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="OnlyImage"><span>&nbsp;&nbsp;نمایش فایل های عکس دار</span></label>
+                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" onchange="show_faves(this)" id="OnlyFaves"><span>&nbsp;&nbsp;نمایش املاک مورد علاقه</span></label>
                         </div>
                     </div>
                     <div class="loading text-center"><img src="~/Content/shared_images/loading.gif" /></div>
+                    <div class="text-center">
+                        <button class="btn btn-primary" id="fetchMore" data-page="1">موارد بیشتر</button>
+                    </div>
                 </div>
             </div>
             <div class="col-md-3">
@@ -245,6 +279,9 @@
 
 @section scripts{
     <script type="text/javascript">
+
+        var search_params = {};
+
         function go_to_details(id) {
             window.location = "/Estate/EstateDetails?EstateID=" + id;
         }
@@ -262,8 +299,7 @@
         function createSearchResultSection(data) {
             var htmls = [];
             for (var i = 0 ; i < data.length ; i++) {
-                var html =  '<br />' + 
-                            '<div class="estate" data-state-id="' + data[i].ID + '">' + 
+                var html =  '<div class="estate" data-state-id="' + data[i].ID + '">' + 
 	                            '<div class="col-md-3">' + 
 		                            '<img src="/Content/estate_images/' + data[i].ImageSrc + '" />' +
 		                            '<label class="img-count number"> ' + data[i].ImageCount + ' عکس</label>' +
@@ -277,26 +313,31 @@
 	                            '<div class="col-md-3" style="border: 1px outset black; margin-top:4px;">' + 
 		                            '<br />' + 
 		                            '<label class="number normal">کد ملک: ' + turn2PersianNumber(data[i].Serial) + '</label><br />' +
-		                            '<label class="number normal">تاریخ: ' + turn2PersianNumber(data[i].Date) + '</label><br />' +
+		                            '<label class="number normal">تاریخ: ' + convertToJalaliDate(data[i].Date) + '</label><br />' +
 		                            '<i class="glyphicon glyphicon-heart-empty favourite" style="font-size:16px;" data-state-id="' + data[i].ID + '"></i> علاقه مندی<br /><br />' +
 	                            '</div>' + 
-	                            '<div class="col-md-1 goto_details" onclick="go_to_details(' + data[i].ID + ')">' +
+	                            '<a class="col-md-1 goto_details" href="/Estate/EstateDetails?EstateID=' + data[i].ID + '" target="_blank">' +
 		                            '<i class="glyphicon glyphicon-chevron-left"></i> مشاهده جزئیات ملک' + 
-	                            '</div>' + 
+	                            '</a>' + 
                             '</div>';
                 htmls.push(html);
             }
             for (var j = 0 ; j < htmls.length ; j++)
-                $(".summery").after(htmls[j]);
+                $(".loading").before(htmls[j]);
             $(".loading.text-center").css('display', 'none');
+            fix_numbers();
+            if (mod(data.length, 10) !== 0) {
+                $("#fetchMore").css('display', 'none');
+            }
         }
 
-        function doSearch(params) {
+        function doSearch(params, page) {
+            $(".loading.text-center").css('display', 'block');
             $.ajax({
-                url: '@Url.Action("DoSearch", "Estate")',
+                url: '/Estate/DoSearch',
                 method: 'POST',
                 dataType: 'json',
-                data: JSON.stringify(params),
+                data: JSON.stringify({"_params": params, "page": page}),
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     createSearchResultSection(data);
@@ -306,6 +347,23 @@
 
                 },
             });
+        }
+
+        function show_faves(elem) {
+            if (elem.checked) {
+                $(".estate").each(function () {
+                    if (!$(this).find('.yes').length) {
+                        $(this).fadeOut('slow');
+                    }
+                });
+            }
+            else {
+                $(".estate").each(function () {
+                    if (!$(this).find('.yes').length) {
+                        $(this).fadeIn('slow');
+                    }
+                });
+            }
         }
 
         $(document).ready(function () {
@@ -319,25 +377,30 @@
                 }
             });
 
-            $("#only_faves").change(function () {
-                if (this.checked) {
-                    $(".estate").each(function () {
-                        if (!$(this).find('.favourite.yes'))
-                            $(this).remove();
-                    });
+            $(".show-type > a").click(function () {
+                var $self = $(this);
+                if (!$self.hasClass("active")) {
+                    $(".show-type > a").removeClass("active");
+                    $self.toggleClass("active").css("text-decoration", "none");
                 }
+            });
+
+            $("#fetchMore").click(function () {
+                var page = parseInt($(this).attr("data-page")) + 1;
+                doSearch(search_params, page);
+                $(this).attr("data-page", page);
             });
 
             var condition = getQueryStringByName("cond") === '1' ? "فروش" : (getQueryStringByName("use") === '2' ? "رهن" : "اجاره");
             var usage = getQueryStringByName("use") === '1' ? "مسکونی" : (getQueryStringByName("use") === '2' ? "کلنگی و مشارکتی" : "تجاری و اداری");
-            var initSearchParams = {
+            search_params = {
                 EstateUsage: true,
                 EstateUsageValue: usage,
                 EstateCondition: true,
                 EstateConditionValue: condition,
             }
 
-            doSearch(initSearchParams);
+            doSearch(search_params, 1);
 
             $(".search-fields").on({
                 keydown: function (e) {
