@@ -51,6 +51,9 @@
         border-bottom: 2px solid #C1C1C1;
         text-align:right;
     }
+    .advanced-section{
+        display:none;
+    }
     .result-section{
         width:90%;
         margin:20px 0 0 0;
@@ -114,6 +117,14 @@
         font-size:17px;
         color: black;
     }
+    .page-separator{
+        width:10%;
+        background-color: #2972b1;
+        color: white;
+        max-height:20px;
+        margin-top: 10px;
+        text-align:center;
+    }
     .goto_details{
         background-color: #428bca;
         border-color: #357ebd;
@@ -146,7 +157,7 @@
     }
      @@media only screen and (max-width: 1265px){
         .goto_details{
-            padding: 32px 4px 0 14px;
+            padding: 5px 4px 0 14px;
         }
      }
     .number.normal{
@@ -236,6 +247,33 @@
                             <input type="text" id="PricePerMeterTo" class="long_input price-type" placeholder="حداکثر قیمت هر متر(تومان)" />
                         </div>
                     </div>
+                    <div class="row advanced-section">
+                        <div class="col-md-3">
+                            <select id="EstateFloor">
+                                <option value="0" selected="selected">تعداد طبقات</option>
+                                <option value="زیرزمین">زیرزمین</option>
+                                <option value="پیلوت">پیلوت</option>
+                                <option value="همکف">همکف</option>
+                                <option value="طبقه اول">طبقه اول</option>
+                                <option value="طبقه دوم">طبقه دوم</option>
+                                <option value="طبقه سوم">طبقه سوم</option>
+                                <option value="طبقه چهارم">طبقه چهارم</option>
+                                <option value="طبقه پنجم">طبقه پنجم</option>
+                                <option value="طبقه ششم">طبقه ششم</option>
+                                <option value="طبقه هفتم تا دهم">طبقه هفتم تا دهم</option>
+                                <option value="طبقه دهم به بالا">طبقه دهم به بالا</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="EstateBedrooms" class="long_input" placeholder="تعداد اتاق خواب" />
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="EstateParkings" class="long_input" placeholder="تعداد پارکینگ" />
+                        </div>
+                        <div class="col-md-3">
+                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="HasParking"><span>&nbsp;&nbsp;انباری</span></label>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-8"></div>
                         <div class="col-md-4">
@@ -255,13 +293,14 @@
                         <label style="font-size:18px;">نتایج جستجو برای املاک فروشی</label>
                         <div class="show-type"><a href="javascript:void(0)" class="active"><i class="glyphicon glyphicon-home"></i>&nbsp;تصویر</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"><i class="glyphicon glyphicon-align-justify"></i>&nbsp;لیست</a></div>
                         <div class="search-customize">
-                            <select>
+                            <select id="sortResult" onchange="changeSortOrder(this)">
                                 <option value="0">ترتیب بر اساس</option>
                                 <option value="1">تاریخ</option>
                                 <option value="2">متراژ</option>
-                                <option value="3">قیمت</option>
+                                <option value="3">متراژ - نزولی</option>
+                                <option value="4">قیمت</option>
                             </select>
-                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="OnlyImage"><span>&nbsp;&nbsp;نمایش فایل های عکس دار</span></label>
+                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="OnlyImage" onchange="only_image_filter(this)"><span>&nbsp;&nbsp;نمایش فایل های عکس دار</span></label>
                             <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" onchange="show_faves(this)" id="OnlyFaves"><span>&nbsp;&nbsp;نمایش املاک مورد علاقه</span></label>
                         </div>
                     </div>
@@ -282,8 +321,43 @@
 
         var search_params = {};
 
+        function initialSearchParams(){
+            var field_names = ['EstateType', 'EstateCity', 'EstateDistrict', 'EstateCondition',
+                               'EstateAge', 'EstateSerial', 'EstateFloor', 'EstateBedrooms', 'EstateParkings',
+                               'Area', 'TotalPrice', 'PricePerMeter', 'PrepaymentPrice', 'MortagePrice', 'HasParking',
+                               'EstateSerial'];
+            for (var j = 0 ; j < field_names.length ; j++){
+                search_params[field_names[j]] = false;
+            }
+            search_params['AreaFrom'] = 0;
+            search_params['AreaTo'] = 1000000;
+            search_params['TotalPriceFrom'] = 0;
+            search_params['TotalPriceTo'] = 100000000000;
+            search_params['PricePerMeterFrom'] = 0;
+            search_params['PricePerMeterTo'] = 100000000;
+            search_params['PrepaymentPriceFrom'] = 0;
+            search_params['PrepaymentPriceTo'] = 1000000000;
+            search_params['MortagePriceFrom'] = 0;
+            search_params['MortagePriceTo'] = 1000000000;
+        }
+
+        function clearSearchResult() {
+            $('.estate').each(function () {
+                $(this).remove();
+            });
+            $('.page-separator').each(function () {
+                $(this).remove();
+            });
+        }
+
         function go_to_details(id) {
             window.location = "/Estate/EstateDetails?EstateID=" + id;
+        }
+
+        function changeSortOrder(elem) {
+            clearSearchResult();
+            var page = parseInt($("#fetchMore").attr("data-page"));
+            doSearch(search_params, page);
         }
 
         function getQueryStringByName(name, url) {
@@ -296,8 +370,9 @@
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
         
-        function createSearchResultSection(data) {
+        function createSearchResultSection(data, page) {
             var htmls = [];
+            htmls.push('<div class="page-separator">صفحه ' + turn2PersianNumber(page) + '</div>');
             for (var i = 0 ; i < data.length ; i++) {
                 var html =  '<div class="estate" data-state-id="' + data[i].ID + '">' + 
 	                            '<div class="col-md-3">' + 
@@ -329,19 +404,28 @@
             if (mod(data.length, 10) !== 0) {
                 $("#fetchMore").css('display', 'none');
             }
+            else {
+                $("#fetchMore").css('display', 'initial');
+            }
         }
 
         function doSearch(params, page) {
+            var order;
+            switch ($("#sortResult").val()) {
+                case '1': order = "date"; break;
+                case '2': order = "area"; break;
+                case '3': order = "area_desc"; break;
+                default: order = "date";
+            }
             $(".loading.text-center").css('display', 'block');
             $.ajax({
                 url: '/Estate/DoSearch',
                 method: 'POST',
                 dataType: 'json',
-                data: JSON.stringify({"_params": params, "page": page}),
+                data: JSON.stringify({"_params": params, "page": page, "order": order}),
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    createSearchResultSection(data);
-                    //alert(data.length);
+                    createSearchResultSection(data, page);
                 },
                 error: function () {
 
@@ -364,6 +448,12 @@
                     }
                 });
             }
+        }
+
+        function only_image_filter(elem) {
+            clearSearchResult();
+            (elem.checked) ? search_params['HasImage'] = true : search_params['HasImage'] = false;
+            doSearch(search_params, 1);
         }
 
         $(document).ready(function () {
@@ -391,8 +481,90 @@
                 $(this).attr("data-page", page);
             });
 
+            $("#advancedSearch").click(function () {
+                var $i = $(this).find('.glyphicon');
+                if ($i.hasClass('glyphicon-chevron-down')) {
+                    $i.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+                    $('.advanced-section').show('slow');
+                }
+                else {
+                    $i.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+                    $('.advanced-section').hide('slow');
+                }
+            });
+
+            $("#search_btn").click(function () {
+                initialSearchParams();
+                var field_names = ['EstateType', 'EstateCity', 'EstateDistrict', 'EstateCondition',
+                                   'EstateAge', 'EstateSerial', 'EstateFloor', 'EstateBedrooms', 'EstateParkings',
+                                   'EstateSerial'];
+                for (var i = 0 ; i < field_names.length ; i++) {
+                    var $elem = $('#' + field_names[i]);
+                    if ($elem.val() !== '' && $elem.val() !== '0') {
+                        search_params[field_names[i]] = true;
+                        if (field_names[i] === 'EstateCondition')
+                            search_params[field_names[i] + 'Value'] = $elem.val() === '1' ? "فروش" : ($elem.val() === '2' ? "رهن" : "اجاره");
+                        else
+                            search_params[field_names[i] + 'Value'] = turn2EnglishNumber($elem.val());
+                    }
+                    else
+                        search_params[field_names[i]] = false;
+                }
+                if ($("#AreaFrom").val() !== '') {
+                    search_params['Area'] = true;
+                    search_params['AreaFrom'] = turn2EnglishNumber($("#AreaFrom").val());
+                }
+                if ($("#AreaTo").val() !== '' ) {
+                    search_params['Area'] = true;
+                    search_params['AreaTo'] = turn2EnglishNumber($("#AreaTo").val());
+                }
+                if ($("#EstateCondition").val() === '1') {
+                    if ($("#TotalPriceFrom").val() !== '') {
+                        search_params['TotalPrice'] = true;
+                        search_params['TotalPriceFrom'] = turn2EnglishNumber($("#TotalPriceFrom").val());
+                    }
+                    if ($("#TotalPriceTo").val() !== '') {
+                        search_params['TotalPrice'] = true;
+                        search_params['TotalPriceTo'] = turn2EnglishNumber($("#TotalPriceTo").val());
+                    }
+                    if ($("#PricePerMeterFrom").val() !== '') {
+                        search_params['PricePerMeter'] = true;
+                        search_params['PricePerMeterFrom'] = turn2EnglishNumber($("#PricePerMeterFrom").val());
+                    }
+                    if ($("#PricePerMeterTo").val() !== '') {
+                        search_params['PricePerMeter'] = true;
+                        search_params['PricePerMeterTo'] = turn2EnglishNumber($("#PricePerMeterTo").val());
+                    }
+                }
+                else {
+                    if ($("#PrepaymentPriceFrom").val() !== '') {
+                        search_params['PrepaymentPrice'] = true;
+                        search_params['PrepaymentPriceFrom'] = turn2EnglishNumber($("#PrepaymentPriceFrom").val());
+                    }
+                    if ($("#PrepaymentPriceTo").val() !== '') {
+                        search_params['PrepaymentPrice'] = true;
+                        search_params['PrepaymentPriceTo'] = turn2EnglishNumber($("#PrepaymentPriceTo").val());
+                    }
+                    if ($("#MortagePriceFrom").val() !== '') {
+                        search_params['MortagePrice'] = true;
+                        search_params['MortagePriceFrom'] = turn2EnglishNumber($("#MortagePriceFrom").val());
+                    }
+                    if ($("#MortagePriceTo").val() !== '') {
+                        search_params['MortagePrice'] = true;
+                        search_params['MortagePriceTo'] = turn2EnglishNumber($("#MortagePriceTo").val());
+                    }
+                }
+                if (document.getElementById("HasParking")) {
+                    search_params['HasParking'] = document.getElementById("HasParking").checked;
+                }
+
+                $("#fetchMore").attr("data-page", 1);
+                clearSearchResult();
+                doSearch(search_params, 1);
+            });
+
             var condition = getQueryStringByName("cond") === '1' ? "فروش" : (getQueryStringByName("use") === '2' ? "رهن" : "اجاره");
-            var usage = getQueryStringByName("use") === '1' ? "مسکونی" : (getQueryStringByName("use") === '2' ? "کلنگی و مشارکتی" : "تجاری و اداری");
+            var usage = getQueryStringByName("use") === '2' ? "کلنگی و مشارکتی" : (getQueryStringByName("use") === '3' ? "تجاری و اداری" : "مسکونی");
             search_params = {
                 EstateUsage: true,
                 EstateUsageValue: usage,

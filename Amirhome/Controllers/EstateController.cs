@@ -29,9 +29,9 @@ namespace Amirhome.Controllers
         }
 
         [HttpPost]
-        public JsonResult DoSearch(SearchParams _params, int page)
+        public JsonResult DoSearch(SearchParams _params, int page, string order = "date")
         {
-            List<State> states = _estateManager.doSearch(_params, page * 10);
+            List<State> states = _estateManager.doSearch(_params, page * 10, order);
             var data = states.Select(o => new
             {
                 ID = o.ID,
@@ -56,7 +56,7 @@ namespace Amirhome.Controllers
             }
             else
             {
-                data = data.Skip(Math.Max(0, data.Count() % 10)).ToList();
+                data = data.Skip(Math.Max(0, data.Count() - (data.Count() % 10))).ToList();
             }
 
             return Json(data);

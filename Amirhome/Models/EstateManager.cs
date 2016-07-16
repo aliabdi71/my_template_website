@@ -97,6 +97,7 @@ namespace Amirhome.Models
         public string EstateTellsValue { get; set; }
         [DefaultValue(false)]
         public bool HasImage { get; set; }
+        public bool HasParking { get; set; }
     }
     
     public class EstateManager
@@ -165,14 +166,6 @@ namespace Amirhome.Models
                 query = query.Where(E => E.Usage == _params.EstateUsageValue);
             if (_params.EstateType)
                 query = query.Where(E => E.StateType == _params.EstateTypeValue);
-            if (_params.EstateUsage)
-                query = query.Where(E => E.Usage == _params.EstateUsageValue);
-            if (_params.EstateUsage)
-                query = query.Where(E => E.Usage == _params.EstateUsageValue);
-            if (_params.EstateUsage)
-                query = query.Where(E => E.Usage == _params.EstateUsageValue);
-            if (_params.EstateUsage)
-                query = query.Where(E => E.Usage == _params.EstateUsageValue);
             if (_params.EstateProvince)
                 query = query.Where(E => E.Province == _params.EstateProvinceValue);
             if (_params.EstateCity)
@@ -182,7 +175,7 @@ namespace Amirhome.Models
             if (_params.EstateSerial)
                 query = query.Where(E => E.Serial == _params.EstateSerialValue);
             if (_params.EstateAge)
-                query = query.Where(E => E.Age == _params.EstateAgeValue);
+                query = query.Where(E => E.Age <= _params.EstateAgeValue);
             if (_params.EstateBedrooms)
                 query = query.Where(E => E.Bedrooms == _params.EstateBedroomsValue);
             if (_params.EstateBathrooms)
@@ -209,6 +202,8 @@ namespace Amirhome.Models
                 query = query.Where(E => E.Area >= _params.AreaFrom && E.Area <= _params.AreaTo);
             if (_params.HasImage)
                 query = query.Where(E => E.Images.Count > 0);
+            if (_params.HasParking)
+                query = query.Where(E => E.Features.Any(F => F.ItemID == 15));
             return query;
         }
         public string SplitInParts(String text, Int32 size)
