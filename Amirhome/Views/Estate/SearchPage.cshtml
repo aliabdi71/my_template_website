@@ -117,6 +117,28 @@
         font-size:17px;
         color: black;
     }
+    .estate-table-view{
+        margin-top:10px;
+        width:100%;
+        font-size: 17px;
+        display:none;
+    }
+    .estate-table-view tr{
+        min-height:25px;
+    }
+    .estate-table-view th{
+        color: white;
+        padding:6px;
+        background-color:#2972b1;
+        font-weight:normal;
+        text-align:center;
+    }
+    .estate-table-view td{
+        background-color:white;
+        text-align:center;
+        padding:6px;
+
+    }
     .page-separator{
         width:10%;
         background-color: #2972b1;
@@ -291,7 +313,7 @@
                 <div class="row">
                     <div class="summery">
                         <label style="font-size:18px;">نتایج جستجو برای املاک فروشی</label>
-                        <div class="show-type"><a href="javascript:void(0)" class="active"><i class="glyphicon glyphicon-home"></i>&nbsp;تصویر</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"><i class="glyphicon glyphicon-align-justify"></i>&nbsp;لیست</a></div>
+                        <div class="show-type"><a href="javascript:void(0)" class="img-view active"><i class="glyphicon glyphicon-home"></i>&nbsp;تصویر</a>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="list-view"><i class="glyphicon glyphicon-align-justify"></i>&nbsp;لیست</a></div>
                         <div class="search-customize">
                             <select id="sortResult" onchange="changeSortOrder(this)">
                                 <option value="0">ترتیب بر اساس</option>
@@ -304,6 +326,25 @@
                             <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" onchange="show_faves(this)" id="OnlyFaves"><span>&nbsp;&nbsp;نمایش املاک مورد علاقه</span></label>
                         </div>
                     </div>
+                    <table class="estate-table-view" border="1">
+                        <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>تاریخ ثبت</th>
+                                <th>محله</th>
+                                <th>تعداد خواب</th>
+                                <th>متراژ</th>
+                                <th>قیمت کل / رهن</th>
+                                <th>قیمت هر متر / اجاره</th>
+                                <th>کد ملک</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="search-table-body">
+                            
+                        </tbody>
+                    </table>
                     <div class="loading text-center"><img src="~/Content/shared_images/loading.gif" /></div>
                     <div class="text-center">
                         <button class="btn btn-primary" id="fetchMore" data-page="1">موارد بیشتر</button>
@@ -320,6 +361,8 @@
     <script type="text/javascript">
 
         var search_params = {};
+
+        var show_type = 'img';
 
         function initialSearchParams(){
             var field_names = ['EstateType', 'EstateCity', 'EstateDistrict', 'EstateCondition',
@@ -342,16 +385,17 @@
         }
 
         function clearSearchResult() {
-            $('.estate').each(function () {
-                $(this).remove();
-            });
-            $('.page-separator').each(function () {
-                $(this).remove();
-            });
-        }
-
-        function go_to_details(id) {
-            window.location = "/Estate/EstateDetails?EstateID=" + id;
+            if (show_type === 'list') {
+                $('.search-table-body').html('');
+            }
+            else {
+                $('.estate').each(function () {
+                    $(this).remove();
+                });
+                $('.page-separator').each(function () {
+                    $(this).remove();
+                });
+            }
         }
 
         function changeSortOrder(elem) {
@@ -371,6 +415,7 @@
         }
         
         function createSearchResultSection(data, page) {
+            $(".estate-table-view").css('display', 'none');
             var htmls = [];
             htmls.push('<div class="page-separator">صفحه ' + turn2PersianNumber(page) + '</div>');
             for (var i = 0 ; i < data.length ; i++) {
@@ -409,6 +454,37 @@
             }
         }
 
+        function createSearchResultListSection(data, page) {
+            $(".estate-table-view").css('display', 'table');
+            var htmls = [];
+            for (var i = 0 ; i < data.length ; i++) {
+                var index = (((page - 1) * 10) + i + 1);
+                html = '<tr>' +
+	                        '<td>' + turn2PersianNumber(index) + '</td>' +
+                            '<td>' + convertToJalaliDate(data[i].Date) + '</td>' +
+	                        '<td>' + data[i].Dist + '</td>' +
+	                        '<td>' + turn2PersianNumber(data[i].Bedrooms) + '</td>' +
+	                        '<td>' + turn2PersianNumber(data[i].Area) + '</td>' +
+	                        '<td>' + numberWithCommas(data[i].TotalPrice) + '</td>' +
+	                        '<td>' + numberWithCommas(data[i].PricePerMeter) + '</td>' +
+	                        '<td>' + turn2PersianNumber(data[i].Serial) + '</td>' +
+	                        '<td><a class="btn btn-primary" target="_blank" href="/Estate/EstateDetails?EstateID=' + data[i].ID + '">جزئیات</a></td>' +
+	                        '<td><i class="glyphicon glyphicon-heart-empty favourite" style="font-size:16px;"></i></td>' +
+                        '</tr>';
+                htmls.push(html);
+            }
+            for (var j = 0 ; j < htmls.length ; j++)
+                $(".search-table-body").append(htmls[j]);
+            $(".loading.text-center").css('display', 'none');
+            //fix_numbers();
+            if (mod(data.length, 10) !== 0) {
+                $("#fetchMore").css('display', 'none');
+            }
+            else {
+                $("#fetchMore").css('display', 'initial');
+            }
+        }
+
         function doSearch(params, page) {
             var order;
             switch ($("#sortResult").val()) {
@@ -425,7 +501,10 @@
                 data: JSON.stringify({"_params": params, "page": page, "order": order}),
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    createSearchResultSection(data, page);
+                    if (show_type === 'img')
+                        createSearchResultSection(data, page);
+                    else
+                        createSearchResultListSection(data, page);
                 },
                 error: function () {
 
@@ -434,19 +513,37 @@
         }
 
         function show_faves(elem) {
-            if (elem.checked) {
-                $(".estate").each(function () {
-                    if (!$(this).find('.yes').length) {
-                        $(this).fadeOut('slow');
-                    }
-                });
+            if (show_type === 'img') {
+                if (elem.checked) {
+                    $(".estate").each(function () {
+                        if (!$(this).find('.yes').length) {
+                            $(this).fadeOut('slow');
+                        }
+                    });
+                }
+                else {
+                    $(".estate").each(function () {
+                        if (!$(this).find('.yes').length) {
+                            $(this).fadeIn('slow');
+                        }
+                    });
+                }
             }
             else {
-                $(".estate").each(function () {
-                    if (!$(this).find('.yes').length) {
-                        $(this).fadeIn('slow');
-                    }
-                });
+                if (elem.checked) {
+                    $(".search-table-body > tr").each(function () {
+                        if (!$(this).find('.yes').length) {
+                            $(this).fadeOut('slow');
+                        }
+                    });
+                }
+                else {
+                    $(".search-table-body > tr").each(function () {
+                        if (!$(this).find('.yes').length) {
+                            $(this).fadeIn('slow');
+                        }
+                    });
+                }
             }
         }
 
@@ -470,8 +567,14 @@
             $(".show-type > a").click(function () {
                 var $self = $(this);
                 if (!$self.hasClass("active")) {
+                    clearSearchResult();
+                    if ($self.hasClass("img-view"))
+                        show_type = 'img';
+                    else
+                        show_type = 'list';
                     $(".show-type > a").removeClass("active");
                     $self.toggleClass("active").css("text-decoration", "none");
+                    doSearch(search_params, 1);
                 }
             });
 

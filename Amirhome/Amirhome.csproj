@@ -843,6 +843,7 @@
     <Content Include="Views\Account\RegisterView.cshtml" />
     <Content Include="Views\Estate\EstateDetails.cshtml" />
     <Content Include="Views\Estate\SearchPage.cshtml" />
+    <Content Include="Views\Estate\SubmitEstate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
