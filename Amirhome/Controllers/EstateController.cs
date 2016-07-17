@@ -64,5 +64,10 @@ namespace Amirhome.Controllers
 
             return Json(data);
         }
+
+        public ActionResult SubitEstate()
+        {
+            return View();
+        }
     }
 }
