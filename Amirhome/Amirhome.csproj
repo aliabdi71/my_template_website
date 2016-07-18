@@ -597,6 +597,7 @@
     <Content Include="Content\bootstrap-rtl.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\EstateDetailsStyle.css" />
     <Content Include="Content\estate_images\007ee7ba-598c-4866-8b7c-7e75cf7856f9.jpg" />
     <Content Include="Content\estate_images\00d96373-fe26-4287-863c-b03fa1617368.jpg" />
     <Content Include="Content\estate_images\02d17911-0b09-48c5-8fed-1565a9cca6e9.jpg" />
@@ -770,6 +771,7 @@
     <Content Include="Content\estate_images\fea1e3b7-5961-41f0-a166-86b221986d15.jpg" />
     <Content Include="Content\estate_images\no-thumb.png" />
     <Content Include="Content\estate_images\sample.jpg" />
+    <Content Include="Content\SearchPageStyle.css" />
     <Content Include="Content\shared_images\background.jpg" />
     <Content Include="Content\shared_images\DownloadApp.png" />
     <Content Include="Content\shared_images\Insta.png" />
@@ -780,7 +782,7 @@
     <Content Include="Content\shared_images\logo1.png" />
     <Content Include="Content\shared_images\logo3.png" />
     <Content Include="Content\shared_images\Social.png" />
-    <Content Include="Content\slick-theme.css" />
+    <Content Include="Content\SubmitEstateStyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

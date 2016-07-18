@@ -102,7 +102,29 @@ namespace Amirhome.Models
     
     public class EstateManager
     {
+        public List<Feature> getAllFeatures()
+        {
+            List<Feature> _feature = null;
+            using (var context = new AmirhomeEntities())
+            {
 
+                _feature = (from F in context.Features
+                           select F).ToList();
+            }
+            return _feature;
+        }
+        public List<tbl_cities> getCityByProvince(int province_id)
+        {
+            List<tbl_cities> _cities = null;
+            using (var context = new AmirhomeEntities())
+            {
+
+                _cities = (from C in context.tbl_cities
+                           where C.provinceId == province_id
+                           select C).ToList();
+            }
+            return _cities;
+        }
         public State getStateByID(int id)
         {
             State _state = null;

@@ -6,8 +6,578 @@
 
 @model Amirhome.Models.State
 
-<div class="container body-content">
-    <div class="row">
+@{
+    List<Amirhome.Models.Feature> ftrs = ViewData["Features"] as List<Amirhome.Models.Feature>;
+}
 
-    </div>
+<link rel="stylesheet" href="~/Content/SubmitEstateStyle.css" />
+
+<div class="container body-content">
+    <h1>سپردن ملک</h1>
+    <hr />
+    @Html.BeginForm("SubmitEstate", "Estate", FormMethod.Post)
+    {
+    <ul class="payment-wizard">
+        <li class="active">
+            <div class="wizard-heading">
+                ۱ - مشخصات مالک
+                <span class="glyphicon glyphicon-user"></span>
+            </div>
+            <div class="wizard-content">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2 left">
+                        <label>نام و نام خانوادگی *</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(m => m.Owner.Name, new { @class="required" })
+                    </div>
+                    <div class="col-md-2 left">
+                        <label>پست الکترونیک</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(m => m.Owner.Email)
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2  left">
+                        <label>شماره تلفن همراه *</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(m => m.Owner.Mobile, new { @style = "margin-bottom: 5px;", @class = "required" })
+                        @Html.TextBoxFor(m => m.Owner.Mobile2)
+                    </div>
+                    <div class="col-md-2  left">
+                        <label>شماره تلفن ثابت</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(m => m.Owner.Telephone, new { @style = "margin-bottom: 5px;" })
+                        @Html.TextBoxFor(m => m.Owner.Tell2)
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2  left">
+                        <label>آدرس منزل</label>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Owner.Address, new { @class="long-input" })
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <button class="btn-green done" type="submit">تأیید و ادامه</button>
+            </div>
+        </li>
+        <li>
+            <div class="wizard-heading">
+                ۲- مشخصات کلی ملک
+                <span class="glyphicon glyphicon-home"></span>
+            </div>
+            <div class="wizard-content">
+                <div class="content">
+                    <div class="text-center caption">مشخصات مکانی و تملکی</div>
+                    <div class="inner_content">
+                        <div class="row" style="margin-bottom:3px;">
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>استان</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Province" id="Province">
+                                            <option value="0">استان</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>منطقه</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Region" id="Region">
+                                            <option value="0">منطقه</option>
+                                            @for (int i = 1; i <= 22; i++)
+                                            {
+                                                <option value="@i">منطقه @i</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>نوع ملک</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="StateType" id="StateType">
+                                            <option value="1">آپارتمان</option>
+                                            <option value="2">ویلا</option>
+                                            <option value="8">سوئیت</option>
+                                            <option value="9">سایر</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>موقعیت</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Position" id="Position">
+                                            <option selected="selected" value="شمالی">شمالی</option>
+                                            <option value="جنوبی">جنوبی</option>
+                                            <option value="شرقی">شرقی</option>
+                                            <option value="غربی">غربی</option>
+                                            <option value="شمالی شرقی">شمالی شرقی</option>
+                                            <option value="شمالی غربی">شمالی غربی</option>
+                                            <option value="جنوبی شرقی">جنوبی شرقی</option>
+                                            <option value="جنوبی غربی">جنوبی غربی</option>
+                                            <option value="دونبش">دونبش</option>
+                                            <option value="دوبر">دوبر</option>
+                                            <option value="سایر">سایر</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>شهر</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="City" id="City">
+                                            <option value="0">شهر</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>محله</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="District" id="District">
+                                            <option value="0">محله</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>نوع کاربری ملک</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Usage" id="Usage">
+                                            <option selected="selected" value="مسکونی">مسکونی</option>
+                                            <option value="کلنگی و مشارکتی">کلنگی و مشارکتی</option>
+                                            <option value="تجاری و اداری">تجاری و اداری</option>
+                                            <option value="سایر">سایر</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>نوع واگذاری ملک</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Condition" id="Condition">
+                                            <option selected="selected" value="فروش">فروش</option>
+                                            <option value="رهن">رهن</option>
+                                            <option value="اجاره">اجاره</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left"><label>خیابان اصلی و فرعی</label></div>
+                                    <div class="col-md-8 ">
+                                        @Html.TextBoxFor(m => m.Address)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left"><label>کوچه، پلاک و واحد</label></div>
+                                    <div class="col-md-8 ">
+                                        @Html.TextBoxFor(m => m.DetailedAddress)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="content">
+                    <div class="text-center caption">قیمت و متراژ</div>
+                    <div class="inner_content">
+                        <div class="row" style="margin-bottom:3px;">
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>متراژ</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Area)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>طول بر</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Length)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>متراژ تراس</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Terrace)
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>مساحت کل</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Width)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>متراژ اصلاحی</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Reformative)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left"><br />
+                                    </div>
+                                    <div class="col-md-8"><br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:3px;">
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>قیمت کل</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.TotalPrice)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>پیش پرداخت</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.PrepaymentPrice, new { @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>قیمت هر متر</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.PricePerMeter)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>قیمت اجاره</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.MortgagePrice, new { @disabled = "disabled" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><br />
+                <div class="content">
+                    <div class="text-center caption">ظاهر و امکانات</div>
+                    <div class="inner_content">
+                        <div class="row" style="margin-bottom:3px;">
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>نما</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Facing" id="Facing">
+                                            <option selected="selected" value="کنیتکس">کنیتکس</option>
+                                            <option value="سفال">سفال</option>
+                                            <option value="سنگ">سنگ</option>
+                                            <option value="رومی">رومی</option>
+                                            <option value="تراورتن">تراورتن</option>
+                                            <option value="سنگ و سفال">سنگ و سفال</option>
+                                            <option value="رومی و سفال">رومی و سفال</option>
+                                            <option value="سرامیک">سرامیک</option>
+                                            <option value="سفال سرامیک">سفال سرامیک</option>
+                                            <option value="گرانیت">گرانیت</option>
+                                            <option value="ومی گرانیت">رومی گرانیت</option>
+                                            <option value="آجرگری">آجرگری</option>
+                                            <option value="سیمان سفید">سیمان سفید</option>
+                                            <option value="آجر و سنگ">آجر و سنگ</option>
+                                            <option value="آلومینیوم">آلومینیوم</option>
+                                            <option value="ترکیبی">ترکیبی</option>
+                                            <option value="چوب و سنگ">چوب و سنگ</option>
+                                            <option value="آجر سه سانت">آجر سه سانت</option>
+                                            <option value="کامپوزیت">کامپوزیت</option>
+                                            <option value="شیشه">شیشه</option>
+                                            <option value="شیشه و سنگ">شیشه و سنگ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>نوع کابینت</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Cabinet" id="Cabinet">
+                                            <option selected="selected" value="فلزی">فلزی</option>
+                                            <option value="چوبی">چوبی</option>
+                                            <option value="چوب و فلز">چوب و فلز</option>
+                                            <option value="های گلس">های گلس</option>
+                                            <option value="MDF">MDF</option>
+                                            <option value="سایر">سایر</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>کفپوش</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Flooring" id="Flooring">
+                                            <option selected="selected" value="سنگ">سنگ</option>
+                                            <option value="سرامیک">سرامیک</option>
+                                            <option value="گرانیت">گرانیت</option>
+                                            <option value="لمینت">لمینت</option>
+                                            <option value="پارکت">پارکت</option>
+                                            <option value="موکت">موکت</option>
+                                            <option value="موزاییک">موزاییک</option>
+                                            <option value="سرامیک و موزاییک">سرامیک و موزاییک</option>
+                                            <option value="موکت و موزاییک">موکت و موزاییک</option>
+                                            <option value="موکت و سنگ">موکت و سنگ</option>
+                                            <option value="سیمان">سیمان</option>
+                                            <option value="تک سرام">تک سرام</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>وضعیت سکونت</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="CurrentStatuse" id="CurrentStatuse">
+                                            <option selected="selected" value="تخلیه">تخلیه</option>
+                                            <option value="مسکونی مالک">مسکونی مالک</option>
+                                            <option value="اجاره">اجاره</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:3px;">
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>سن بنا</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Age)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>تعداد اتاق خواب</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Bedrooms)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>تعداد پارکینگ</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Parking)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>تعداد سرویس بهداشتی</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Bathrooms)
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>تعداد خط تلفن</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(m => m.Tells)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:3px;">
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>طبقه</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Floor" id="Floor">
+                                            <option selected="selected" value="زیرزمین">زیرزمین</option>
+                                            <option value="پیلوت">پیلوت</option>
+                                            <option value="همکف">همکف</option>
+                                            <option value="طبقه اول">طبقه اول</option>
+                                            <option value="طبقه دوم">طبقه دوم</option>
+                                            <option value="طبقه سوم">طبقه سوم</option>
+                                            <option value="طبقه چهارم">طبقه چهارم</option>
+                                            <option value="طبقه پنجم">طبقه پنجم</option>
+                                            <option value="طبقه ششم">طبقه ششم</option>
+                                            <option value="طبقه هفتم تا دهم">طبقه هقتم تا دهم</option>
+                                            <option value="طبقه دهم به بالا">طبقه دهم به بالا</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>تعداد طبقات ساختمان</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Floors" id="Floors">
+                                            <option selected="selected" value="یک طبقه">یک طبقه</option>
+                                            <option value="دو طبقه">دو طبقه</option>
+                                            <option value="سه طبقه">سه طبقه</option>
+                                            <option value="چهار طبقه">چهار طبقه</option>
+                                            <option value="پنج طبقه">پنج طبقه</option>
+                                            <option value="شش طبقه">شش طبقه</option>
+                                            <option value="هفت تا ده طبقه">هفت تا ده طبقه</option>
+                                            <option value="ده تا بیست طبقه">ده تا بیست طبقه</option>
+                                            <option value="بیش از بیست طبقه">بیش از بیست طبقه</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-md-4 left">
+                                        <lable>تعداد واحد در طبقه</lable>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="Units" id="Units">
+                                            <option selected="selected" value="تک واحدی">تک واحدی</option>
+                                            <option value="دو واحدی">دو واحدی</option>
+                                            <option value="سه واحدی">سه واحدی</option>
+                                            <option value="چهار واحدی">چهار واحدی</option>
+                                            <option value="بیش از چهار واحد در هر طبقه">بیش از چهار واحد در هر طبقه</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:3px;">
+                            <table border="1" class="features-table">
+                                <tr>
+                                    @for (int i = 0; i < 10; i++)
+                                    {
+                                        <td><label><input type="checkbox" name="Features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                                    }
+                                </tr>
+                                <tr>
+                                    @for (int i = 10; i < 20; i++)
+                                    {
+                                        <td><label><input type="checkbox" name="Features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                                    }
+                                </tr>
+                                <tr>
+                                    @for (int i = 20; i < 30; i++)
+                                    {
+                                        <td><label><input type="checkbox" name="Features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                                    }
+                                </tr>
+                                <tr>
+                                    @for (int i = 30; i < 36; i++)
+                                    {
+                                        <td><label><input type="checkbox" name="Features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                                    }
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-green done" type="submit">تأیید و ادامه</button>
+            </div>
+        </li>
+        <li>
+            <div class="wizard-heading">
+                ۳ - افزودن عکس و نقشه
+                <span class="glyphicon glyphicon-picture"></span>
+            </div>
+            <div class="wizard-content">
+                <p>Order summary details section.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nulla nisl, luctus sed sagittis in, lobortis ac dui. Donec scelerisque nisi at fringilla ullamcorper. Maecenas ullamcorper sapien at porta aliquam. Nulla id elit ipsum. Nullam eget elit laoreet, aliquam ligula quis, accumsan magna. Proin in mi nisl. Morbi commodo ipsum id ipsum condimentum hendrerit. </p>
+                <button class="btn-green done" type="submit">Continue</button>
+            </div>
+        </li>
+        <li>
+            <div class="wizard-heading">
+                ۴ - ثبت نهایی
+                <span class="glyphicon glyphicon-check"></span>
+            </div>
+            <div class="wizard-content">
+                <p>Your payment methods detail section.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nulla nisl, luctus sed sagittis in, lobortis ac dui. Donec scelerisque nisi at fringilla ullamcorper. Maecenas ullamcorper sapien at porta aliquam. Nulla id elit ipsum. Nullam eget elit laoreet, aliquam ligula quis, accumsan magna. Proin in mi nisl. Morbi commodo ipsum id ipsum condimentum hendrerit. </p>
+                <button class="btn-green" type="submit">Done</button>
+            </div>
+        </li>
+    </ul>
+    }
 </div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(window).load(function () {
+            $(".done").click(function () {
+                var this_li_ind = $(this).parent().parent("li").index();
+                if ($('.payment-wizard li').hasClass("jump-here")) {
+                    $(this).parent().parent("li").removeClass("active").addClass("completed");
+                    $(this).parent(".wizard-content").slideUp();
+                    $('.payment-wizard li.jump-here').removeClass("jump-here");
+                } else {
+                    $(this).parent().parent("li").removeClass("active").addClass("completed");
+                    $(this).parent(".wizard-content").slideUp();
+                    $(this).parent().parent("li").next("li:not('.completed')").addClass('active').children('.wizard-content').slideDown();
+                }
+            });
+
+            $('.payment-wizard li .wizard-heading').click(function () {
+                if ($(this).parent().hasClass('completed')) {
+                    var this_li_ind = $(this).parent("li").index();
+                    var li_ind = $('.payment-wizard li.active').index();
+                    if (this_li_ind < li_ind) {
+                        $('.payment-wizard li.active').addClass("jump-here");
+                    }
+                    $(this).parent().addClass('active').removeClass('completed');
+                    $(this).siblings('.wizard-content').slideDown();
+                }
+            });
+        })
+    </script>
+}

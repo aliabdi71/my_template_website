@@ -65,8 +65,9 @@ namespace Amirhome.Controllers
             return Json(data);
         }
 
-        public ActionResult SubitEstate()
+        public ActionResult SubmitEstate()
         {
+            ViewData["Features"] = _estateManager.getAllFeatures();
             return View();
         }
     }
