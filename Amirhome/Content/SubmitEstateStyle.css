@@ -64,7 +64,6 @@ li:first-child .wizard-content{display: block;}
 }
 .left{
     text-align:left;
-    font-weight:bold;
 }
 @media only screen and (max-width: 960px) {
     .left{
@@ -77,8 +76,8 @@ li:first-child .wizard-content{display: block;}
 .row.form-group{
     margin-bottom:20px;
 }
-.form-group label{
-    font-weight:bold;
+label{
+    font-weight:normal !important;
 }
 
 .features-table{
