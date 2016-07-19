@@ -8,6 +8,7 @@
 
 @{
     List<Amirhome.Models.Feature> ftrs = ViewData["Features"] as List<Amirhome.Models.Feature>;
+    List<Amirhome.Models.province> prv = ViewData["Province"] as List<Amirhome.Models.province>;
 }
 
 <link rel="stylesheet" href="~/Content/SubmitEstateStyle.css" />
@@ -16,7 +17,7 @@
     <h1>سپردن ملک</h1>
     <hr />
     <form action="/Estate/SubmitEstate" method="post">
-        <ul class="payment-wizard">
+        <ul class="submit-wizard">
             <li class="active">
                 <div class="wizard-heading">
                     ۱ - مشخصات مالک
@@ -87,7 +88,10 @@
                                         </div>
                                         <div class="col-md-8">
                                             <select name="Province" id="Province" class="form-control">
-                                                <option value="0">استان</option>
+                                                @foreach (var item in prv)
+                                                {
+                                                    <option value="@item.id">@item.name</option>
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -202,8 +206,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <br />
+                    </div><br />
                     <div class="content">
                         <div class="text-center caption">قیمت و متراژ</div>
                         <div class="inner_content">
@@ -214,7 +217,7 @@
                                             <lable>متراژ</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.Area, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Area, new { @class = "form-control number-type" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -222,7 +225,7 @@
                                             <lable>طول بر</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.Length, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Length, new { @class = "form-control number-type" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -230,7 +233,7 @@
                                             <lable>متراژ تراس</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.Terrace, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Terrace, new { @class = "form-control number-type" })
                                         </div>
                                     </div>
                                 </div>
@@ -240,7 +243,7 @@
                                             <lable>مساحت کل</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.Width, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Width, new { @class = "form-control number-type" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -248,16 +251,11 @@
                                             <lable>متراژ اصلاحی</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.Reformative, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Reformative, new { @class = "form-control number-type" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4 left">
-                                            <br />
-                                        </div>
-                                        <div class="col-md-8">
-                                            <br />
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -265,28 +263,10 @@
                                 <div class="col-md-6">
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>قیمت کل</lable>
-                                        </div>
-                                        <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.TotalPrice, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-4 left">
-                                            <lable>پیش پرداخت</lable>
-                                        </div>
-                                        <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.PrepaymentPrice, new { @disabled = "disabled", @class="form-control"})
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="row form-group">
-                                        <div class="col-md-4 left">
                                             <lable>قیمت هر متر</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.PricePerMeter, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.PricePerMeter, new { @class = "form-control number-type" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -294,7 +274,25 @@
                                             <lable>قیمت اجاره</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.MortgagePrice, new { @disabled = "disabled", @class="form-control" })
+                                            @Html.TextBoxFor(m => m.MortgagePrice, new { @disabled = "disabled", @class = "form-control number-type" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <div class="col-md-4 left">
+                                            <lable>قیمت کل</lable>
+                                        </div>
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.TotalPrice, new { @class = "form-control number-type" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4 left">
+                                            <lable>پیش پرداخت</lable>
+                                        </div>
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.PrepaymentPrice, new { @disabled = "disabled", @class = "form-control number-type" })
                                         </div>
                                     </div>
                                 </div>
@@ -522,7 +520,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn-green done" type="submit" onclick="return false;">تأیید و ادامه</button>
+                    <button class="btn-green done" type="button" onclick="return false;">تأیید و ادامه</button>
                 </div>
             </li>
             <li>
@@ -531,9 +529,36 @@
                     <span class="glyphicon glyphicon-picture"></span>
                 </div>
                 <div class="wizard-content">
-                    <p>Order summary details section.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nulla nisl, luctus sed sagittis in, lobortis ac dui. Donec scelerisque nisi at fringilla ullamcorper. Maecenas ullamcorper sapien at porta aliquam. Nulla id elit ipsum. Nullam eget elit laoreet, aliquam ligula quis, accumsan magna. Proin in mi nisl. Morbi commodo ipsum id ipsum condimentum hendrerit. </p>
-                    <button class="btn-green done" type="submit">Continue</button>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="content" style="margin-bottom:5px;">
+                                <div class="text-center caption">عکس از داخل ساختمان</div>
+                                <div class="inner_content">
+                                    <input type="file" name="main_image" accept=".jpg,.jpeg,.png"/>
+                                    <a href="javascript:void(0)" onclick="add_main_img(this)" style="text-decoration:none; margin-top:5px;">+ عکس جدید</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="content" style="margin-bottom:5px;">
+                                <div class="text-center caption">عکس از نقشه ساختمان</div>
+                                <div class="inner_content">
+                                    <input type="file" name="plan_image" accept=".jpg,.jpeg,.png" />
+                                    <a href="javascript:void(0)" onclick="add_plan_img(this)" style="text-decoration:none; margin-top:5px;">+ عکس جدید</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="content" style="margin-bottom:5px;">
+                                <div class="text-center caption">عکس از نمای خیابان</div>
+                                <div class="inner_content">
+                                    <input type="file" name="street_image" accept=".jpg,.jpeg,.png" />
+                                    <a href="javascript:void(0)" onclick="add_street_img(this)" style="text-decoration:none; margin-top:5px;">+ عکس جدید</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-green done" type="submit" onclick="return false;">تأیید و ادامه</button>
                 </div>
             </li>
             <li>
@@ -542,9 +567,12 @@
                     <span class="glyphicon glyphicon-check"></span>
                 </div>
                 <div class="wizard-content">
-                    <p>Your payment methods detail section.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nulla nisl, luctus sed sagittis in, lobortis ac dui. Donec scelerisque nisi at fringilla ullamcorper. Maecenas ullamcorper sapien at porta aliquam. Nulla id elit ipsum. Nullam eget elit laoreet, aliquam ligula quis, accumsan magna. Proin in mi nisl. Morbi commodo ipsum id ipsum condimentum hendrerit. </p>
-                    <button class="btn-green" type="submit">Done</button>
+                    <div>
+                        <p class="text-info">مراحل ثبت ملک به اتمام رسید</p>
+                        <p>اکنون با زدن دکمه ثبت نهایی، ملک شما در لیست ملک های سایت قرار خواهد گرفت.</p>
+                        <p>در صورت تأیید اطلاعات ملک توسط کارشناسان مربوطه، ملک شما قابل مشاهده برای عموم خواهد بود.</p>
+                    </div>
+                    <button class="btn-green" type="submit">ثبت نهایی</button>
                 </div>
             </li>
         </ul>
@@ -568,6 +596,7 @@
             });
 
             $('.payment-wizard li .wizard-heading').click(function () {
+                alert("clicked");
                 if ($(this).parent().hasClass('completed')) {
                     var this_li_ind = $(this).parent("li").index();
                     var li_ind = $('.payment-wizard li.active').index();
@@ -578,6 +607,110 @@
                     $(this).siblings('.wizard-content').slideDown();
                 }
             });
-        })
+        });
+
+        function fix_input_formats() {
+            $(".number-type").each(function () {
+                var val = $(this).val().replace(/,/g, '');
+                $(this).val(val);
+            })
+        }
+
+        function add_main_img(elem) {
+            $(elem).before('<input type="file" name="main_image" accept=".jpg,.jpeg,.png"/>');
+        }
+        function add_plan_img(elem) {
+            $(elem).before('<input type="file" name="plan_image" accept=".jpg,.jpeg,.png"/>');
+        }
+        function add_street_img(elem) {
+            $(elem).before('<input type="file" name="street_image" accept=".jpg,.jpeg,.png"/>');
+        }
+
+        $(document).ready(function () {
+            $("#Province").change(function () {
+                $.ajax({
+                    url: '/Estate/fetchCities',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ "p_id": $(this).val() }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        $("#City").html('');
+                        for(var i = 0 ; i < data.length ; i++){
+                            $("#City").append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+                        }
+                    },
+                    error: function () {
+
+                    },
+                });
+            });
+
+            $("#City").change(function () {
+                if ($(this).val() === '118') {
+                    $.ajax({
+                        url: '/Estate/fetchDistricts',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: '',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            $("#District").html('');
+                            for (var i = 0 ; i < data.length ; i++) {
+                                $("#District").append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+                            }
+                        },
+                        error: function () {
+
+                        },
+                    });
+                }
+                else {
+                    $("#District").html('<option value="0">محله</option>');
+                }
+            });
+
+            $("#Condition").change(function () {
+                if ($(this).val() === 'فروش') {
+                    $("#PrepaymentPrice").val('').attr("disabled", "disabled");
+                    $("#MortgagePrice").val('').attr("disabled", "disabled");
+                    $("#TotalPrice").val('').removeAttr("disabled");
+                    $("#PricePerMeter").val('').removeAttr("disabled")
+                }
+                else {
+                    $("#TotalPrice").val('').attr("disabled", "disabled");
+                    $("#PricePerMeter").val('').attr("disabled", "disabled");
+                    $("#PrepaymentPrice").val('').removeAttr("disabled");
+                    $("#MortgagePrice").val('').removeAttr("disabled");
+                }
+            });
+
+            $("body").on({
+                keydown: function (e) {
+                    if ((notInRange(e.keyCode, 48, 57) && notInRange(e.keyCode, 96, 105) && e.keyCode !== 8 && e.keyCode !== 9 && e.keyCode !== 46) || e.shiftKey) {
+                        e.preventDefault();
+                    }
+                    return true;
+                },
+                focus: function () {
+                    $(this).select();
+                },
+                keyup: function () {
+                    var $self = $(this);
+                    var new_val = $self.val().replace(/,/g, '');
+                    $self.val(inputNumberWithCommasEnglish(new_val));
+                },
+                blur: function () {
+                    var $self = $(this);
+                    if ($self.attr('id') === 'PricePerMeter' || $self.attr('id') === 'Area') {
+                        var ppm = $("#PricePerMeter").val().replace(/,/g, '');
+                        var area = $("#Area").val().replace(/,/g, '');
+                        var total = parseInt(ppm) * parseInt(area);
+                        if (total)
+                            $("#TotalPrice").val(inputNumberWithCommasEnglish(total));
+                    }
+                }
+            }, ".number-type");
+        });
     </script>
 }

@@ -68,7 +68,31 @@ namespace Amirhome.Controllers
         public ActionResult SubmitEstate()
         {
             ViewData["Features"] = _estateManager.getAllFeatures();
+            ViewData["Province"] = _estateManager.getAllProvince();
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult fetchCities(int p_id)
+        {
+            List<tbl_cities> cities = _estateManager.getCityByProvince(p_id);
+            var data = cities.Select(c => new
+            {
+                id = c.id,
+                name = c.name
+            });
+            return Json(data);
+        }
+        [HttpPost]
+        public JsonResult fetchDistricts()
+        {
+            List<District> dists = _estateManager.getAllDistricts();
+            var data = dists.Select(c => new
+            {
+                id = c.ID,
+                name = c.name
+            });
+            return Json(data);
         }
     }
 }

@@ -236,8 +236,22 @@
                     use = $("#usage").val();
                 window.location = "/Estate/SearchPage?cond=" + cond + "&use=" + use;
             });
+            $("#submit_estate").click(function () {
+                /*if ($("#condition").val() === '0') {
+                    $("#condition").css('background-color', '#FF7C7C');
+                    return false;
+                }
+                if ($("#usage").val() === '0') {
+                    $("#usage").css('background-color', '#FF7C7C');
+                    return false;
+                }
+                var cond = $("#condition").val(),
+                    use = $("#usage").val();*/
+                window.location = "/Estate/SubmitEstate";
+            });
             //Occasion Section
             getOccasionsFromServer();
+            
         });
 
         $(window).on("load", function () {

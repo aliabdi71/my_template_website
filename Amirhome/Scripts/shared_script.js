@@ -33,6 +33,11 @@ function turn2PersianNumber(value) {
     return value;
 }
 
+function inputNumberWithCommasEnglish(x) {
+    var res = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return res;
+}
+
 function inputNumberWithCommas(x) {
     var res = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return turn2PersianNumber(res);

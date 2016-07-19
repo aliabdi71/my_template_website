@@ -113,6 +113,18 @@ namespace Amirhome.Models
             }
             return _feature;
         }
+        public List<province> getAllProvince()
+        {
+            List<province> _province = null;
+            using (var context = new AmirhomeEntities())
+            {
+
+                _province = (from P in context.provinces
+                             where P.id > 0
+                            select P).OrderBy(p => p.name).ToList();
+            }
+            return _province;
+        }
         public List<tbl_cities> getCityByProvince(int province_id)
         {
             List<tbl_cities> _cities = null;
@@ -121,9 +133,21 @@ namespace Amirhome.Models
 
                 _cities = (from C in context.tbl_cities
                            where C.provinceId == province_id
-                           select C).ToList();
+                           select C).OrderBy(c => c.name).ToList();
             }
             return _cities;
+        }
+        public List<District> getAllDistricts()
+        {
+            List<District> _districts = null;
+            using (var context = new AmirhomeEntities())
+            {
+
+                _districts = (from D in context.Districts
+                              where D.ID > 0
+                           select D).OrderBy(d => d.name).ToList();
+            }
+            return _districts;
         }
         public State getStateByID(int id)
         {
