@@ -1,41 +1,43 @@
 ﻿
 @{
     ViewBag.Title = "ManagementPanel";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ManagementPanelLayout.cshtml";
+    string role_id = ViewData["user_role_id"].ToString();
 }
 
 <link href="~/Content/simple-sidebar.css" rel="stylesheet" />
 <link href="~/Content/ManagementPanelStyle.css" rel="stylesheet" />
 
-<div id="wrapper">
+<div id="wrapper" style="background-color:white;">
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="#">
-                    Start Bootstrap
-                </a>
+            <li class="sidebar-brand" style="height:inherit; text-align:center; border-bottom: 1px solid white;">
+                <img src='@ViewData["user_image_src"].ToString()' style="margin: 4px 0 0 45px; width: 135px;" />
             </li>
-            <li>
-                <a href="#">Dashboard</a>
-            </li>
-            <li>
-                <a href="#">Shortcuts</a>
-            </li>
-            <li>
-                <a href="#">Overview</a>
-            </li>
-            <li>
-                <a href="#">Events</a>
-            </li>
-            <li>
-                <a href="#">About</a>
-            </li>
-            <li>
-                <a href="#">Services</a>
-            </li>
-            <li>
-                <a href="#">Contact</a>
-            </li>
+            @{
+                if (role_id == "1")
+                {
+                    <li><a href="javascript:void(0)">داشبورد مدیریت</a></li>
+                }
+                if (role_id == "1" || role_id == "3")
+                {
+                    <li><a href="javascript:void(0)">املاک فروشی</a></li>
+                }
+                if (role_id == "1" || role_id == "4")
+                {
+                    <li><a href="javascript:void(0)">املاک رهن و اجاره</a></li>
+                }
+                if (role_id == "1" || role_id == "2")
+                {
+                    <li><a href="javascript:void(0)">همه املاک</a></li>
+                    <li><a href="javascript:void(0)">املاک آرشیو شده</a></li>
+                }
+                if (role_id == "1")
+                {
+                    <li><a href="javascript:void(0)">کاربران سایت</a></li>
+                }
+            }            
+            <li><a href="#">صفحه شخصی</a></li>
         </ul>
     </div>
     <div id="page-content-wrapper">

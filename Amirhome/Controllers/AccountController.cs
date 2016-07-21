@@ -74,7 +74,7 @@ namespace Amirhome.Controllers
                     return Json("success");
                 }
             }
-            catch ( ex)
+            catch
             {
                 return Json("خطا در برقراری ارتباط با سرور");
             }

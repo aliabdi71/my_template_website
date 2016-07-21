@@ -112,5 +112,10 @@ function sendDataToServer(email, pass, remember) {
                 $("#message").html(data);
             }
         },
+        error: function(){
+            $("#login_btn").css('display', 'inline');
+            $("#loading_button").css('display', 'none');
+            $("#message").html('خطا در برقراری ارتباط با سرور');
+        },
     });
 }

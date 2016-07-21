@@ -151,77 +151,76 @@
     <script type="text/javascript" src="~/Scripts/jquery.backstretch.min.js"></script>
     <script type="text/javascript" src="~/Scripts/slick.js"></script>
     <script type="text/javascript">
-        function getOccasionsFromServer() {
-            $.ajax({
-                url: '@Url.Action("GetOccasionEstates", "Home")',
-                method: 'GET',
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    createOccasionSection(data);
-                },
-                error: function () {
-                    
-                },
-            });
-            return occ_data;
-        }
+    function getOccasionsFromServer() {
+        $.ajax({
+            url: '@Url.Action("GetOccasionEstates", "Home")',
+            method: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                createOccasionSection(data);
+            },
+            error: function () {
 
-        function createOccasionSection(data) {
-            var htmls = [];
-            $(".occasion.row").html("");
-            for (var i = 0 ; i < data.length ; i++) {
-                //Create Basic Elements
-                var $div = $("<div>").addClass("col-md-3").css('display', 'none');
-                var $a = $("<a>").attr('href', '/Estate/EstateDetails?EstateID=' + data[i].ID);
-                var $panel = $("<div>").addClass("panel panel-success");
+            },
+        });
+    }
 
-                //Panel Heading Initialize
-                var $panel_heading = $("<div>").addClass("panel-heading");
-                var $heading_label = $("<label>").html(data[i].Condition + ' - ' + turn2PersianNumber(data[i].Area) + ' متری');
-                var $heading_header = $("<h3>").html(data[i].Address).css('white-space', 'nowrap');
-                $panel_heading.append($heading_label).append($heading_header);
+    function createOccasionSection(data) {
+        var htmls = [];
+        $(".occasion.row").html("");
+        for (var i = 0 ; i < data.length ; i++) {
+            //Create Basic Elements
+            var $div = $("<div>").addClass("col-md-3").css('display', 'none');
+            var $a = $("<a>").attr('href', '/Estate/EstateDetails?EstateID=' + data[i].ID);
+            var $panel = $("<div>").addClass("panel panel-success");
 
-                //Panel Body Initialize
-                var $panel_body = $("<div>").addClass("panel-body");
-                var $body_occ_desc = $("<div>").addClass("occasion-desc");
-                var $occ_desc_p = $("<p>").html(data[i].Occasion);
-                $body_occ_desc.append($occ_desc_p);
-                var $body_image = $("<img>").attr("src", "/Content/estate_images/" + data[i].ImageSrc);
-                var $body_img_count = $("<div>").addClass("img-count").html(turn2PersianNumber(data[i].ImageCount) + ' عکس');
-                $panel_body.append($body_occ_desc).append($body_image).append($body_img_count);
+            //Panel Heading Initialize
+            var $panel_heading = $("<div>").addClass("panel-heading");
+            var $heading_label = $("<label>").html(data[i].Condition + ' - ' + turn2PersianNumber(data[i].Area) + ' متری');
+            var $heading_header = $("<h3>").html(data[i].Address).css('white-space', 'nowrap');
+            $panel_heading.append($heading_label).append($heading_header);
 
-                //Panel Footer Initialize
-                var $panel_footer = $("<div>").addClass("panel-footer");
-                var $footer_main_price = $("<p>").addClass("main-price");
-                var $footer_second_price = $("<p>").addClass("second-price");
-                var $footer_date = $("<p>").addClass("date").html(turn2PersianNumber(data[i].Date));
-                switch (data[i].Condition) {
-                    case 'فروش': $footer_main_price.html('قیمت کل: ' + numberWithCommas(data[i].TotalPrice)); $footer_second_price.html("&nbsp;"); break;
-                    case 'رهن': $footer_main_price.html('قیمت رهن: ' + numberWithCommas(data[i].Prepayment)); $footer_second_price.html("&nbsp;"); break;
-                    case 'اجاره': $footer_main_price.html('پیش پرداخت: ' + numberWithCommas(data[i].Prepayment)); $footer_second_price.html('ماهیانه: ' + numberWithCommas(data[i].Mortage)); break;
-                }
-                $panel_footer.append($footer_main_price).append($footer_second_price).append($footer_date);
+            //Panel Body Initialize
+            var $panel_body = $("<div>").addClass("panel-body");
+            var $body_occ_desc = $("<div>").addClass("occasion-desc");
+            var $occ_desc_p = $("<p>").html(data[i].Occasion);
+            $body_occ_desc.append($occ_desc_p);
+            var $body_image = $("<img>").attr("src", "/Content/estate_images/" + data[i].ImageSrc);
+            var $body_img_count = $("<div>").addClass("img-count").html(turn2PersianNumber(data[i].ImageCount) + ' عکس');
+            $panel_body.append($body_occ_desc).append($body_image).append($body_img_count);
 
-                //Finilizing and Fading the content
-                $panel.append($panel_heading).append($panel_body).append($panel_footer);
-                $a.append($panel);
-                $div.append($a);
-                $div.appendTo(".occasion.row").show('slow');
+            //Panel Footer Initialize
+            var $panel_footer = $("<div>").addClass("panel-footer");
+            var $footer_main_price = $("<p>").addClass("main-price");
+            var $footer_second_price = $("<p>").addClass("second-price");
+            var $footer_date = $("<p>").addClass("date").html(turn2PersianNumber(data[i].Date));
+            switch (data[i].Condition) {
+                case 'فروش': $footer_main_price.html('قیمت کل: ' + numberWithCommas(data[i].TotalPrice)); $footer_second_price.html("&nbsp;"); break;
+                case 'رهن': $footer_main_price.html('قیمت رهن: ' + numberWithCommas(data[i].Prepayment)); $footer_second_price.html("&nbsp;"); break;
+                case 'اجاره': $footer_main_price.html('پیش پرداخت: ' + numberWithCommas(data[i].Prepayment)); $footer_second_price.html('ماهیانه: ' + numberWithCommas(data[i].Mortage)); break;
             }
-            $(".occasion .panel").hover(function () {
-                $(this).find('.occasion-desc').fadeIn(450);
-            }, function () {
-                $(this).find('.occasion-desc').fadeOut(450);
-            });
-        }
+            $panel_footer.append($footer_main_price).append($footer_second_price).append($footer_date);
 
-        $(document).ready(function () {
-            //attach banner image to banner section
-            $(".banner").backstretch(['/Content/banner_images/bg1.jpg', '/Content/banner_images/bg2.jpg', '/Content/banner_images/bg3.jpg'], { fade: 550, duration: 4000 });
+            //Finilizing and Fading the content
+            $panel.append($panel_heading).append($panel_body).append($panel_footer);
+            $a.append($panel);
+            $div.append($a);
+            $div.appendTo(".occasion.row").show('slow');
+        }
+        $(".occasion .panel").hover(function () {
+            $(this).find('.occasion-desc').fadeIn(450);
+        }, function () {
+            $(this).find('.occasion-desc').fadeOut(450);
+        });
+    }
+
+    $(document).ready(function () {
+        //attach banner image to banner section
+        $(".banner").backstretch(['@Url.Content("~/Content/banner_images/bg1.jpg")', '@Url.Content("~/Content/banner_images/bg2.jpg")', '@Url.Content("~/Content/banner_images/bg3.jpg")'], { fade: 550, duration: 4000 });
             $(".banner-panel").fadeIn(550);
             //attach plane image to plane section
-            $(".about-banner").backstretch('/Content/banner_images/pelan.jpg');
+            $(".about-banner").backstretch('@Url.Content("~/Content/banner_images/pelan.jpg")');
 
             $("#search_estate").click(function () {
                 if ($("#condition").val() === '0') {
@@ -251,7 +250,7 @@
             });
             //Occasion Section
             getOccasionsFromServer();
-            
+
         });
 
         $(window).on("load", function () {

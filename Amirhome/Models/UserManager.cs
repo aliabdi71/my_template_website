@@ -142,7 +142,7 @@ namespace Amirhome.Models
             UserAccouunt user = null;
             using (var context = new AmirhomeEntities())
             {
-                user = (from U in context.UserAccouunts.Include("UserAccouuntsRoles")
+                user = (from U in context.UserAccouunts.Include("UserAccouuntsRole")
                         where U.ID == id
                         select U).FirstOrDefault();
             }

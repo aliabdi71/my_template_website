@@ -46,60 +46,14 @@
                                 @ViewData["user_name"].ToString()
                                 </a>
                             </li>
-                            if (ViewData["user_role_id"] != null)
-                            {
-                                <li><a href='@Url.Action("ManagementPanel", "Estate")'><i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;پنل مدیریت</a></li>
-                            }
-                            <li><a href='@Url.Action("SignOut", "Home")' class="navbar-signout"><i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;خروج</a></li>  
+                            <li><a href='@Url.Action("SignOut", "Home")' class="navbar-register"><i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;خروج</a></li>  
                         }
-                    }
+}
                 </ul>
             </div>
         </div>
     </div>
     @RenderBody()   
-    <footer>
-        <div class="row">
-            <h4>
-                اطلاعات موجود در این وب سایت اطلاعاتی است که از طریق کاربران عمومی سایت اعلام و ثبت شده و لذا وبسایت مسکن امیر هیچگونه مسئولیتی در صحت و سقم اطلاعات مذکور ندارد.
-            </h4>
-        </div>
-        <section id="contact">
-            <div class="row blue">
-                <div class="col-md-4">
-                    <h1><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;آدرس</h1>
-                    <h4>گیشا، بین خیابان پنجم و هفتم، پلاک ۲۲</h4>
-                </div>
-                <div class="col-md-4">
-                    <h1><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;پست الکترونیک</h1>
-                    <h4>amir.home.ir@gmail.com</h4>
-                </div>
-                <div class="col-md-4">
-                    <h1><i class="glyphicon glyphicon-phone-alt"></i>&nbsp;&nbsp;شماره تماس</h1>
-                    <h4>۰۲۱-۸۸۲۸۰۶۱۰</h4>
-                </div>
-                @*persianNumbers = ["۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰"];*@
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <a href="javascript:void(0)"><img src="~/Content/shared_images/Social.png" /></a>
-                </div>
-                <div class="col-md-3">
-                    <a href="javascript:void(0)"><img src="~/Content/shared_images/DownloadApp.png" /></a>
-                </div>
-                <div class="col-md-3">
-                    <a href="javascript:void(0)"><img src="~/Content/shared_images/Insta.png" /></a>
-                </div>
-                <div class="col-md-3">
-                    <a href="javascript:void(0)"><img src="~/Content/shared_images/JoinTelegram.png" /></a>
-                </div>
-            </div>
-        </section>
-        <div class="row">
-            <p>Copyright 2015 © <a href="http://www.namaadarya.com">Namaade Tose'e Arya</a></p>
-        </div>
-    </footer>
-
 
     <div id="loginView">
         @Html.Partial("LoginPartialView")
