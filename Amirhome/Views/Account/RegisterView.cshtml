@@ -37,7 +37,7 @@
                         <label>ایمیل:* &nbsp;</label>
                     </div>
                     <div class="col-lg-8">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "requierd", @type = "email" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "requierd form-control", @type = "email" })
                     </div>
                 </div>
                 <div class="row">
@@ -45,7 +45,7 @@
                         <label>کلمه عبور:* &nbsp;</label>
                     </div>
                     <div class="col-lg-8">
-                        @Html.TextBoxFor(m => m.Passkey, new { @class = "requierd", @type = "password" })
+                        @Html.TextBoxFor(m => m.Passkey, new { @class = "requierd form-control", @type = "password" })
                     </div>
                 </div>
                 <div class="row">
@@ -53,7 +53,7 @@
                         <label>تکرار کلمه عبور:* &nbsp;</label>
                     </div>
                     <div class="col-lg-8">
-                        <input type="password" class="requierd" id="pass_confirm" />
+                        <input type="password" class="requierd form-control" id="pass_confirm" />
                     </div>
                 </div>
                 <div class="row">
@@ -61,7 +61,7 @@
                         <label>نام:* &nbsp;</label>
                     </div>
                     <div class="col-lg-8">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "requierd" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "requierd form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -69,7 +69,7 @@
                         <label>شماره تماس: &nbsp;</label>
                     </div>
                     <div class="col-lg-8">
-                        @Html.TextBoxFor(m => m.Phone)
+                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">

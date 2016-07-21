@@ -102,6 +102,49 @@ namespace Amirhome.Models
     
     public class EstateManager
     {
+        public int generateSerial()
+        {
+            int[] currentSerials = null;
+            using (var context = new AmirhomeEntities())
+            {
+                currentSerials = (from S in context.States
+                                  select S.Serial).ToArray();
+            }
+            Random rand = new Random();
+            int res = rand.Next(1000, 1000000);
+            while(currentSerials.Contains(res))
+                res = rand.Next(1000, 1000000);
+            return res;
+        }
+        public List<Feature> fetchFeaturesById(int[] ids)
+        {
+            List<Feature> _feature = null;
+            using (var context = new AmirhomeEntities())
+            {
+
+                _feature = (from F in context.Features
+                            where ids.Contains(F.ItemID)
+                            select F).ToList();
+            }
+            return _feature;
+
+        }
+        public bool addNewEstate(State model)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    context.States.Add(model);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public List<Feature> getAllFeatures()
         {
             List<Feature> _feature = null;
@@ -200,6 +243,7 @@ namespace Amirhome.Models
         private IQueryable<State> EstateQueryBuilder(AmirhomeEntities context, SearchParams _params)
         {
             IQueryable<State> query = from E in context.States.Include("Images").Include("District1").Include("StateType1") select E;
+            query = query.Where(E => E.Approved == true);
             if (_params.EstateCondition)
                 query = query.Where(E => E.Condition == _params.EstateConditionValue);
             if (_params.EstateDistrict)

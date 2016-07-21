@@ -9,10 +9,23 @@ namespace Amirhome.Controllers
 {
     public class HomeController : Controller
     {
-        UserManager _userManager = new UserManager();
-        EstateManager _estateManager = new EstateManager();
-        public ActionResult Index()
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            base.OnActionExecuting(filterContext);
+            if (Session["UserID"] == null)
+            {
+                var userEmail = Request.Cookies["AmirhomeUserEmail"];
+                if (userEmail != null)
+                {
+                    var userPass = Request.Cookies["AmirhomeUserPass"];
+                    int id = _userManager.authenticateUser(userEmail.Value, userPass.Value);
+                    if (id > 0)
+                    {
+                        Session["UserID"] = id;
+                    }
+                }
+            }
             if (Session["UserID"] != null)
             {
                 if (Session["user_name"] == null)
@@ -25,6 +38,8 @@ namespace Amirhome.Controllers
                         string imageSrc = string.Format("data:image/jpg;base64,{0}", imageBase64);
                         Session["user_name"] = user.Name;
                         Session["user_image_src"] = imageSrc;
+                        Session["user_role_id"] = user.UserAccouuntsRole.ID;
+                        Session["user_role_access"] = user.UserAccouuntsRole.Username;
                     }
                     catch
                     {
@@ -32,12 +47,16 @@ namespace Amirhome.Controllers
                         Session["user_image_src"] = null;
                     }
                 }
-                else
-                {
-                    ViewData["user_name"] = Session["user_name"];
-                    ViewData["user_image_src"] = Session["user_image_src"];
-                }
+                ViewData["user_name"] = Session["user_name"];
+                ViewData["user_image_src"] = Session["user_image_src"];
+                ViewData["user_role_id"] = Session["user_role_id"];
             }
+        }
+
+        UserManager _userManager = new UserManager();
+        EstateManager _estateManager = new EstateManager();
+        public ActionResult Index()
+        {
             return View();
         }
 
@@ -62,18 +81,10 @@ namespace Amirhome.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult About()
+        public ActionResult SignOut()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            Session["UserID"] = null;
+            return RedirectToAction("Index", "Home");
         }
     }
 }

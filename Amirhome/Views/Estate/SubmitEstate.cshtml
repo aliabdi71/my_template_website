@@ -16,9 +16,9 @@
 <div class="container body-content">
     <h1>سپردن ملک</h1>
     <hr />
-    <form action="/Estate/SubmitEstate" method="post">
+    <form action="/Estate/SubmitEstate" method="post" enctype="multipart/form-data">
         <ul class="submit-wizard">
-            <li class="active">
+            <li class="active" data-step="0">
                 <div class="wizard-heading">
                     ۱ - مشخصات مالک
                     <span class="glyphicon glyphicon-user"></span>
@@ -46,7 +46,7 @@
                             <label>شماره تلفن همراه *</label>
                         </div>
                         <div class="col-md-3">
-                            @Html.TextBoxFor(m => m.Owner.Mobile, new { @style = "margin-bottom: 5px;", @class = "required, form-control" })
+                            @Html.TextBoxFor(m => m.Owner.Mobile, new { @style = "margin-bottom: 5px;", @class = "required form-control" })
                             @Html.TextBoxFor(m => m.Owner.Mobile2, new { @class = "form-control" })
                         </div>
                         <div class="col-md-2  left">
@@ -71,7 +71,7 @@
                     <button class="btn-green done" type="submit" onclick="return false;">تأیید و ادامه</button>
                 </div>
             </li>
-            <li>
+            <li data-step="1">
                 <div class="wizard-heading">
                     ۲- مشخصات کلی ملک
                     <span class="glyphicon glyphicon-home"></span>
@@ -84,10 +84,10 @@
                                 <div class="col-md-6">
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>استان</lable>
+                                            <lable>استان *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            <select name="Province" id="Province" class="form-control">
+                                            <select name="Province" id="Province" class="form-control required">
                                                 @foreach (var item in prv)
                                                 {
                                                     <option value="@item.id">@item.name</option>
@@ -104,17 +104,17 @@
                                                 <option value="0">منطقه</option>
                                                 @for (int i = 1; i <= 22; i++)
                                             {
-                                                    <option value="@i">منطقه @i</option>
+                                                <option value="@i">منطقه @i</option>
                                             }
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>نوع ملک</lable>
+                                            <lable>نوع ملک *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            <select name="StateType" id="StateType" class="form-control">
+                                            <select name="StateType" id="StateType" class="form-control required">
                                                 <option value="1">آپارتمان</option>
                                                 <option value="2">ویلا</option>
                                                 <option value="8">سوئیت</option>
@@ -127,7 +127,7 @@
                                             <lable>موقعیت</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            <select name="Position" id="Position" class="form-control">
+                                            <select name="StatePosition" id="StatePosition" class="form-control">
                                                 <option selected="selected" value="شمالی">شمالی</option>
                                                 <option value="جنوبی">جنوبی</option>
                                                 <option value="شرقی">شرقی</option>
@@ -146,10 +146,10 @@
                                 <div class="col-md-6">
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>شهر</lable>
+                                            <lable>شهر *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            <select name="City" id="City" class="form-control">
+                                            <select name="City" id="City" class="form-control required">
                                                 <option value="0">شهر</option>
                                             </select>
                                         </div>
@@ -166,10 +166,10 @@
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>نوع کاربری ملک</lable>
+                                            <lable>نوع کاربری ملک *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            <select name="Usage" id="Usage" class="form-control">
+                                            <select name="Usage" id="Usage" class="form-control required">
                                                 <option selected="selected" value="مسکونی">مسکونی</option>
                                                 <option value="کلنگی و مشارکتی">کلنگی و مشارکتی</option>
                                                 <option value="تجاری و اداری">تجاری و اداری</option>
@@ -179,10 +179,10 @@
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>نوع واگذاری ملک</lable>
+                                            <lable>نوع واگذاری ملک *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            <select name="Condition" id="Condition" class="form-control">
+                                            <select name="Condition" id="Condition" class="form-control required">
                                                 <option selected="selected" value="فروش">فروش</option>
                                                 <option value="رهن">رهن</option>
                                                 <option value="اجاره">اجاره</option>
@@ -192,15 +192,15 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="row form-group">
-                                        <div class="col-md-4 left"><label>خیابان اصلی و فرعی</label></div>
+                                        <div class="col-md-4 left"><label>خیابان اصلی و فرعی *</label></div>
                                         <div class="col-md-8 ">
-                                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control required" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4 left"><label>کوچه، پلاک و واحد</label></div>
+                                        <div class="col-md-4 left"><label>کوچه، پلاک و واحد *</label></div>
                                         <div class="col-md-8 ">
-                                            @Html.TextBoxFor(m => m.DetailedAddress, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.DetailedAddress, new { @class = "form-control required" })
                                         </div>
                                     </div>
                                 </div>
@@ -214,10 +214,10 @@
                                 <div class="col-md-6">
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>متراژ</lable>
+                                            <lable>متراژ *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.Area, new { @class = "form-control number-type" })
+                                            @Html.TextBoxFor(m => m.Area, new { @class = "form-control number-type required" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -255,7 +255,6 @@
                                         </div>
                                     </div>
                                     <div class="row form-group">
-
                                     </div>
                                 </div>
                             </div>
@@ -263,36 +262,43 @@
                                 <div class="col-md-6">
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>قیمت هر متر</lable>
+                                            <lable>قیمت هر متر *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.PricePerMeter, new { @class = "form-control number-type" })
+                                            @Html.TextBoxFor(m => m.PricePerMeter, new { @class = "form-control number-type required" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>قیمت اجاره</lable>
+                                            <lable>قیمت اجاره *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.MortgagePrice, new { @disabled = "disabled", @class = "form-control number-type" })
+                                            @Html.TextBoxFor(m => m.MortgagePrice, new { @disabled = "disabled", @class = "form-control number-type required" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4 left">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label><input type="checkbox" style="margin:2px;  width: 6%;" name="Changable" id="Changable" disabled="disabled"> قابل تبدیل</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>قیمت کل</lable>
+                                            <lable>قیمت کل *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.TotalPrice, new { @class = "form-control number-type" })
+                                            @Html.TextBoxFor(m => m.TotalPrice, new { @class = "form-control number-type required" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>پیش پرداخت</lable>
+                                            <lable>پیش پرداخت *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.PrepaymentPrice, new { @disabled = "disabled", @class = "form-control number-type" })
+                                            @Html.TextBoxFor(m => m.PrepaymentPrice, new { @disabled = "disabled", @class = "form-control number-type required" })
                                         </div>
                                     </div>
                                 </div>
@@ -377,7 +383,7 @@
                                             <lable>وضعیت سکونت</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            <select name="CurrentStatuse" id="CurrentStatuse" class="form-control">
+                                            <select name="CurrentStatus" id="CurrentStatus" class="form-control">
                                                 <option selected="selected" value="تخلیه">تخلیه</option>
                                                 <option value="مسکونی مالک">مسکونی مالک</option>
                                                 <option value="اجاره">اجاره</option>
@@ -390,26 +396,26 @@
                                 <div class="col-md-6">
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>سن بنا</lable>
+                                            <lable>سن بنا *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.Age, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Age, new { @class = "form-control required" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>تعداد اتاق خواب</lable>
+                                            <lable>تعداد اتاق خواب *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.Bedrooms, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Bedrooms, new { @class = "form-control required" })
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>تعداد پارکینگ</lable>
+                                            <lable>تعداد پارکینگ *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            @Html.TextBoxFor(m => m.Parking, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Parking, new { @class = "form-control required" })
                                         </div>
                                     </div>
                                 </div>
@@ -436,10 +442,10 @@
                                 <div class="col-md-6">
                                     <div class="row form-group">
                                         <div class="col-md-4 left">
-                                            <lable>طبقه</lable>
+                                            <lable>طبقه *</lable>
                                         </div>
                                         <div class="col-md-8">
-                                            <select name="Floor" id="Floor" class="form-control">
+                                            <select name="Floor" id="Floor" class="form-control required">
                                                 <option selected="selected" value="زیرزمین">زیرزمین</option>
                                                 <option value="پیلوت">پیلوت</option>
                                                 <option value="همکف">همکف</option>
@@ -495,25 +501,25 @@
                                     <tr>
                                         @for (int i = 0; i < 10; i++)
                                     {
-                                            <td><label><input type="checkbox" name="Features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                                        <td><label><input type="checkbox" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
                                     }
                                     </tr>
                                     <tr>
                                         @for (int i = 10; i < 20; i++)
                                     {
-                                            <td><label><input type="checkbox" name="Features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                                        <td><label><input type="checkbox" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
                                     }
                                     </tr>
                                     <tr>
                                         @for (int i = 20; i < 30; i++)
                                     {
-                                            <td><label><input type="checkbox" name="Features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                                        <td><label><input type="checkbox" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
                                     }
                                     </tr>
                                     <tr>
                                         @for (int i = 30; i < 36; i++)
                                     {
-                                            <td><label><input type="checkbox" name="Features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                                        <td><label><input type="checkbox" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
                                     }
                                     </tr>
                                 </table>
@@ -567,12 +573,12 @@
                     <span class="glyphicon glyphicon-check"></span>
                 </div>
                 <div class="wizard-content">
-                    <div>
+                    <div class="note">
                         <p class="text-info">مراحل ثبت ملک به اتمام رسید</p>
                         <p>اکنون با زدن دکمه ثبت نهایی، ملک شما در لیست ملک های سایت قرار خواهد گرفت.</p>
                         <p>در صورت تأیید اطلاعات ملک توسط کارشناسان مربوطه، ملک شما قابل مشاهده برای عموم خواهد بود.</p>
                     </div>
-                    <button class="btn-green" type="submit">ثبت نهایی</button>
+                    <button class="btn-green" type="submit" onclick="fix_input_formats(); return true;">ثبت نهایی</button>
                 </div>
             </li>
         </ul>
@@ -584,6 +590,10 @@
         $(window).load(function () {
             $(".done").click(function () {
                 var this_li_ind = $(this).parent().parent("li").index();
+                var flag = validate_form(this_li_ind);
+                if (!flag) {
+                    return false;
+                }
                 if ($('.payment-wizard li').hasClass("jump-here")) {
                     $(this).parent().parent("li").removeClass("active").addClass("completed");
                     $(this).parent(".wizard-content").slideUp();
@@ -595,19 +605,47 @@
                 }
             });
 
-            $('.payment-wizard li .wizard-heading').click(function () {
-                alert("clicked");
+            $('.submit-wizard li .wizard-heading').click(function () {
                 if ($(this).parent().hasClass('completed')) {
                     var this_li_ind = $(this).parent("li").index();
-                    var li_ind = $('.payment-wizard li.active').index();
+                    var li_ind = $('.submit-wizard li.active').index();
                     if (this_li_ind < li_ind) {
-                        $('.payment-wizard li.active').addClass("jump-here");
+                        $('.submit-wizard li.active').addClass("jump-here");
                     }
                     $(this).parent().addClass('active').removeClass('completed');
                     $(this).siblings('.wizard-content').slideDown();
                 }
             });
         });
+
+        function validate_form(index) {
+            var flag = true;
+            if (index === 0) {
+                $("li[data-step=0] .required").each(function () {
+                    if ($(this).val() === '') {
+                        $(this).css('border', '2px solid red');
+                        flag = false;
+                    }
+                    else {
+                        $(this).css('border', '1px solid #cccccc');
+                    }
+                });
+            }
+            else if (index === 1) {
+                $("li[data-step=1] .required").each(function () {
+                    if (!$(this).is('[disabled]')) {
+                        if ($(this).val() === '' || $(this).val() === '0') {
+                            $(this).css('border', '2px solid red');
+                            flag = false;
+                        }
+                        else {
+                            $(this).css('border', '1px solid #cccccc');
+                        }
+                    }
+                });
+            }
+            return flag;
+        }
 
         function fix_input_formats() {
             $(".number-type").each(function () {
@@ -674,14 +712,16 @@
                 if ($(this).val() === 'فروش') {
                     $("#PrepaymentPrice").val('').attr("disabled", "disabled");
                     $("#MortgagePrice").val('').attr("disabled", "disabled");
+                    $("#Changable").attr("disabled", "disabled");
                     $("#TotalPrice").val('').removeAttr("disabled");
-                    $("#PricePerMeter").val('').removeAttr("disabled")
+                    $("#PricePerMeter").val('').removeAttr("disabled");
                 }
                 else {
                     $("#TotalPrice").val('').attr("disabled", "disabled");
                     $("#PricePerMeter").val('').attr("disabled", "disabled");
                     $("#PrepaymentPrice").val('').removeAttr("disabled");
                     $("#MortgagePrice").val('').removeAttr("disabled");
+                    $("#Changable").removeAttr("disabled");
                 }
             });
 

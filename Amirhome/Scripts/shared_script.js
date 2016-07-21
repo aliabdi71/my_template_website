@@ -78,7 +78,8 @@ $(document).ready(function () {
     $("#login_btn").click(function () {
 
         var email = $("#email").val(),
-            pass = $("#password").val();
+            pass = $("#password").val(),
+            remember = document.getElementById("remember").checked;
         if (email === '') {
             $("#message").html("لطفا ایمیل را وارد کنید");
             return false;
@@ -89,13 +90,13 @@ $(document).ready(function () {
         }
         $(this).css('display', 'none');
         $("#loading_button").css('display', 'inline');
-        sendDataToServer(email, pass);
+        sendDataToServer(email, pass, remember);
         return true;
     });
 });
 
-function sendDataToServer(email, pass) {
-    var postData = { "email": email, "password": pass };
+function sendDataToServer(email, pass, remember) {
+    var postData = { "email": email, "password": pass, "remember": remember };
     $.ajax({
         type: 'POST',
         url: "/Account/Login",

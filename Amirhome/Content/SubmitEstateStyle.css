@@ -20,13 +20,13 @@ li:first-child .wizard-content{display: block;}
 .icon-location{width: 15px; height: 20px; background-position: -22px -42px; margin-top: 4px;}
 .icon-summary{width: 20px; height: 20px; background-position: -39px -42px; margin-top: 4px;}
 .icon-mode{width: 20px; height: 16px; background-position: -61px -34px; margin-top: 6px;}
-.active .wizard-heading{background-color: #447294; color: #fff; margin-bottom: 0;}
+.active .wizard-heading{background-color: #1F9696; color: #fff; margin-bottom: 0;}
 .active .icon-user{background-position: 0 0;}
 .active .icon-location{background-position: -22px 0;}
 .active .icon-summary{background-position: -39px 0;}
 .active .icon-mode{background-position: -61px 0;}
-.completed .wizard-heading{color: #447294; position: relative; padding: 10px 15px 10px 36px; cursor: pointer; transition: 0.3s;}
-.completed .wizard-heading:before{content: "✓"; color: #fff; text-align: center; font-size: 15px; font-weight: bold; position: absolute; min-height: 22px; left: -7px; top: 8px; width: 32px; padding: 4px 0; background-color: #447294; z-index: 99;}
+.completed .wizard-heading{color: #1F9696; position: relative; padding: 10px 15px 10px 36px; cursor: pointer; transition: 0.3s;}
+.completed .wizard-heading:before{content: "✓"; color: #fff; text-align: center; font-size: 15px; font-weight: bold; position: absolute; min-height: 22px; left: -7px; top: 8px; width: 32px; padding: 4px 0; background-color: #1F9696; z-index: 99;}
 .completed .wizard-heading:after{content: ""; position: absolute; top: 38px; left: -7px; border-left: 7px solid transparent; border-top: 5px solid #001e34;}
 .completed .icon-user{background-position: 0 -20px;}
 .completed .icon-location{background-position: -22px -21px;}
@@ -96,4 +96,10 @@ label{
     .features-table{
         display:block;
     }
+}
+
+.note{
+    margin: 10px;
+    padding:25px;
+    background-color: #ddf3a5;
 }

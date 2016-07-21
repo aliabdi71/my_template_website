@@ -46,6 +46,9 @@
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Recaptcha">
+      <HintPath>..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -771,6 +774,7 @@
     <Content Include="Content\estate_images\fea1e3b7-5961-41f0-a166-86b221986d15.jpg" />
     <Content Include="Content\estate_images\no-thumb.png" />
     <Content Include="Content\estate_images\sample.jpg" />
+    <Content Include="Content\ManagementPanelStyle.css" />
     <Content Include="Content\SearchPageStyle.css" />
     <Content Include="Content\shared_images\background.jpg" />
     <Content Include="Content\shared_images\DownloadApp.png" />
@@ -782,6 +786,7 @@
     <Content Include="Content\shared_images\logo1.png" />
     <Content Include="Content\shared_images\logo3.png" />
     <Content Include="Content\shared_images\Social.png" />
+    <Content Include="Content\simple-sidebar.css" />
     <Content Include="Content\SubmitEstateStyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -846,9 +851,11 @@
     <Content Include="Views\Estate\EstateDetails.cshtml" />
     <Content Include="Views\Estate\SearchPage.cshtml" />
     <Content Include="Views\Estate\SubmitEstate.cshtml" />
+    <Content Include="Views\Estate\ManagementPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\temp_img_folder\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

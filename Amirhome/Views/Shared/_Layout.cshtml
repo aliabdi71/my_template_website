@@ -41,13 +41,14 @@
                         }
                         else
                         {
-                            <li><a href="javascript:void(0)" style="text-align:left"><img  src='@ViewData["user_image_src"].ToString()' style="width:10%"/>
+                            <li><a href="javascript:void(0)" style="text-align:left; padding: 7px;"><img  src='@ViewData["user_image_src"].ToString()' style="width:10%"/>
                                 &nbsp;
                                 @ViewData["user_name"].ToString()
                                 </a>
                             </li>
+                            <li><a href='@Url.Action("SignOut", "Home")' class="navbar-register"><i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;خروج</a></li>  
                         }
-                    }
+}
                 </ul>
             </div>
         </div>

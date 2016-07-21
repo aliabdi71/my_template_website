@@ -5,7 +5,9 @@ using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Mvc;
 using System.IO;
+using System.Data.Entity;
 using Amirhome.Models;
+using System.Web.Security;
 
 namespace Amirhome.Controllers
 {
@@ -14,6 +16,8 @@ namespace Amirhome.Controllers
         UserManager _userManager = new UserManager();
         public ActionResult RegisterView()
         {
+            if (Session["UserID"] != null)
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
@@ -46,7 +50,7 @@ namespace Amirhome.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string email, string password)
+        public ActionResult Login(string email, string password, bool remember)
         {
             try
             {
@@ -58,10 +62,19 @@ namespace Amirhome.Controllers
                 else
                 {
                     Session["UserID"] = id;
+                    if (remember)
+                    {
+                        var userEmailCookie = new HttpCookie("AmirhomeUserEmail", email);
+                        var userPassCookie = new HttpCookie("AmirhomeUserPass", password);
+                        userEmailCookie.Expires.AddDays(365);
+                        userPassCookie.Expires.AddDays(365);
+                        HttpContext.Request.Cookies.Add(userEmailCookie);
+                        HttpContext.Request.Cookies.Add(userPassCookie);
+                    }
                     return Json("success");
                 }
             }
-            catch
+            catch ( ex)
             {
                 return Json("خطا در برقراری ارتباط با سرور");
             }
