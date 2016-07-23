@@ -1,0 +1,39 @@
+﻿@model List<Amirhome.Models.State>
+
+@using Amirhome.CustomHelpers
+
+<h1>@ViewData["title"].ToString()</h1>
+<hr />
+<table class="estate-table-view" border="1">
+    <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>تاریخ ثبت</th>
+            <th>محله</th>
+            <th>تعداد خواب</th>
+            <th>متراژ (متر مربع)</th>
+            <th>قیمت کل / رهن</th>
+            <th>قیمت هر متر / اجاره</th>
+            <th>کد ملک</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="search-table-body">
+        @for (int i = 0; i < Model.Count; i++ )
+        {
+            <tr data-approved="@Model[i].Approved">
+                <td>@Html.turnToPersianNumber((i+1).ToString())</td>
+                <td>@Html.gregorianToJalali(Model[i].Date.ToString().Split(' ')[0])</td>
+                <td>@Model[i].District1.name</td>
+                <td>@Html.turnToPersianNumber(Model[i].Bedrooms)</td>
+                <td>@Html.turnToPersianNumber(Model[i].Area.ToString())</td>
+                <td>@Html.SplitInParts(Model[i].TotalPrice.ToString(), 3)</td>
+                <td>@Html.SplitInParts(Model[i].PricePerMeter.ToString(), 3)</td>
+                <td>@Html.turnToPersianNumber(Model[i].Serial.ToString())</td>
+                <td><button class="btn btn-primary" onclick="">تأیید</button></td>
+                <td><button class="btn btn-primary" onclick="edit_estate(@Model[i].ID); return true;">ویرایش</button></td>
+            </tr>
+        }
+    </tbody>
+</table>

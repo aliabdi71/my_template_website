@@ -1,1 +1,37 @@
-﻿
+﻿body {
+    background-color: white;
+}
+
+.estate-table-view{
+    margin-top:10px;
+    width:100%;
+    font-size: 17px;
+}
+.estate-table-view tr{
+    min-height:25px;
+}
+.estate-table-view th{
+    color: white;
+    padding:6px;
+    background-color:#2972b1;
+    font-weight:normal;
+    text-align:center;
+}
+.estate-table-view tr > td{
+    background-color:#d3e6e9;
+    text-align:center;
+    padding:6px;
+}
+.estate-table-view tr:nth-child(2n+1) > td{
+    background-color:white;
+}
+
+.features-table{
+    border:1px solid thin;
+    margin:0 auto;
+    overflow-x:auto;
+}
+.features-table td{
+    min-width:80px;
+    text-align:center;
+}

@@ -285,7 +285,130 @@ namespace Amirhome.Controllers
         }
         public ActionResult ManagementPanel()
         {
+            if (Session["user_role_id"] == null)
+                return RedirectToAction("Index", "Home");
             return View();
+        }
+        [HttpPost]
+        public ActionResult ManagementCommand(string command)
+        {
+            object return_obj = null;
+            List<State> all_estates = _estateManager.getAllStates();
+            switch (command)
+            {
+                case "mNg_dshbd":
+                    {
+                        ViewData["title"] = "داشبور مدیریت";
+                        break;
+                    }
+                case "saLe_est":
+                    {
+                        ViewData["title"] = "املاک فروش";
+                        all_estates = all_estates.Where(E => E.Condition == "فروش").ToList();
+                        return PartialView("_ManagementPartialView", all_estates);
+                    }
+                case "mRtG_est":
+                    {
+                        ViewData["title"] = "املاک رهن و اجاره";
+                        all_estates = all_estates.Where(E => E.Condition != "فروش").ToList();
+                        return PartialView("_ManagementPartialView", all_estates);
+                    }
+                case "all_The_est":
+                    {
+                        ViewData["title"] = "همه املاک";
+                        all_estates = all_estates.ToList();
+                        return PartialView("_ManagementPartialView", all_estates);
+                    }
+                case "arsH_est":
+                    {
+                        ViewData["title"] = "املاک آرشیو شده";
+                        all_estates = all_estates.Where(E => E.Archived == true).ToList();
+                        return PartialView("_ManagementPartialView", all_estates);
+                    }
+                case "seE_USers":
+                    {
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+            return Json(return_obj);
+        }
+        public JsonResult EstateApprovement(int id, bool flag)
+        {
+            bool res = _estateManager.approveEstate(id, flag);
+            if (res)
+                return Json("Success");
+            else
+                return Json("Error");
+        }
+        public JsonResult EstateArchive(int id, bool flag)
+        {
+            bool res = _estateManager.archiveEstate(id, flag);
+            if (res)
+                return Json("Success");
+            else
+                return Json("Error");
+        }
+        [HttpPost]
+        public ActionResult EditEstate(int id)
+        {
+            State _estate = _estateManager.getStateByID(id);
+            ViewData["Features"] = _estateManager.getAllFeatures();
+            ViewBag.Province = new SelectList(_estateManager.getAllProvince(), "id", "name", _estate.Province);
+            ViewBag.City = new SelectList(_estateManager.getCityByProvince((int)_estate.Province), "id", "name", _estate.City);
+            #region InitializeSelectLists
+            ViewBag.District = new SelectList(_estateManager.getAllDistricts(), "ID", "name", _estate.District);
+            List<object> StateTypeList = new List<object>()
+            {
+                new { Text = "آپارتمان", Value = "1" },
+                new { Text = "ویلا", Value = "2" },
+                new { Text = "سوئیت", Value = "8" },
+                new { Text = "سایر", Value = "9" },
+
+            };
+            ViewBag.StateType = new SelectList(StateTypeList,"Value", "Text",  _estate.StateType);
+
+            List<object> StatePositionList = new List<object>()
+            {
+                new { Text = "شمالی", Value = "شمالی" },
+                new { Text = "جنوبی", Value = "جنوبی" },
+                new { Text = "شرقی", Value = "شرقی" },
+                new { Text = "غربی", Value = "غربی" },
+				new { Text = "شمالی شرقی", Value = "شمالی شرقی" },
+				new { Text = "شمالی غربی", Value = "شمالی غربی" },
+				new { Text = "جنوبی شرقی", Value = "جنوبی شرقی" },
+				new { Text = "جنوبی غربی", Value = "جنوبی غربی" },
+				new { Text = "دونبش", Value = "دونبش" },
+				new { Text = "دوبر", Value = "دوبر" },
+				new { Text = "سایر", Value = "سایر" },
+
+            };
+            ViewBag.StatePosition = new SelectList(StatePositionList, "Value", "Text", _estate.StatePosition);
+
+            List<object> UsageList = new List<object>()
+            {
+                new { Text = "مسکونی", Value = "مسکونی" },
+                new { Text = "کلنگی و مشارکتی", Value = "کلنگی و مشارکتی" },
+                new { Text = "تجاری و اداری", Value = "تجاری و اداری" },
+                new { Text = "سایر", Value = "سایر" },
+
+
+            };
+            ViewBag.Usage = new SelectList(UsageList, "Value", "Text", _estate.Usage);
+
+            List<object> ConditionList = new List<object>()
+            {
+                new { Text = "فروش", Value = "فروش" },
+                new { Text = "رهن", Value = "رهن" },
+                new { Text = "اجاره", Value = "اجاره" },
+            };
+            ViewBag.Condition = new SelectList(ConditionList, "Value", "Text", _estate.Condition);
+
+            #endregion
+            return PartialView("_EditEstatePartialView", _estate);
         }
     }
 }

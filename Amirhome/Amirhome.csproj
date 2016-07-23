@@ -224,6 +224,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomHelper.cs" />
     <Compile Include="Models\Dashboard_Controls.cs">
       <DependentUpon>CoreModel.tt</DependentUpon>
     </Compile>
@@ -853,6 +854,8 @@
     <Content Include="Views\Estate\SubmitEstate.cshtml" />
     <Content Include="Views\Estate\ManagementPanel.cshtml" />
     <Content Include="Views\Shared\_ManagementPanelLayout.cshtml" />
+    <Content Include="Views\Estate\_ManagementPartialView.cshtml" />
+    <Content Include="Views\Estate\_EditEstatePartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

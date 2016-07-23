@@ -124,11 +124,13 @@
     font-weight:normal;
     text-align:center;
 }
-.estate-table-view td{
-    background-color:white;
+.estate-table-view tr > td{
+    background-color:#d3e6e9;
     text-align:center;
     padding:6px;
-
+}
+.estate-table-view tr:nth-child(2n+1) > td{
+    background-color:white;
 }
 .page-separator{
     width:10%;

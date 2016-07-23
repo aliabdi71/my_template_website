@@ -206,6 +206,74 @@ namespace Amirhome.Models
             }
             return _state;
         }
+        public List<State> getAllStates()
+        {
+            List<State> _estates = null;
+            using (var context = new AmirhomeEntities())
+            {
+                _estates = (from E in context.States.Include("District1").Include("StateType1")
+                            select E).ToList();
+            }
+            return _estates;
+        }
+        public bool approveEstate(int id, bool flag)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    State est = (from E in context.States
+                                 where E.ID == id
+                                 select E).First();
+                    est.Approved = flag;
+                    context.States.Attach(est);
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+        public bool archiveEstate(int id, bool flag)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    State est = (from E in context.States
+                                 where E.ID == id
+                                 select E).First();
+                    est.Archived = flag;
+                    context.States.Attach(est);
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+        public bool updateEstate(State model)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    context.States.Attach(model);
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public List<State> getOccasions()
         {
             List<State> _states = null;
@@ -296,32 +364,6 @@ namespace Amirhome.Models
                 query = query.Where(E => E.Features.Any(F => F.ItemID == 15));
             return query;
         }
-        public string SplitInParts(String text, Int32 size)
-        {
-            List<String> ret = new List<String>(((text.Length + size - 1) / size) + 1);
-            if ((text.Length + size) % size != 0)
-                ret.Add(text.Substring(0, (text.Length + size) % size));
 
-            for (int start = (text.Length + size) % size; start < text.Length; start += size)
-            {
-                if ((start + size) <= text.Length)
-                    ret.Add(text.Substring(start, size));
-                else
-                    ret.Add(text.Substring(start, (text.Length + size) % size));
-            }
-            string result = String.Join(",", ret);
-            return turnToPersianNumber(result);
-        }
-
-        public string turnToPersianNumber(string str)
-        {
-            char[] englishNumbers = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
-            char[] persianNumbers = { '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۰' };
-            for (int i = 0; i < 10; i++)
-            {
-                str = str.Replace(englishNumbers[i], persianNumbers[i]);
-            }
-            return str;
-        }
     }
 }

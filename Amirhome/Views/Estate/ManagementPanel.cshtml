@@ -21,16 +21,16 @@
                 }
                 if (role_id == "1" || role_id == "3")
                 {
-                    <li><a href="javascript:void(0)">املاک فروشی</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('saLe_est'); return true;">املاک فروشی</a></li>
                 }
                 if (role_id == "1" || role_id == "4")
                 {
-                    <li><a href="javascript:void(0)">املاک رهن و اجاره</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('mRtG_est'); return true;">املاک رهن و اجاره</a></li>
                 }
                 if (role_id == "1" || role_id == "2")
                 {
-                    <li><a href="javascript:void(0)">همه املاک</a></li>
-                    <li><a href="javascript:void(0)">املاک آرشیو شده</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('all_The_est'); return true;">همه املاک</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('arsH_est'); return true;">املاک آرشیو شده</a></li>
                 }
                 if (role_id == "1")
                 {
@@ -42,11 +42,55 @@
     </div>
     <div id="page-content-wrapper">
         <div class="container-fluid">
-            <div class="row">
-                Hello!
+            <div class="row" id="content">
+                <img src="~/Content/shared_images/loading.gif" style="margin:0 auto; display:block;" id="loading"/>
             </div>
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script type="text/javascript">
+        function render_content(content_type) {
+            $("#content").html('<img src="/Content/shared_images/loading.gif" style="margin:0 auto; display:block;" id="loading"/>');
+            $("#loading").css('display', 'block');
+            var postData = { "command": content_type};
+            $.ajax({
+                type: 'POST',
+                url: "/Estate/ManagementCommand",
+                dataType: 'json',
+                data: postData,
+                success: function (partial) {
+                    $("#loading").css('display', 'none');
+                    $('#content').html(partial.responseText);
+                },
+                error: function (data) {
+                    $("#loading").css('display', 'none');
+                    $("#content").html(data.responseText);
+                },
+            });
+        }
+
+        function edit_estate(id) {
+            $("#content").html('<img src="/Content/shared_images/loading.gif" style="margin:0 auto; display:block;" id="loading"/>');
+            $("#loading").css('display', 'block');
+            var postData = { "id": id };
+            $.ajax({
+                type: 'POST',
+                url: "/Estate/EditEstate",
+                dataType: 'json',
+                data: postData,
+                success: function (partial) {
+                    $("#loading").css('display', 'none');
+                    $('#content').html(partial.responseText);
+                },
+                error: function (data) {
+                    $("#loading").css('display', 'none');
+                    $("#content").html(data.responseText);
+                },
+            });
+        }
+    </script>
+}
 
 

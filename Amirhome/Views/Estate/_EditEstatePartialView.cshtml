@@ -1,0 +1,142 @@
+﻿@model Amirhome.Models.State
+
+@{
+    List<Amirhome.Models.Feature> ftrs = ViewData["Features"] as List<Amirhome.Models.Feature>;
+    //IEnumerable<SelectListItem> prv = ViewData["Province"] as IEnumerable<SelectListItem>;
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h2>ویرایش ملک</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-md-3 control-label">نام مالک</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Owner.Name, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">ایمیل مالک</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Owner.Email, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">موبایل مالک</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Owner.Mobile, new { @style = "margin-bottom: 5px;", @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Owner.Mobile2, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">شهر</label>
+                <div class="col-md-9">
+                    @Html.DropDownList("City", null, null, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">نوع ملک</label>
+                <div class="col-md-9">
+                    @Html.DropDownList("StateType", null, null, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-md-3 control-label">تلفن مالک</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Owner.Telephone, new { @style = "margin-bottom: 5px;", @class = "form-control" })
+                    @Html.TextBoxFor(m => m.Owner.Tell2, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">آدرس مالک</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Owner.Address, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">استان</label>
+                <div class="col-md-9">
+                    @Html.DropDownList("Province", null, null, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">محله</label>
+                <div class="col-md-9">
+                    @Html.DropDownList("District", null, null, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">منطقه</label>
+                <div class="col-md-9">
+                    <select name="Region" id="Region" class="form-control">
+                        <option value="0">منطقه</option>
+                        @for (int i = 1; i <= 22; i++)
+                        {
+                            if (Model.Region == i.ToString())
+                            {
+                                <option selected="selected" value="@i">منطقه @i</option>
+                            }
+                            else
+                            {
+                                <option value="@i">منطقه @i</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+
+            </div>
+        </div>
+       
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
