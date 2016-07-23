@@ -43,6 +43,12 @@ namespace Amirhome.Controllers
             }
         }
 
+        public ActionResult ShowOccasions()
+        {
+            var model = _estateManager.getOccasions();
+            return View(model);
+        }
+
         public ActionResult EstateDetails()
         {
             int ID = int.Parse(Request.QueryString["EstateID"].ToString());

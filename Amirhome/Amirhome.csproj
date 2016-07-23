@@ -856,6 +856,7 @@
     <Content Include="Views\Shared\_ManagementPanelLayout.cshtml" />
     <Content Include="Views\Estate\_ManagementPartialView.cshtml" />
     <Content Include="Views\Estate\_EditEstatePartialView.cshtml" />
+    <Content Include="Views\Estate\ShowOccasions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

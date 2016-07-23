@@ -366,4 +366,12 @@ namespace Amirhome.Models
         }
 
     }
+
+    public class OccasionViewModel
+    {
+        public int ID { get; set; }
+        public string Condition { get; set; }
+        public long Area { get; set; }
+
+    }
 }
