@@ -56,7 +56,7 @@ function convertToJalaliDate(Gdate) {
 
 function fix_numbers() {
     $(".price").each(function () {
-        var val = $(this).html();
+        var val = $(this).html().replace('تومان', '');
         $(this).html(numberWithCommas(val));
         $(this).removeClass("price");
     });
@@ -88,8 +88,7 @@ $(document).ready(function () {
             $("#message").html("لطفا کلمه عبور را وارد کنید");
             return false;
         }
-        $(this).css('display', 'none');
-        $("#loading_button").css('display', 'inline');
+        $(this).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
         sendDataToServer(email, pass, remember);
         return true;
     });
@@ -107,14 +106,14 @@ function sendDataToServer(email, pass, remember) {
                 location.reload();
             }
             else {
-                $("#login_btn").css('display', 'inline');
-                $("#loading_button").css('display', 'none');
+                $("#login_btn").html('ورود').removeAttr('disabled');
+                //$("#loading_button").css('display', 'none');
                 $("#message").html(data);
             }
         },
         error: function(){
-            $("#login_btn").css('display', 'inline');
-            $("#loading_button").css('display', 'none');
+            $("#login_btn").html('ورود').removeAttr('disabled');
+            //$("#loading_button").css('display', 'none');
             $("#message").html('خطا در برقراری ارتباط با سرور');
         },
     });

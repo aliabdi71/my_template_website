@@ -2,6 +2,10 @@
 
 @using Amirhome.CustomHelpers
 
+@{
+    string role_id = ViewData["user_role_id"].ToString();
+}
+
 <h1>@ViewData["title"].ToString()</h1>
 <hr />
 <table class="estate-table-view" border="1">
@@ -15,8 +19,6 @@
             <th>قیمت کل / رهن</th>
             <th>قیمت هر متر / اجاره</th>
             <th>کد ملک</th>
-            <th></th>
-            <th></th>
         </tr>
     </thead>
     <tbody class="search-table-body">
@@ -31,8 +33,30 @@
                 <td>@Html.SplitInParts(Model[i].TotalPrice.ToString(), 3)</td>
                 <td>@Html.SplitInParts(Model[i].PricePerMeter.ToString(), 3)</td>
                 <td>@Html.turnToPersianNumber(Model[i].Serial.ToString())</td>
-                <td><button class="btn btn-primary" onclick="">تأیید</button></td>
-                <td><button class="btn btn-primary" onclick="edit_estate(@Model[i].ID); return true;">ویرایش</button></td>
+                @{
+                    if (!Model[i].Approved.Value)
+                    {
+                        <td><button class="btn btn-primary" data-flag="true" onclick="approve_estate(@Model[i].ID, this)">تأیید</button></td>
+                    }
+                    else
+                    {
+                        <td><button class="btn btn-danger" data-flag="false" onclick="approve_estate(@Model[i].ID, this)">رد</button></td>
+                    }
+                }
+                @{
+                    if (role_id == "1" || role_id == "2")
+                    {
+                        if (!Model[i].Archived.Value)
+                        {
+                            <td><button class="btn btn-primary" onclick="archive_estate(@Model[i].ID, true, this)">بایگانی</button></td>
+                        }
+                        else
+                        {
+                            <td><button class="btn btn-danger" onclick="archive_estate(@Model[i].ID, false, this)">احیا</button></td>
+                        }
+                    }
+                }
+                <td><button class="btn btn-success" onclick="edit_estate(@Model[i].ID); return true;">ویرایش</button></td>
             </tr>
         }
     </tbody>

@@ -228,6 +228,8 @@
             var htmls = [];
             htmls.push('<div class="page-separator">صفحه ' + turn2PersianNumber(page) + '</div>');
             for (var i = 0 ; i < data.length ; i++) {
+                var age = data[i].Age === 0 ? 'نوساز' : data[i].Age + ' ساله';
+                var custom_string = data[i].Bedrooms + ' خوابه - ' + age + ' - ' + data[i].Floor + ' - ' + data[i].Units;
                 var html =  '<div class="estate" data-state-id="' + data[i].ID + '">' + 
 	                            '<div class="col-md-3">' + 
 		                            '<img src="/Content/estate_images/' + data[i].ImageSrc + '" />' +
@@ -235,9 +237,9 @@
 	                            '</div>' + 
 	                            '<div class="col-md-5">' + 
 		                            '<table></table>' + 
-		                            '<i class="glyphicon glyphicon-usd">&nbsp;</i><label class="price header">' + numberWithCommas(data[i].TotalPrice) + '</label><br />' +
-		                            '<i class="glyphicon glyphicon-pushpin">&nbsp;</i><label class="number sub-header">' + data[i].Address + ' - ' + turn2PersianNumber(data[i].Area) + ' متر - متری <span class="price">' + numberWithCommas("4500000") + '</span></label>' +
-		                            '<p class="number" style="margin-top:8px;">2 خوابه - نوساز - طبقه سوم - 3 واحدی</p>' + 
+		                            '<i class="glyphicon glyphicon-usd">&nbsp;</i><label class="price header">' + numberWithCommas(data[i].FirstPrice) + '</label><br />' +
+		                            '<i class="glyphicon glyphicon-pushpin">&nbsp;</i><label class="number sub-header">' + data[i].Address + ' - ' + turn2PersianNumber(data[i].Area) + ' متر - متری <span class="price">' + numberWithCommas(data[i].SecondPrice) + '</span></label>' +
+		                            '<p class="number" style="margin-top:8px;">' + custom_string + '</p>' +
 	                            '</div>' + 
 	                            '<div class="col-md-3" style="border: 1px outset black; margin-top:4px;">' + 
 		                            '<br />' + 
@@ -274,8 +276,8 @@
 	                        '<td>' + data[i].Dist + '</td>' +
 	                        '<td>' + turn2PersianNumber(data[i].Bedrooms) + '</td>' +
 	                        '<td>' + turn2PersianNumber(data[i].Area) + '</td>' +
-	                        '<td>' + numberWithCommas(data[i].TotalPrice) + '</td>' +
-	                        '<td>' + numberWithCommas(data[i].PricePerMeter) + '</td>' +
+	                        '<td>' + numberWithCommas(data[i].FirstPrice) + '</td>' +
+	                        '<td>' + numberWithCommas(data[i].SecondPrice) + '</td>' +
 	                        '<td>' + turn2PersianNumber(data[i].Serial) + '</td>' +
 	                        '<td><a class="btn btn-primary" target="_blank" href="/Estate/EstateDetails?EstateID=' + data[i].ID + '">جزئیات</a></td>' +
 	                        '<td><i class="glyphicon glyphicon-heart-empty favourite" style="font-size:16px;"></i></td>' +

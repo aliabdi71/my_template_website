@@ -75,12 +75,12 @@ namespace Amirhome.Controllers
             {
                 ID = o.ID,
                 Area = o.Area,
-                TotalPrice = o.TotalPrice,
-                PricePerMeter = o.PricePerMeter,
+                FirstPrice = (o.TotalPrice == null || o.TotalPrice == 0) ? o.PrepaymentPrice : o.TotalPrice,
+                SecondPrice = (o.PricePerMeter == null || o.PricePerMeter == 0) ? o.MortgagePrice : o.PricePerMeter,
                 Date = o.Date.ToString().Split(' ')[0],
-                Prepayment = o.PrepaymentPrice,
-                Loan = o.Loan,
-                Mortage = o.MortgagePrice,
+                //Prepayment = o.PrepaymentPrice,
+                //Loan = o.Loan,
+                //Mortage = o.MortgagePrice,
                 Address = o.Address,
                 Floor = o.Floor,
                 Age = o.Age,
@@ -88,6 +88,7 @@ namespace Amirhome.Controllers
                 Dist = o.District1.name,
                 Bedrooms = o.Bedrooms,
                 Serial = o.Serial,
+                Units = o.Units,
                 ImageSrc = (o.Images.Count(i => i.Primary == true) == 0 ? "no-thumb.png" : o.Images.FirstOrDefault(i => i.Primary == true).url),
                 ImageCount = o.Images.Count
             }).ToList();
@@ -116,7 +117,6 @@ namespace Amirhome.Controllers
             try
             {
                 model.Approved = false;
-                model.OccasionFlag = false;
                 model.Archived = false;
                 model.Date = DateTime.Now;
                 model.Serial = _estateManager.generateSerial();
@@ -289,10 +289,14 @@ namespace Amirhome.Controllers
             });
             return Json(data);
         }
-        public ActionResult ManagementPanel()
+        public ActionResult ManagementPanel(string message = null)
         {
             if (Session["user_role_id"] == null)
                 return RedirectToAction("Index", "Home");
+            if (!string.IsNullOrEmpty(message))
+            {
+                ViewBag.Message = message;
+            }
             return View();
         }
         [HttpPost]
@@ -346,9 +350,9 @@ namespace Amirhome.Controllers
         {
             bool res = _estateManager.approveEstate(id, flag);
             if (res)
-                return Json("Success");
+                return Json("Success", JsonRequestBehavior.AllowGet);
             else
-                return Json("Error");
+                return Json("Error", JsonRequestBehavior.AllowGet);
         }
         public JsonResult EstateArchive(int id, bool flag)
         {
@@ -413,8 +417,106 @@ namespace Amirhome.Controllers
             };
             ViewBag.Condition = new SelectList(ConditionList, "Value", "Text", _estate.Condition);
 
+            List<object> FacingList = new List<object>()
+            {
+                new { Text = "کنیتکس", Value = "کنیتکس" },
+                new { Text = "سفال", Value = "سفال" },
+                new { Text = "سنگ", Value = "سنگ" },
+				new { Text = "رومی", Value = "رومی" },
+				new { Text = "تراورتن", Value = "تراورتن" },
+				new { Text = "سنگ و سفال", Value = "سنگ و سفال" },
+				new { Text = "رومی و سفال", Value = "رومی و سفال" },
+				new { Text = "سرامیک", Value = "سرامیک" },
+				new { Text = "سفال سرامیک", Value = "سفال سرامیک" },
+				new { Text = "گرانیت", Value = "گرانیت" },
+				new { Text = "رومی گرانیت", Value = "رومی گرانیت" },
+				new { Text = "آجرگری", Value = "آجرگری" },
+				new { Text = "سیمان سفید", Value = "سیمان سفید" },
+				new { Text = "آجر و سنگ", Value = "آجر و سنگ" },
+				new { Text = "آلومینیوم", Value = "آلومینیوم" },
+				new { Text = "ترکیبی", Value = "ترکیبی" },
+				new { Text = "چوب و سنگ", Value = "چوب و سنگ" },
+				new { Text = "آجر سه سانت", Value = "آجر سه سانت" },
+				new { Text = "کامپوزیت", Value = "کامپوزیت" },
+				new { Text = "شیشه", Value = "شیشه" },
+				new { Text = "شیشه و سنگ", Value = "شیشه و سنگ" },
+            };
+            ViewBag.Facing = new SelectList(FacingList, "Value", "Text", _estate.Facing);
+
+            List<object> CabinetList = new List<object>()
+            {
+                new { Text = "فلزی", Value = "فلزی" },
+				new { Text = "چوبی", Value = "چوبی" },
+				new { Text = "چوب و فلز", Value = "چوب و فلز" },
+				new { Text = "های گلس", Value = "های گلس" },
+				new { Text = "MDF", Value = "MDF" },
+				new { Text = "سایر", Value = "سایر" },
+            };
+            ViewBag.Cabinet = new SelectList(CabinetList, "Value", "Text", _estate.Cabinet);
+
+            List<object> CurrentStatusList = new List<object>()
+            {
+                new { Text = "تخلیه", Value = "تخلیه" },
+				new { Text = "مسکونی مالک", Value = "مسکونی مالک" },
+				new { Text = "اجاره", Value = "اجاره" },
+            };
+            ViewBag.CurrentStatus = new SelectList(CurrentStatusList, "Value", "Text", _estate.CurrentStatus);
+
+            List<object> FloorList = new List<object>()
+            {
+                new { Text = "زیرزمین", Value = "زیرزمین" },
+				new { Text = "پیلوت", Value = "پیلوت" },
+				new { Text = "همکف", Value = "همکف" },
+				new { Text = "طبقه اول", Value = "طبقه اول" },
+				new { Text = "طبقه دوم", Value = "طبقه دوم" },
+				new { Text = "طبقه سوم", Value = "طبقه سوم" },
+				new { Text = "طبقه چهارم", Value = "طبقه چهارم" },
+				new { Text = "طبقه پنجم", Value = "طبقه پنجم" },
+				new { Text = "طبقه ششم", Value = "طبقه ششم" },
+				new { Text = "طبقه هفتم تا دهم", Value = "طبقه هفتم تا دهم" },
+				new { Text = "طبقه دهم به بالا", Value = "طبقه دهم به بالا" },
+            };
+            ViewBag.Floor = new SelectList(FloorList, "Value", "Text", _estate.Floor);
+
+            List<object> FloorsList = new List<object>()
+            {
+                new { Text = "یک طبقه", Value = "یک طبقه" },
+				new { Text = "دو طبقه", Value = "دو طبقه" },
+				new { Text = "سه طبقه", Value = "سه طبقه" },
+				new { Text = "چهار طبقه", Value = "چهار طبقه" },
+				new { Text = "پنج طبقه", Value = "پنج طبقه" },
+				new { Text = "شش طبقه", Value = "شش طبقه" },
+				new { Text = "هفت تا ده طبقه", Value = "هفت تا ده طبقه" },
+				new { Text = "ده تا بیست طبقه", Value = "ده تا بیست طبقه" },
+				new { Text = "بیش از بیست طبقه", Value = "بیش از بیست طبقه" },
+				
+            };
+            ViewBag.Floors = new SelectList(FloorsList, "Value", "Text", _estate.Floors);
+
+            List<object> UnitsList = new List<object>()
+            {
+                new { Text = "تک واحدی", Value = "تک واحدی" },
+				new { Text = "دو واحدی", Value = "دو واحدی" },
+				new { Text = "سه واحدی", Value = "سه واحدی" },
+				new { Text = "چهار واحدی", Value = "چهار واحدی" },
+				new { Text = "بیش از چهار واحد در هر طبقه", Value = "بیش از چهار واحد در هر طبقه" },
+				new { Text = "شش طبقه", Value = "شش طبقه" },
+            };
+            ViewBag.Units = new SelectList(UnitsList, "Value", "Text", _estate.Units);
+
             #endregion
             return PartialView("_EditEstatePartialView", _estate);
+        }
+        [HttpPost]
+        public ActionResult SubmitEditEstate(State model)
+        {
+            if (Session["user_role_id"] == null)
+                return Json("هویت شما مورد تأیید نیست");
+            bool success = _estateManager.updateEstate(model);
+            if (success)
+                return RedirectToAction("ManagementPanel", "Estate", new { message = "تغییرات با موفقیت ثبت گردید" });
+            else
+                return RedirectToAction("ManagementPanel", "Estate", new { message = "خطا در ثبت تغییرات" });
         }
     }
 }

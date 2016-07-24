@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel;
+using System.Data.Entity;
 
 namespace Amirhome.Models
 {
@@ -200,6 +201,7 @@ namespace Amirhome.Models
                 IEnumerable<State> data = (from E in context.States.Include("Images").Include("Features")
                                            .Include("Owner").Include("Plans").Include("GoogleMaps")
                                            .Include("StreetViews").Include("StateType1").Include("District1")
+                                           .Include("Feedbacks").Include("province1")
                           where E.ID == id
                           select E);
                 _state = data.FirstOrDefault();
@@ -227,6 +229,7 @@ namespace Amirhome.Models
                                  select E).First();
                     est.Approved = flag;
                     context.States.Attach(est);
+                    context.Entry(est).State = EntityState.Modified;
                     context.SaveChanges();
                     return true;
                 }
@@ -247,9 +250,8 @@ namespace Amirhome.Models
                                  where E.ID == id
                                  select E).First();
                     est.Archived = flag;
-                    context.States.Attach(est);
-                    context.SaveChanges();
-                    return true;
+                    bool res = updateEstate(est);
+                    return res;
                 }
             }
             catch
@@ -265,6 +267,7 @@ namespace Amirhome.Models
                 using (var context = new AmirhomeEntities())
                 {
                     context.States.Attach(model);
+                    context.Entry(model).State = EntityState.Modified;
                     context.SaveChanges();
                     return true;
                 }

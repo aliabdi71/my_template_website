@@ -8,6 +8,13 @@
 <link href="~/Content/simple-sidebar.css" rel="stylesheet" />
 <link href="~/Content/ManagementPanelStyle.css" rel="stylesheet" />
 
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <script type="text/javascript">
+        alert("@ViewBag.Message");
+    </script>
+}
+
 <div id="wrapper" style="background-color:white;">
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
@@ -90,6 +97,50 @@
                 },
             });
         }
+
+        function approve_estate(id, elem) {
+            $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+            var flag = $(elem).attr('data-flag');
+            var postData = { "id": id, "flag": flag };
+            $.ajax({
+                type: 'GET',
+                url: "/Estate/EstateApprovement",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    if (data === "Success") {
+                        if (flag === "false") {
+                            $(elem).html('تأیید').removeClass('btn-danger').addClass('btn-primary').removeAttr('disabled');
+                            $(elem).attr('data-flag', "true");
+                        }
+                        else {
+                            $(elem).html('رد').addClass('btn-danger').removeClass('btn-primary').removeAttr('disabled');
+                            $(elem).attr('data-flag', "false");
+                        }
+                    }
+                    else
+                    {
+                        if(flag === "true")
+                            $(elem).html('تأیید').removeAttr('disabled');
+                        else
+                            $(elem).html('رد').removeAttr('disabled');
+                        alert("خطا در انجام عملیات");
+                    }
+                },
+                error: function (data) {
+                    if (flag === "true")
+                        $(elem).html('تأیید').removeAttr('disabled');
+                    else
+                        $(elem).html('رد').removeAttr('disabled');
+                    alert("خطا در انجام عملیات");
+                },
+            });
+        }
+
+        function archive_estate(id, flag, elem) {
+
+        }
+
     </script>
 }
 
