@@ -25,7 +25,6 @@ namespace Amirhome.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Agent> Agents { get; set; }
         public virtual DbSet<District> Districts { get; set; }
         public virtual DbSet<Feature> Features { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }

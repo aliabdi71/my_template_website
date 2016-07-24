@@ -131,9 +131,6 @@
     <Compile Include="Models\Affiliate.cs">
       <DependentUpon>CoreModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Agent.cs">
-      <DependentUpon>CoreModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\AnonymousUser.cs">
       <DependentUpon>CoreModel.tt</DependentUpon>
     </Compile>

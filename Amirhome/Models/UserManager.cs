@@ -182,17 +182,45 @@ namespace Amirhome.Models
         }
         public int authenticateUser(string email, string password)
         {
-            List<int> res;
+            List<UserAccouunt> res;
             string passkey = encodePassword(password);
             using (var context = new AmirhomeEntities())
             {
                 res = (from U in context.UserAccouunts
                        where U.Email == email && U.Passkey == passkey
-                        select U.ID).ToList();
+                        select U).ToList();
+                if (res.Count > 0)
+                {
+                    UserAccouunt usr = res.First();
+                    usr.LastTimeOnline = DateTime.Now;
+                    context.UserAccouunts.Attach(usr);
+                    context.Entry(usr).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                }
             }
             if (res.Count > 0)
-                return res.First();
+                return res.First().ID;
             return -1;
+        }
+
+        public bool deleteUser(int id)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    UserAccouunt acc = new UserAccouunt { ID = id };
+                    context.UserAccouunts.Attach(acc);
+                    context.UserAccouunts.Remove(acc);
+                    context.Entry(acc).State = System.Data.Entity.EntityState.Deleted;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool createNewUser(UserAccouunt user)

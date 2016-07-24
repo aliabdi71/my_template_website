@@ -23,5 +23,7 @@ namespace Amirhome.Models
         public string name { get; set; }
     
         public virtual ICollection<State> States { get; set; }
+        public virtual District Districts1 { get; set; }
+        public virtual District District1 { get; set; }
     }
 }

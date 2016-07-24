@@ -18,18 +18,6 @@
           <Property Name="CPA" Type="float" Nullable="false" />
           <Property Name="Acquisitions" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Agents">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" />
-          <Property Name="Family" Type="nvarchar" MaxLength="50" />
-          <Property Name="Mobile" Type="nchar" MaxLength="20" />
-          <Property Name="Telephone" Type="nchar" MaxLength="20" />
-          <Property Name="Address" Type="nvarchar(max)" />
-          <Property Name="Email" Type="nchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="AnonymousUsers">
           <Key>
             <PropertyRef Name="UserID" />
@@ -689,11 +677,11 @@
           <Property Name="price_prepayment" Type="float" />
           <Property Name="price_mortage" Type="float" />
           <Property Name="price_loan" Type="float" />
-          <Property Name="phone" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="image" Type="varchar(max)" />
           <Property Name="expire_date" Type="date" Nullable="false" />
-          <Property Name="district" Type="nvarchar" MaxLength="15" />
-          <Property Name="city" Type="nvarchar" MaxLength="20" />
+          <Property Name="district" Type="nvarchar(max)" />
+          <Property Name="city" Type="nvarchar" MaxLength="30" />
           <Property Name="approved" Type="bit" />
           <Property Name="email" Type="varchar" MaxLength="85" />
           <Property Name="create_date" Type="date" />
@@ -1092,12 +1080,12 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="50" />
-          <Property Name="Family" Type="nchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Family" Type="nvarchar" MaxLength="50" />
           <Property Name="Mobile" Type="nchar" MaxLength="20" />
           <Property Name="Telephone" Type="nchar" MaxLength="20" />
           <Property Name="Address" Type="nvarchar(max)" />
-          <Property Name="Email" Type="nvarchar" MaxLength="200" />
+          <Property Name="Email" Type="nchar" MaxLength="50" />
           <Property Name="Mobile2" Type="nchar" MaxLength="20" />
           <Property Name="Tell2" Type="nchar" MaxLength="20" />
         </EntityType>
@@ -1680,8 +1668,12 @@
           <Property Name="LastModifiedByUserID" Type="int" Nullable="false" />
           <Property Name="LastModifiedOnDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AmirRealestate.dbo.sysdiagrams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="sysdiagrams">
           <Key>
+            
+            
             <PropertyRef Name="diagram_id" />
           </Key>
           <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
@@ -1947,8 +1939,10 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Code" Type="varchar" MaxLength="20" />
           <Property Name="Passkey" Type="varchar(max)" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="LastTimeOnline" Type="datetime" />
           <Property Name="RoleID" Type="int" />
-          <Property Name="ProfileImage" Type="varbinary(max)" />
+          <Property Name="ProfileImage" Type="binary" MaxLength="1" />
           <Property Name="Phone" Type="varchar" MaxLength="15" />
           <Property Name="Email" Type="varchar" MaxLength="81" />
           <Property Name="Approved" Type="bit" />
@@ -2637,6 +2631,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Districts_Districts">
+          <End Role="Districts" Type="Self.Districts" Multiplicity="1" />
+          <End Role="Districts1" Type="Self.Districts" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Districts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Districts1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EventLog_EventLogConfig">
           <End Role="EventLogConfig" Type="Self.EventLogConfig" Multiplicity="0..1" />
           <End Role="EventLog" Type="Self.EventLog" Multiplicity="*" />
@@ -2670,20 +2676,6 @@
             </Principal>
             <Dependent Role="EventLogConfig">
               <PropertyRef Name="LogTypeKey" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Features-jnc_Features">
-          <End Role="Features" Type="Self.Features" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Features-jnc" Type="Self.Features-jnc" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Features">
-              <PropertyRef Name="ItemID" />
-            </Principal>
-            <Dependent Role="Features-jnc">
-              <PropertyRef Name="ItemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3599,6 +3591,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_States_Agents">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="States" Type="Self.States" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="States">
+              <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_States_Districts">
           <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
           <End Role="States" Type="Self.States" Multiplicity="*" />
@@ -3612,7 +3616,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_States_Owners">
-          <End Role="Owners" Type="Self.Owners" Multiplicity="0..1" />
+          <End Role="Owners" Type="Self.Owners" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="States" Type="Self.States" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Owners">
@@ -3644,32 +3650,6 @@
             </Principal>
             <Dependent Role="States">
               <PropertyRef Name="StateType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_States_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="States" Type="Self.States" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="States">
-              <PropertyRef Name="AgentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StreetView_States1">
-          <End Role="States" Type="Self.States" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="StreetView" Type="Self.StreetView" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="States">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StreetView">
-              <PropertyRef Name="StateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4215,7 +4195,6 @@
         </Association>
         <EntityContainer Name="AmirhomeModelStoreContainer">
           <EntitySet Name="Affiliates" EntityType="Self.Affiliates" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Agents" EntityType="Self.Agents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AnonymousUsers" EntityType="Self.AnonymousUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="aspnet_Applications" EntityType="Self.aspnet_Applications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="aspnet_Membership" EntityType="Self.aspnet_Membership" Schema="dbo" store:Type="Tables" />
@@ -4330,7 +4309,6 @@
           <EntitySet Name="StateTypes" EntityType="Self.StateTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StreetView" EntityType="Self.StreetView" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SynonymsGroups" EntityType="Self.SynonymsGroups" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemMessages" EntityType="Self.SystemMessages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TabAliasSkins" EntityType="Self.TabAliasSkins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TabModules" EntityType="Self.TabModules" Schema="dbo" store:Type="Tables" />
@@ -4363,6 +4341,15 @@
           <EntitySet Name="WebServers" EntityType="Self.WebServers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Workflow" EntityType="Self.Workflow" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WorkflowStates" EntityType="Self.WorkflowStates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [sysdiagrams].[name] AS [name], 
+    [sysdiagrams].[principal_id] AS [principal_id], 
+    [sysdiagrams].[diagram_id] AS [diagram_id], 
+    [sysdiagrams].[version] AS [version], 
+    [sysdiagrams].[definition] AS [definition]
+    FROM [dbo].[sysdiagrams] AS [sysdiagrams]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__aspnet_Me__Appli__08012052" Association="Self.FK__aspnet_Me__Appli__08012052">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
@@ -4503,6 +4490,10 @@
             <End Role="Packages" EntitySet="Packages" />
             <End Role="DesktopModules" EntitySet="DesktopModules" />
           </AssociationSet>
+          <AssociationSet Name="FK_Districts_Districts" Association="Self.FK_Districts_Districts">
+            <End Role="Districts" EntitySet="Districts" />
+            <End Role="Districts1" EntitySet="Districts" />
+          </AssociationSet>
           <AssociationSet Name="FK_EventLog_EventLogConfig" Association="Self.FK_EventLog_EventLogConfig">
             <End Role="EventLogConfig" EntitySet="EventLogConfig" />
             <End Role="EventLog" EntitySet="EventLog" />
@@ -4514,10 +4505,6 @@
           <AssociationSet Name="FK_EventLogConfig_EventLogTypes" Association="Self.FK_EventLogConfig_EventLogTypes">
             <End Role="EventLogTypes" EntitySet="EventLogTypes" />
             <End Role="EventLogConfig" EntitySet="EventLogConfig" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Features-jnc_Features" Association="Self.FK_Features-jnc_Features">
-            <End Role="Features" EntitySet="Features" />
-            <End Role="Features-jnc" EntitySet="Features-jnc" />
           </AssociationSet>
           <AssociationSet Name="FK_Features-jnc_States" Association="Self.FK_Features-jnc_States">
             <End Role="States" EntitySet="States" />
@@ -4787,6 +4774,10 @@
             <End Role="SkinPackages" EntitySet="SkinPackages" />
             <End Role="Skins" EntitySet="Skins" />
           </AssociationSet>
+          <AssociationSet Name="FK_States_Agents" Association="Self.FK_States_Agents">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="States" EntitySet="States" />
+          </AssociationSet>
           <AssociationSet Name="FK_States_Districts" Association="Self.FK_States_Districts">
             <End Role="Districts" EntitySet="Districts" />
             <End Role="States" EntitySet="States" />
@@ -4802,14 +4793,6 @@
           <AssociationSet Name="FK_States_StateTypes" Association="Self.FK_States_StateTypes">
             <End Role="StateTypes" EntitySet="StateTypes" />
             <End Role="States" EntitySet="States" />
-          </AssociationSet>
-          <AssociationSet Name="FK_States_Users" Association="Self.FK_States_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="States" EntitySet="States" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StreetView_States1" Association="Self.FK_StreetView_States1">
-            <End Role="States" EntitySet="States" />
-            <End Role="StreetView" EntitySet="StreetView" />
           </AssociationSet>
           <AssociationSet Name="FK_SystemMessages_Portals" Association="Self.FK_SystemMessages_Portals">
             <End Role="Portals" EntitySet="Portals" />
@@ -4976,18 +4959,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AmirhomeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Agent">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Family" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-          <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-        </EntityType>
         <EntityType Name="District">
           <Key>
             <PropertyRef Name="ID" />
@@ -4995,6 +4966,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="States" Relationship="Self.FK_States_Districts" FromRole="Districts" ToRole="States" />
+          <NavigationProperty Name="Districts1" Relationship="AmirhomeModel.FK_Districts_Districts" FromRole="District" ToRole="District1" />
+          <NavigationProperty Name="District1" Relationship="AmirhomeModel.FK_Districts_Districts" FromRole="District1" ToRole="District" />
         </EntityType>
         <EntityType Name="Feature">
           <Key>
@@ -5030,11 +5003,11 @@
           <Property Name="price_prepayment" Type="Double" />
           <Property Name="price_mortage" Type="Double" />
           <Property Name="price_loan" Type="Double" />
-          <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="expire_date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="district" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="city" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="district" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="approved" Type="Boolean" />
           <Property Name="email" Type="String" MaxLength="85" FixedLength="false" Unicode="false" />
           <Property Name="create_date" Type="DateTime" Precision="0" />
@@ -5064,12 +5037,12 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="Family" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Family" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="Mobile2" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="Tell2" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="States" Relationship="Self.FK_States_Owners" FromRole="Owners" ToRole="States" />
@@ -5196,11 +5169,13 @@
           <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Passkey" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="RoleID" Type="Int32" />
-          <Property Name="ProfileImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProfileImage" Type="Binary" MaxLength="1" FixedLength="true" />
           <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="81" FixedLength="false" Unicode="false" />
           <Property Name="Approved" Type="Boolean" />
           <NavigationProperty Name="UserAccouuntsRole" Relationship="Self.FK_UARole" FromRole="UserAccouunts" ToRole="UserAccouuntsRoles" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="LastTimeOnline" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="UserAccouuntsRole">
           <Key>
@@ -5357,7 +5332,6 @@
           <End Role="States" Type="Self.State" Multiplicity="*" />
         </Association>
         <EntityContainer Name="AmirhomeEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Agents" EntityType="Self.Agent" />
           <EntitySet Name="Districts" EntityType="Self.District" />
           <EntitySet Name="Features" EntityType="Self.Feature" />
           <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
@@ -6108,6 +6082,10 @@
           <AssociationSet Name="FK_WorkflowStates_Workflow" Association="AmirhomeModel.FK_WorkflowStates_Workflow">
             <End Role="Workflow" EntitySet="Workflows" />
             <End Role="WorkflowState" EntitySet="WorkflowStates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Districts_Districts" Association="AmirhomeModel.FK_Districts_Districts">
+            <End Role="District" EntitySet="Districts" />
+            <End Role="District1" EntitySet="Districts" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Affiliate">
@@ -10208,25 +10186,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Districts_Districts">
+          <End Type="AmirhomeModel.District" Role="District" Multiplicity="1" />
+          <End Type="AmirhomeModel.District" Role="District1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="District">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="District1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="AmirhomeModelStoreContainer" CdmEntityContainer="AmirhomeEntities">
-          <EntitySetMapping Name="Agents">
-            <EntityTypeMapping TypeName="AmirhomeModel.Agent">
-              <MappingFragment StoreEntitySet="Agents">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Family" ColumnName="Family" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Districts">
             <EntityTypeMapping TypeName="AmirhomeModel.District">
               <MappingFragment StoreEntitySet="Districts">
@@ -10419,6 +10396,8 @@
           <EntitySetMapping Name="UserAccouunts">
             <EntityTypeMapping TypeName="AmirhomeModel.UserAccouunt">
               <MappingFragment StoreEntitySet="UserAccouunts">
+                <ScalarProperty Name="LastTimeOnline" ColumnName="LastTimeOnline" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />

@@ -237,44 +237,26 @@
 </div>
 
 @section scripts{
-    @*<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>*@
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSCo1rFqPGYULOc7cZHo8nZeDxfohox08&callback=initMap&language=fa&region=IR"
+        async defer>
+</script>
 
     <script type="text/javascript">
 
-        /*var initLatlng = new google.maps.LatLng(35.688045, 51.392884);
-        var geocoder = new google.maps.Geocoder();
-        var infowindow = new google.maps.InfoWindow();*/
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('googleMap'), {
+                zoom: 14,
+                center: { lat: 35.688045, lng: 51.392884 }
+            });
+        }
+
         $(document).ready(function () {
             $(".fade-animate").each(function (index) {
                 $(this).delay(index * 300).fadeTo(1000, 1);
             })
+
+            initMap();
         });
-
-        /*function initializeMap(laglng) {
-            var mapOptions = {
-                zoom: 12,
-                center: laglng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
-
-            marker = new google.maps.Marker({
-                map: map,
-                position: laglng,
-                draggable: true
-            });
-
-            geocoder.geocode({ 'latLng': laglng }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[0]) {
-                        //$('#address').val(results[0].formatted_address);
-                        infowindow.setContent(results[0].formatted_address);
-                        infowindow.open(map, marker);
-                    }
-                }
-            });
-        }*/
     </script>
 }
 

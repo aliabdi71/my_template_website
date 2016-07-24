@@ -35,6 +35,7 @@ namespace Amirhome.Controllers
                     data = bin_reader.ReadBytes((int)numBytes);
                     model.ProfileImage = data;
                     model.RoleID = 1;
+                    model.CreateDate = DateTime.Now;
                 }
                 model.Approved = true;
                 bool res = _userManager.createNewUser(model);

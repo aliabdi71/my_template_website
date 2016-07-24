@@ -23,6 +23,8 @@ namespace Amirhome.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public Nullable<bool> Approved { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<System.DateTime> LastTimeOnline { get; set; }
     
         public virtual UserAccouuntsRole UserAccouuntsRole { get; set; }
     }
