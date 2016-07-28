@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "SubmitEstate";
+    ViewBag.Title = "سپردن ملک";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -24,7 +24,7 @@
                     <span class="glyphicon glyphicon-user"></span>
                 </div>
                 <div class="wizard-content">
-                    @Html.ValidationSummary()
+                        <p class="text-danger"> @ViewBag.ErrMsg </p>
                     <br />
                     <div class="row">
                         <div class="col-md-1"></div>
@@ -566,6 +566,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <div id="googleMap" style="min-height:270px;"></div>
+                            <br />
+                            <label>مختصات طولی: </label><input name="latitude" id="latitude" class="form-control" value="35.7329636" type="text" disabled="disabled" />
+                            <br />
+                            <label>مختصات عرضی: </label><input name="longitude" id="longitude" class="form-control" value="51.3779877" type="text" disabled="disabled" />
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
                     <button class="btn-green done" type="submit" onclick="return false;">تأیید و ادامه</button>
                 </div>
             </li>
@@ -588,7 +599,13 @@
 </div>
 
 @section scripts{
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSCo1rFqPGYULOc7cZHo8nZeDxfohox08&callback=initMap&language=fa&region=IR"
+            async defer>
+    </script>
+
     <script type="text/javascript">
+
         $(window).load(function () {
             $(".done").click(function () {
                 var this_li_ind = $(this).parent().parent("li").index();
@@ -619,6 +636,43 @@
                 }
             });
         });
+
+        function initMap() {
+            var _lat = 35.7329636;
+            var _lng = 51.3779877;
+            var map = new google.maps.Map(document.getElementById('googleMap'), {
+                zoom: 16,
+                center: { lat: parseFloat(_lat), lng: parseFloat(_lng) }
+            });
+            var marker = new google.maps.Marker({
+                draggable: true,
+                position: { lat: parseFloat(_lat), lng: parseFloat(_lng) },
+                map: map,
+                title: 'ملک شما در اینجا قرار دارد'
+            });
+            google.maps.event.addListener(marker, 'dragend', function () {
+                geocodePosition(marker.getPosition());
+            });
+        }
+
+        function geocodePosition(pos) {
+            geocoder = new google.maps.Geocoder();
+            geocoder.geocode
+             ({
+                 latLng: pos
+             },
+                 function (results, status) {
+                     if (status == google.maps.GeocoderStatus.OK) {
+                         //alert(results[0].formatted_address);
+                         $("#latitude").val(results[0].geometry.location.lat());
+                         $("#longitude").val(results[0].geometry.location.lng());
+                     }
+                     else {
+                         alert('Cannot determine address at this location.' + status);
+                     }
+                 }
+             );
+        }
 
         function validate_form(index) {
             var flag = true;

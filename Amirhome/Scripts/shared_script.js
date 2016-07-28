@@ -75,6 +75,8 @@ $(document).ready(function () {
 
     fix_numbers();
 
+    $(".sys-msg").show().delay(5000).fadeOut();
+
     $("#login_btn").click(function () {
 
         var email = $("#email").val(),

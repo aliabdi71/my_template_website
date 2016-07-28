@@ -3,6 +3,15 @@
     List<Amirhome.Models.province> prv = ViewData["Province"] as List<Amirhome.Models.province>;
 }
 
+@{
+    if (ViewBag.SucsMsg != null)
+    {
+        <div class="sys-msg">
+            @ViewBag.SucsMsg
+        </div>
+    }
+}
+
 <div class="banner">
     <div class="banner-content">
         <h1>مشاورین املاک امیر</h1>

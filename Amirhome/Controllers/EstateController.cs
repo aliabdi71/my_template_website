@@ -145,7 +145,7 @@ namespace Amirhome.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult SubmitEstate(State model, HttpPostedFileBase[] main_image, HttpPostedFileBase[] plan_image, HttpPostedFileBase[] street_image, int[] features)
+        public ActionResult SubmitEstate(State model, HttpPostedFileBase[] main_image, HttpPostedFileBase[] plan_image, HttpPostedFileBase[] street_image, int[] features, string latitude, string longitude)
         {
             try
             {
@@ -159,6 +159,9 @@ namespace Amirhome.Controllers
                     model.Parking = "ندارد";
                 if (model.Bathrooms == null)
                     model.Bathrooms = "1";
+                model.AgentID = 6036;
+
+                model.GoogleMaps.Add(new GoogleMap() { latitude = latitude, longitude = longitude });
 
                 //List<Feature> _features = _estateManager.fetchFeaturesById(features);
                 /*model.Features.Clear();
@@ -244,11 +247,12 @@ namespace Amirhome.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "خطا در حین ثبت ملک. لطفا مجددا تلاش کنید ");
+                    ViewBag.ErrMsg = "خطایی در حین ثبت ملک رخ داده است. لطفا مجددا تلاش نمایید";
                     ViewData["Features"] = _estateManager.getAllFeatures();
                     ViewData["Province"] = _estateManager.getAllProvince();
                     return View(model);
                 }
+                ViewBag.SucsMsg = "ملک شما با موفقیت ثبت گردید";
                 return RedirectToAction("Index", "Home");
             }
             catch

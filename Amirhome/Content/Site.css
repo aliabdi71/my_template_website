@@ -86,6 +86,17 @@ footer .row.blue{
 /*********************************************/
 
 /* Banner styles starts */
+
+.sys-msg{
+    position: static;
+    top:0;
+    margin:0 auto;
+    min-height:30px;
+    background-color:#cf5151;
+    color: black;
+    text-align: center;
+    display:none;
+}
 .banner{
     width: 100%;
 	height: 100%;
