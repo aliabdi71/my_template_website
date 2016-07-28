@@ -25,13 +25,17 @@ namespace Amirhome
 
             bundles.Add(new ScriptBundle("~/bundles/custom_scripts").Include(
                       "~/Scripts/shared_script.js",
-                      "~/Scripts/jalaali.js"));
+                      "~/Scripts/jalaali.js",
+                      "~/Plugins/select2/select2.js",
+                      "~/Plugins/select2/select2_locale_fa.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-rtl.css",
                       "~/Content/site.css",
-                      "~/Content/font-awesome.css"));
+                      "~/Content/font-awesome.css",
+                      "~/Plugins/select2/select2.css",
+                      "~/Plugins/select2/select2-bootstrap.css"));
         }
     }
 }

@@ -128,16 +128,19 @@ footer .row.blue{
 .banner-panel table td{
     padding:10px;
 }
-.banner-panel table td > select{
-    width: 150px;
-    min-height:35px;
+.banner-panel table td > .select2-container{
+    width: 150px !important;
+}
+.banner-panel table td .select2-choice{
+    min-height:35px !important;
+    padding: 3px 10px !important;
 }
 @media only screen and (max-width: 1265px){
     .banner-panel table{
         min-width: 467px;
     }
-    .banner-panel table td > select{
-        width: 120px;
+    .banner-panel table td > .select2-container{
+        width: 120px !important;
     }
 }
 @media only screen and (max-width: 985px) {
@@ -153,8 +156,8 @@ footer .row.blue{
     .banner-panel table{
         min-width: 287px;
     }
-    .banner-panel table td > select{
-        width: 90px;
+    .banner-panel table td > .select2-container{
+        width: 90px !important;
     }
 }
 /* Banner styles ends */

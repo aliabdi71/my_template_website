@@ -92,6 +92,14 @@ $(document).ready(function () {
         sendDataToServer(email, pass, remember);
         return true;
     });
+
+    $("#email, #password").keypress(function (e) {
+        if (e.which == 13) {
+            $('#login_btn').trigger('click');
+        }
+    });
+
+    $(".banner-panel table td > select").select2();
 });
 
 function sendDataToServer(email, pass, remember) {

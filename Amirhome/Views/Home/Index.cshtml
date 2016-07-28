@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "مشاورین مسکن امیر";
+    List<Amirhome.Models.province> prv = ViewData["Province"] as List<Amirhome.Models.province>;
 }
 
 <div class="banner">
@@ -19,6 +20,10 @@
                                 <td>
                                     <select id="states">
                                         <option value="0">استان</option>
+                                        @foreach (var item in prv)
+                                        {
+                                            <option value="@item.id">@item.name</option>
+                                        }
                                     </select>
                                 </td>
                                 <td>
@@ -52,13 +57,17 @@
                                 <td>
                                     <select id="type">
                                         <option value="0">نوع ملک</option>
+                                        <option value="1">آپارتمان</option>
+                                        <option value="2">ویلا</option>
+                                        <option value="8">سوئیت</option>
+                                        <option value="9">سایر</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td style="text-align:center;">
-                                    <input id="search_estate" style="min-width:100px;" type="button" class="btn btn-primary" value="جستجو" />
+                                    <button id="search_estate" style="min-width:100px;" type="button" class="btn btn-primary">جستجو</button>
                                 </td>
                                 <td></td>
                             </tr>
@@ -78,6 +87,10 @@
                                 <td>
                                     <select id="states_submit">
                                         <option value="0">استان</option>
+                                        @foreach (var item in prv)
+                                        {
+                                            <option value="@item.id">@item.name</option>
+                                        }
                                     </select>
                                 </td>
                                 <td>
@@ -111,6 +124,10 @@
                                 <td>
                                     <select id="type_submit">
                                         <option value="0">نوع ملک</option>
+                                        <option value="1">آپارتمان</option>
+                                        <option value="2">ویلا</option>
+                                        <option value="8">سوئیت</option>
+                                        <option value="9">سایر</option>
                                     </select>
                                 </td>
                             </tr>
@@ -218,55 +235,113 @@
     $(document).ready(function () {
         //attach banner image to banner section
         $(".banner").backstretch(['@Url.Content("~/Content/banner_images/bg1.jpg")', '@Url.Content("~/Content/banner_images/bg2.jpg")', '@Url.Content("~/Content/banner_images/bg3.jpg")'], { fade: 550, duration: 4000 });
-            $(".banner-panel").fadeIn(550);
-            //attach plane image to plane section
-            $(".about-banner").backstretch('@Url.Content("~/Content/banner_images/pelan.jpg")');
+        $(".banner-panel").fadeIn(550);
+        //attach plane image to plane section
+        $(".about-banner").backstretch('@Url.Content("~/Content/banner_images/pelan.jpg")');
 
-            $("#search_estate").click(function () {
-                if ($("#condition").val() === '0') {
-                    $("#condition").css('background-color', '#FF7C7C');
-                    return false;
-                }
-                if ($("#usage").val() === '0') {
-                    $("#usage").css('background-color', '#FF7C7C');
-                    return false;
-                }
-                var cond = $("#condition").val(),
-                    use = $("#usage").val();
-                window.location = "/Estate/SearchPage?cond=" + cond + "&use=" + use;
-            });
-            $("#submit_estate").click(function () {
-                /*if ($("#condition").val() === '0') {
-                    $("#condition").css('background-color', '#FF7C7C');
-                    return false;
-                }
-                if ($("#usage").val() === '0') {
-                    $("#usage").css('background-color', '#FF7C7C');
-                    return false;
-                }
-                var cond = $("#condition").val(),
-                    use = $("#usage").val();*/
-                window.location = "/Estate/SubmitEstate";
-            });
-            //Occasion Section
-            getOccasionsFromServer();
-
+        $("#search_estate").click(function () {
+            if ($("#condition").val() === '0') {
+                $("#s2id_condition > a").css('border', '2px solid #FF7C7C');
+                return false;
+            }
+            if ($("#usage").val() === '0') {
+                $("#s2id_usage > a").css('border', '2px solid #FF7C7C');
+                return false;
+            }
+            var cond = $("#condition").val(),
+                use = $("#usage").val();
+            var query_str = "?cond=" + cond + "&use=" + use;
+            if ($("#states").val() !== '0')
+                query_str += "&state=" + $("#states").val();
+            if ($("#city").val() !== '0')
+                query_str += "&city=" + $("#city").val();
+            if ($("#district").val() !== '0')
+                query_str += "&district=" + $("#district").val();
+            if ($("#type").val() !== '0')
+                query_str += "&type=" + $("#type").val();
+            window.location = "/Estate/SearchPage" + query_str;
+        });
+        $("#submit_estate").click(function () {
+            /*if ($("#condition").val() === '0') {
+                $("#condition").css('background-color', '#FF7C7C');
+                return false;
+            }
+            if ($("#usage").val() === '0') {
+                $("#usage").css('background-color', '#FF7C7C');
+                return false;
+            }
+            var cond = $("#condition").val(),
+                use = $("#usage").val();*/
+            window.location = "/Estate/SubmitEstate";
         });
 
-        $(window).on("load", function () {
-            $(window).scroll(function () {
-                $(".fade-animate").each(function () {
-                    /* Check the location of each desired element */
-                    var objectBottom = $(this).offset().top + $(this).outerHeight();
-                    var windowBottom = $(window).scrollTop() + $(window).innerHeight();
 
-                    /* If the element is completely within bounds of the window, fade it in */
-                    if (objectBottom - 200 < windowBottom) { //object comes into view (scrolling down)
-                        if ($(this).css("opacity") == 0) { $(this).fadeTo(500, 1); }
+        $("#states").change(function () {
+            $("#search_estate").html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+            $.ajax({
+                url: '/Estate/fetchCities',
+                method: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ "p_id": $(this).val() }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    $("#city").html('<option value="0">شهر</option>');
+                    for (var i = 0 ; i < data.length ; i++) {
+                        $("#city").append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
                     }
-                });
-            }); $(window).scroll(); //invoke scroll-handler on page-load
+                    $("#search_estate").html('جستجو').removeAttr('disabled');
+                },
+                error: function () {
+                    $("#search_estate").html('جستجو').removeAttr('disabled');
+                },
+            });
         });
+
+        $("#city").change(function () {
+            if ($(this).val() === '118') {
+                $("#search_estate").html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+                $.ajax({
+                    url: '/Estate/fetchDistricts',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: '',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        $("#district").html('<option value="0">محله</option>');
+                        for (var i = 0 ; i < data.length ; i++) {
+                            $("#district").append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+                        }
+                        $("#search_estate").html('جستجو').removeAttr('disabled');
+                    },
+                    error: function () {
+                        $("#search_estate").html('جستجو').removeAttr('disabled');
+                    },
+                });
+            }
+            else {
+                $("#district").html('<option value="0">محله</option>');
+            }
+        });
+
+            //Occasion Section
+        getOccasionsFromServer();
+
+    });
+
+    $(window).on("load", function () {
+        $(window).scroll(function () {
+            $(".fade-animate").each(function () {
+                /* Check the location of each desired element */
+                var objectBottom = $(this).offset().top + $(this).outerHeight();
+                var windowBottom = $(window).scrollTop() + $(window).innerHeight();
+
+                /* If the element is completely within bounds of the window, fade it in */
+                if (objectBottom - 200 < windowBottom) { //object comes into view (scrolling down)
+                    if ($(this).css("opacity") == 0) { $(this).fadeTo(500, 1); }
+                }
+            });
+        }); $(window).scroll(); //invoke scroll-handler on page-load
+    });
 
     </script>
 }

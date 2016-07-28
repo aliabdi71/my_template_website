@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Amirhome.Models;
 using System.Drawing;
+using System.Net.Mail;
 
 namespace Amirhome.Controllers
 {
@@ -55,6 +56,29 @@ namespace Amirhome.Controllers
             try
             {
                 State estate_model = _estateManager.getStateByID(ID);
+                if (Session["serach_ids_array"] != null)
+                {
+                    int[] ids = Session["serach_ids_array"] as int[];
+                    if (ids.Contains(ID))
+                    {
+                        int index = Array.IndexOf(ids, ID);
+                        if (index > 0)
+                            ViewData["prev_estate"] = ids[index - 1];
+                        if (index < ids.Length - 1)
+                            ViewData["next_estate"] = ids[index + 1];
+                    }
+                }
+                if (estate_model.GoogleMaps.Count > 0)
+                {
+                    ViewData["latitude"] = string.IsNullOrEmpty(estate_model.GoogleMaps.First().latitude) ? "35.688045" : estate_model.GoogleMaps.First().latitude;
+                    ViewData["longitude"] = string.IsNullOrEmpty(estate_model.GoogleMaps.First().longitude) ? "51.392884" : estate_model.GoogleMaps.First().longitude;
+                }
+                else
+                {
+                    ViewData["latitude"] = "35.688045";
+                    ViewData["longitude"] = "51.392884";
+                }
+                ViewData["agent"] = _estateManager.getAgentById(estate_model.AgentID.Value);
                 return View(estate_model);
             }
             catch
@@ -70,7 +94,16 @@ namespace Amirhome.Controllers
         [HttpPost]
         public JsonResult DoSearch(SearchParams _params, int page, string order = "date")
         {
+            if (_params == null)
+                _params = Session["search_params"] as SearchParams;
+            else
+                Session["search_params"] = _params;
+            if (page == -1)
+                page = int.Parse(Session["search_page"].ToString());
+            else
+                Session["search_page"] = page;
             List<State> states = _estateManager.doSearch(_params, page * 10, order);
+            Session["serach_ids_array"] = states.Select(s => s.ID).ToArray();
             var data = states.Select(o => new
             {
                 ID = o.ID,
@@ -127,9 +160,10 @@ namespace Amirhome.Controllers
                 if (model.Bathrooms == null)
                     model.Bathrooms = "1";
 
-                List<Feature> _features = _estateManager.fetchFeaturesById(features);
-                foreach (var item in _features)
-                    model.Features.Add(item);
+                //List<Feature> _features = _estateManager.fetchFeaturesById(features);
+                /*model.Features.Clear();
+                foreach (var item in features)
+                    model.Features.Add(new Feature() { ItemID = item });*/
 
                 string filePath = "~/Content/estate_images/",
                        tempFilePath = "~/Content/temp_img_folder/";
@@ -193,7 +227,7 @@ namespace Amirhome.Controllers
                 }
                 #endregion
 
-                bool insert_success = _estateManager.addNewEstate(model);
+                bool insert_success = _estateManager.addNewEstate(model, features);
                 if (insert_success)
                 {
                     foreach (var item in posted_files_img)
@@ -209,7 +243,12 @@ namespace Amirhome.Controllers
                     }
                 }
                 else
-                    throw new Exception("Error while Inserting new esteta");
+                {
+                    ModelState.AddModelError("", "خطا در حین ثبت ملک. لطفا مجددا تلاش کنید ");
+                    ViewData["Features"] = _estateManager.getAllFeatures();
+                    ViewData["Province"] = _estateManager.getAllProvince();
+                    return View(model);
+                }
                 return RedirectToAction("Index", "Home");
             }
             catch
@@ -517,6 +556,49 @@ namespace Amirhome.Controllers
                 return RedirectToAction("ManagementPanel", "Estate", new { message = "تغییرات با موفقیت ثبت گردید" });
             else
                 return RedirectToAction("ManagementPanel", "Estate", new { message = "خطا در ثبت تغییرات" });
+        }
+
+        [HttpPost]
+        public string SendMail(string reciever, string name, int id)
+        {
+            string sender = "email@amirhome.ir";
+            string pass = "emailpass123";
+            string mail_subject = "مسکن امیر - دعوت به مشاهده ملک";
+            string mail_body = "از طرف " + name + "\n";
+            mail_body += "سلام دوست عزیز! پیشنهاد میکنم اطلاعات این ملک را بر روی وبسایت 'مسکن امیر' مشاهده کنید. \n";
+            mail_body += "http://www.amirhome.ir/Estate/EstateDetails?EstateID=" + id.ToString();
+            var smtp = new SmtpClient()
+            {
+                Host = "amirhome.ir",
+                Port = 25,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new System.Net.NetworkCredential(sender, pass),
+                Timeout = 20000,
+            };
+            try
+            {
+                smtp.Send(sender, reciever, mail_subject, mail_body);
+                return "true";
+            }
+            catch
+            {
+                return "false";
+            }
+        }
+
+        [HttpPost]
+        public string SubmitFeedback(string name, string phone, string email, string body, int id)
+        {
+            Feedback fb = new Feedback()
+            {
+                Name = name,
+                Tell = phone,
+                Email = email,
+                Text = body,
+                StateID = id,
+            };
+            bool res = _estateManager.addFeedbackForEstate(fb);
+            return res ? "true" : "false";
         }
     }
 }

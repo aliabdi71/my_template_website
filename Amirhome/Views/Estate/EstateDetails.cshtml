@@ -2,22 +2,66 @@
 @{
     ViewBag.Title = "مشاهده جزئیات ملک";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var agent = ViewData["agent"] as Amirhome.Models.User;
 }
 
 @model Amirhome.Models.State
 
 <link rel="stylesheet" href="~/Content/EstateDetailsStyle.css" />
+<link rel="stylesheet" href="~/Plugins/NinjaSlider/ninja-slider.css" />
+
+<div style="background-color:rgba(0, 0, 0, 0.5); display:none; top:0; left:0; right:0; height:600px; width:100%;" id="img_slider">
+    <span onclick="hide_slider()" class="close">X</span>
+    <div id="jssor_1" style="position: relative; margin: 0 auto; top: 65px; left: 0px; width: 600px; height: 300px; overflow: hidden; visibility: hidden;">
+        <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
+            <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
+            <div style="position:absolute;display:block;background:url('/Content/shared_images/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
+        </div>
+        <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 600px; height: 300px; overflow: hidden;">
+            @foreach (var item in Model.Images)
+            {
+                <div data-p="112.50" style="display: none;">
+                    <img data-u="image" src="~/Content/estate_images/@item.url" style="width: 100%;"/>
+                </div>
+            }
+        </div>
+        <div data-u="navigator" class="jssorb01" style="bottom:16px;right:16px;">
+            <div data-u="prototype" style="width:12px;height:12px;"></div>
+        </div>
+        <!-- Arrow Navigator -->
+        <span data-u="arrowleft" class="jssora02l" style="top:0px;left:8px;width:55px;height:55px;" data-autocenter="2"></span>
+        <span data-u="arrowright" class="jssora02r" style="top:0px;right:8px;width:55px;height:55px;" data-autocenter="2"></span>
+    </div>
+</div>
 
 <div class="container body-content">
     <div class="row details" style="padding:30px;">
         <div class="col-md-6 col">
+            @if (Session["search_params"] != null)
+            {
+                <a class="btn btn-primary" href="/Estate/SearchPage" style="width:100%; margin-bottom:3px;">بازگشت به جستجو</a>
+            }
             <div class="row items text-center fade-animate">
-                <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ملک قبلی</a></div>
-                <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-envelope"></i>&nbsp;ارسال</a></div>
-                <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-remove-circle"></i>&nbsp;گزارش خرابی</a></div>
-                <div class="col-md-3"><a href="javascript:void()"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;ملک بعدی</a></div>
+                @if (ViewData["prev_estate"] != null)
+                {
+                    <div class="col-md-3"><a href="/Estate/EstateDetails?EstateID=@ViewData["prev_estate"].ToString()"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ملک قبلی</a></div>
+                }
+                else
+                {
+                    <div class="col-md-3"><a href="javascript:void()" class="disabled"><i class="glyphicon glyphicon-chevron-right"></i>&nbsp;ملک قبلی</a></div>
+                }
+                <div class="col-md-3"><a href="#" id="send_mail" data-toggle="popover" data-placement="bottom" data-html="true" data-original-title="ارسال به دوستان" data-content="<input id='mail_name' class='form-control' style='margin-bottom: 5px;min-width: 140px;' placeholder='نام شما'/><input id='mail_mail' class='form-control' placeholder='ایمیل مقصد' style='margin-bottom: 5px;min-width: 140px;' /><button onclick='send_email(this); return true;' class='btn btn-primary'>ارسال</button>"><i class="glyphicon glyphicon-envelope"></i>&nbsp;ارسال</a></div>
+                <div class="col-md-3"><a id="bug_report" href="javascript:void(0)"><i class="glyphicon glyphicon-remove-circle"></i>&nbsp;گزارش خرابی</a></div>
+                @if (ViewData["next_estate"] != null)
+                {
+                    <div class="col-md-3"><a href="/Estate/EstateDetails?EstateID=@ViewData["next_estate"].ToString()"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;ملک بعدی</a></div>
+                }
+                else
+                {
+                    <div class="col-md-3"><a href="javascript:void()" class="disabled"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp;ملک بعدی</a></div>
+                }
             </div>
-            <br />
             <div class="content fade-animate">
                 <div class="text-center caption">مشخصات ملک</div>
                 <div class="inner_content">
@@ -35,7 +79,16 @@
                                 قیمت کل
                             </td>
                             <td colspan="3" class="red price">
-                                @Model.TotalPrice
+                                @{
+                                    if (Model.Condition == "فروش")
+                                    {
+                                        <span>@Model.TotalPrice</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@Model.PrepaymentPrice</span>
+                                    }
+                                }
                             </td>
                         </tr>
                         <tr>
@@ -43,7 +96,16 @@
                                 قیمت هر متر
                             </td>
                             <td colspan="3" class="red price">
-                                @Model.PricePerMeter
+                                @{
+                                    if (Model.Condition == "فروش")
+                                    {
+                                        <span>@Model.PricePerMeter</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@Model.MortgagePrice</span>
+                                    }
+                                }
                             </td>
                         </tr>
                         <tr>
@@ -107,7 +169,7 @@
                                 }
                                 else
                                 {
-                                    <img class="thumb-img" src='@string.Format("/Content/estate_images/{0}", Model.Images.FirstOrDefault(i => i.Primary == true).url)' />
+                                    <img class="thumb-img" onclick="display_slider()" src='@string.Format("/Content/estate_images/{0}", Model.Images.FirstOrDefault(i => i.Primary == true).url)' />
                                     <label class="img-count number">مشاهده @Model.Images.Count عکس</label>
                                 }
                             }
@@ -158,50 +220,54 @@
                 </div>
             </div>
             <br />
-            <ul class="nav nav-tabs fade-animate">
-                <li class="active"><a data-toggle="tab" href="#googleMap">نقشه گوگل</a></li>
-                <li><a data-toggle="tab" href="#street">نمای خیابان</a></li>
-                <li><a data-toggle="tab" href="#plan">نقشه ساختمان</a></li>
-            </ul>
-            <div class="tab-content fade-animate">
-                <div id="googleMap" class="tab-pane fade active">
-                </div>
-                <div id="street" class="tab-pane fade">
-                    @{
-                        if (Model.StreetViews.FirstOrDefault() == null)
-                        {
-
-                        }
-                        else
-                        {
-                            <img class="thumb-img" src='@string.Format("/Content/estate_images/{0}", Model.StreetViews.FirstOrDefault().url)' />
-                        }
-                    }
-                </div>
-                <div id="plan" class="tab-pane fade">
-                    @{
-                        if (Model.Plans.FirstOrDefault() == null)
-                        {
-
-                        }
-                        else
-                        {
-                            <img class="thumb-img" src='@string.Format("/Content/estate_images/{0}", Model.Plans.FirstOrDefault().url)' />
-                        }
-                    }
-                </div>
-            </div>
 
         </div>
         <div class="col-md-5 col">
+            <div class="navigator" style="width:90%; margin-right: 40px;">
+                <ul class="nav nav-tabs fade-animate">
+                    <li class="active"><a data-toggle="tab" href="#googleMap">نقشه گوگل</a></li>
+                    <li><a data-toggle="tab" href="#street">نمای خیابان</a></li>
+                    <li><a data-toggle="tab" href="#plan">نقشه ساختمان</a></li>
+                </ul>
+                <div class="tab-content fade-animate">
+                    <div id="googleMap" class="tab-pane fade active in">
+                        
+                    </div>
+                    <div id="street" class="tab-pane fade">
+                        @{
+                            if (Model.StreetViews.FirstOrDefault() == null)
+                            {
+                                <img class="thumb-img" src='~/Content/estate_images/no-thumb.png' style="max-width: 100%; max-height: 100%;" />
+                            }
+                            else
+                            {
+                                <img class="thumb-img" style="max-width: 100%; max-height: 100%;" src='@string.Format("/Content/estate_images/{0}", Model.StreetViews.FirstOrDefault().url)' />
+                            }
+                        }
+                    </div>
+                    <div id="plan" class="tab-pane fade">
+                        @{
+                            if (Model.Plans.FirstOrDefault() == null)
+                            {
+                                <img class="thumb-img" style="max-width: 100%; max-height: 100%;" src='~/Content/estate_images/no-thumb.png' />
+                            }
+                            else
+                            {
+                                <img class="thumb-img" style="max-width: 100%; max-height: 100%;" src='@string.Format("/Content/estate_images/{0}", Model.Plans.FirstOrDefault().url)' />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <br />
             <div class="content left fade-animate">
                 <div class="text-center caption">اطلاعات تماس</div>
                 <div class="inner_content">
                     <img class="agent_img" src="~/Content/shared_images/logo3.png" />
                     <span>کد ملک: </span><label class="number">@Model.Serial</label><br />
                     <span>نام مالک: </span><label class="number">@Model.Owner.Name</label><br />
-                    <span>نام مشاور: </span><label class="number">علی عبدی</label><br />
-                    <span>تلفن: </span><label class="number">@Model.Owner.Telephone - @Model.Owner.Tell2</label><br />
+                    <span>نام مشاور: </span><label class="number">@agent.DisplayName</label><br />
+                    <span>تلفن: </span><label class="number">@Model.Owner.Mobile - @Model.Owner.Telephone</label><br />
                     <span>ایمیل: </span><label class="number">@Model.Owner.Email</label><br />
                 </div>
             </div>
@@ -210,7 +276,7 @@
                 <div class="text-center caption">ارسال نظرات</div>
                 <div style="background-color:white;">
                     <p style="font-size:small; padding:10px 20px 0 20px">هرگونه نظر یا سوال در رابطه با اطلاعات این ملک را می توانید از طریق فرم زیر با ما در میان بگذارید</p>
-                    <form id="feedbackForm" class="feedback">
+                    <div id="feedbackForm" class="feedback">
                         <table>
                             <tr>
                                 <td class="fblabel"><label>نام و نام خانوادگی</label></td>
@@ -228,8 +294,12 @@
                                 <td class="fblabel"><label>متن پیام</label></td>
                                 <td><textarea id="fb_text"></textarea></td>
                             </tr>
+                            <tr>
+                                <td><button id="fb_send" onclick="send_feedback()" class="btn btn-primary">ارسال</button></td>
+                                <td><label id="fb_result"></label></td>
+                            </tr>
                         </table>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -237,25 +307,168 @@
 </div>
 
 @section scripts{
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSCo1rFqPGYULOc7cZHo8nZeDxfohox08&callback=initMap&language=fa&region=IR"
-        async defer>
-</script>
+    @if (@Model.GoogleMaps.Count > 0)
+    {
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSCo1rFqPGYULOc7cZHo8nZeDxfohox08&callback=initMap&language=fa&region=IR"
+                async defer>
+        </script>
+    }
+
+    <script type="text/javascript" src="~/Scripts/jssor.slider.mini.js"></script>
 
     <script type="text/javascript">
 
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('googleMap'), {
-                zoom: 14,
-                center: { lat: 35.688045, lng: 51.392884 }
+    function initMap() {
+        var _lat = @ViewData["latitude"].ToString() ;
+        var _lng = @ViewData["longitude"].ToString() ;
+        var map = new google.maps.Map(document.getElementById('googleMap'), {
+            zoom: 16,
+            center: { lat: parseFloat(_lat), lng: parseFloat(_lng) }
+        });
+        var marker = new google.maps.Marker({
+            position: { lat: parseFloat(_lat), lng: parseFloat(_lng) },
+            map: map,
+            title: 'ملک شما در اینجا قرار دارد'
+        });
+    }
+    function display_slider(){
+        $("#img_slider").fadeIn('slow');
+    }
+    function hide_slider(){
+        $("#img_slider").fadeOut('slow');
+    }
+
+    function send_email(elem) {
+        if ($("#mail_mail").val() === ''){
+            alert('لطفا ایمیل مقصد را وارد نمایید');
+            return false;
+        }
+        $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+        var postData = { "reciever": $("#mail_mail").val(), "name": $("#mail_name").val(), "id": @Model.ID };
+            $.ajax({
+                type: 'POST',
+                url: "/Estate/SendMail",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    if (data) {
+                        $("#mail_mail").after('<p class="text-success">ایمیل ارسال شد</p>');
+                        $(elem).html('ارسال').removeAttr('disabled');
+                    }
+                    else {
+                        $("#mail_mail").after('<p class="text-danger">ایمیل ارسال نشد</p>');
+                        $(elem).html('ارسال').removeAttr('disabled');
+                    }
+                },
+                error: function(){
+                    $("#mail_mail").after('<p class="text-danger">خطایی رخ داده است</p>');
+                    $(elem).html('ارسال').removeAttr('disabled');
+                },
             });
         }
 
+        function send_feedback() {
+            if ($("#fb_name").val() === ''){
+                $("#fb_result").html('لطفا نام خود را وارد نمایید').css('color', 'red');
+                return false;
+            }
+            if ($("#fb_mail").val() === ''){
+                $("#fb_result").html('لطفا ایمیل خود را وارد نمایید').css('color', 'red');
+                return false;
+            }
+            if ($("#fb_text").val() === ''){
+                $("#fb_result").html('لطفا متن پیام را وارد نمایید').css('color', 'red');
+                return false;
+            }
+            $("#fb_send").html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+            var postData = { "name": $("#fb_name").val(), "phone": $("#fb_phone").val(), "email": $("#fb_email").val(), "body": $("#fb_text").val(), "id": @Model.ID };
+            $.ajax({
+                type: 'POST',
+                url: "/Estate/SubmitFeedback",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    alert(data);
+                    if (data) {
+                        $("#fb_result").html('نظر شما با موفقیت ارسال شد').css('color', 'green');
+                        $("#fb_send").html('ارسال');
+                    }
+                    else {
+                        $("#fb_result").html('متأسفانه نظر شما ارسال نشد').css('color', 'red');
+                        $("#fb_send").html('ارسال').removeAttr('disabled');
+                    }
+                },
+                error: function(data){
+                    if(data.responseText === "True"){
+                        $("#fb_result").html('نظر شما با موفقیت ارسال شد').css('color', 'green');
+                        $("#fb_send").html('ارسال');
+                    }
+                    else{
+                        $("#fb_result").html('خطا در برقراری ارتباط با سرور').css('color', 'red');
+                        $("#fb_send").html('ارسال').removeAttr('disabled');
+                    }
+                },
+            });
+
+        }
+
         $(document).ready(function () {
+            $("#send_mail").popover().css('color', 'green');
+            $("#bug_report").css('color', 'red');
             $(".fade-animate").each(function (index) {
                 $(this).delay(index * 300).fadeTo(1000, 1);
             })
 
-            initMap();
+            /*Json Slider*/
+            var jssor_1_SlideoTransitions = [
+              [{b:0,d:600,y:-290,e:{y:27}}],
+              [{b:0,d:1000,y:185},{b:1000,d:500,o:-1},{b:1500,d:500,o:1},{b:2000,d:1500,r:360},{b:3500,d:1000,rX:30},{b:4500,d:500,rX:-30},{b:5000,d:1000,rY:30},{b:6000,d:500,rY:-30},{b:6500,d:500,sX:1},{b:7000,d:500,sX:-1},{b:7500,d:500,sY:1},{b:8000,d:500,sY:-1},{b:8500,d:500,kX:30},{b:9000,d:500,kX:-30},{b:9500,d:500,kY:30},{b:10000,d:500,kY:-30},{b:10500,d:500,c:{x:87.50,t:-87.50}},{b:11000,d:500,c:{x:-87.50,t:87.50}}],
+              [{b:0,d:600,x:410,e:{x:27}}],
+              [{b:-1,d:1,o:-1},{b:0,d:600,o:1,e:{o:5}}],
+              [{b:-1,d:1,c:{x:175.0,t:-175.0}},{b:0,d:800,c:{x:-175.0,t:175.0},e:{c:{x:7,t:7}}}],
+              [{b:-1,d:1,o:-1},{b:0,d:600,x:-570,o:1,e:{x:6}}],
+              [{b:-1,d:1,o:-1,r:-180},{b:0,d:800,o:1,r:180,e:{r:7}}],
+              [{b:0,d:1000,y:80,e:{y:24}},{b:1000,d:1100,x:570,y:170,o:-1,r:30,sX:9,sY:9,e:{x:2,y:6,r:1,sX:5,sY:5}}],
+              [{b:2000,d:600,rY:30}],
+              [{b:0,d:500,x:-105},{b:500,d:500,x:230},{b:1000,d:500,y:-120},{b:1500,d:500,x:-70,y:120},{b:2600,d:500,y:-80},{b:3100,d:900,y:160,e:{y:24}}],
+              [{b:0,d:1000,o:-0.4,rX:2,rY:1},{b:1000,d:1000,rY:1},{b:2000,d:1000,rX:-1},{b:3000,d:1000,rY:-1},{b:4000,d:1000,o:0.4,rX:-1,rY:-1}]
+            ];
+
+            var jssor_1_options = {
+                $AutoPlay: true,
+                $Idle: 2000,
+                $CaptionSliderOptions: {
+                    $Class: $JssorCaptionSlideo$,
+                    $Transitions: jssor_1_SlideoTransitions,
+                    $Breaks: [
+                      [{d:2000,b:1000}]
+                    ]
+                },
+                $ArrowNavigatorOptions: {
+                    $Class: $JssorArrowNavigator$
+                },
+                $BulletNavigatorOptions: {
+                    $Class: $JssorBulletNavigator$
+                }
+            };
+
+            var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+
+            function ScaleSlider() {
+                var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+                if (refSize) {
+                    refSize = Math.min(refSize, 600);
+                    jssor_1_slider.$ScaleWidth(refSize);
+                }
+                else {
+                    window.setTimeout(ScaleSlider, 30);
+                }
+            }
+            ScaleSlider();
+            $(window).bind("load", ScaleSlider);
+            $(window).bind("resize", ScaleSlider);
+            $(window).bind("orientationchange", ScaleSlider);
+            /*Jsor Slider End*/
         });
     </script>
 }

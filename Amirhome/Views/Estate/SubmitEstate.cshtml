@@ -24,6 +24,8 @@
                     <span class="glyphicon glyphicon-user"></span>
                 </div>
                 <div class="wizard-content">
+                    @Html.ValidationSummary()
+                    <br />
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-2 left">
@@ -517,7 +519,7 @@
                                     }
                                     </tr>
                                     <tr>
-                                        @for (int i = 30; i < 36; i++)
+                                        @for (int i = 30; i < 35; i++)
                                     {
                                         <td><label><input type="checkbox" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
                                     }

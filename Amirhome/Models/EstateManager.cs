@@ -130,18 +130,27 @@ namespace Amirhome.Models
             return _feature;
 
         }
-        public bool addNewEstate(State model)
+        public bool addNewEstate(State model, int[] _features)
         {
             try
             {
                 using (var context = new AmirhomeEntities())
                 {
+                    model.Features.Clear();
+                    if (_features != null)
+                    {
+                        var _feature = (from F in context.Features
+                                        where _features.Contains(F.ItemID)
+                                        select F).ToList();
+                        foreach (var item in _feature)
+                            model.Features.Add(item);
+                    }
                     context.States.Add(model);
                     context.SaveChanges();
                 }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
@@ -217,6 +226,33 @@ namespace Amirhome.Models
                             select E).ToList();
             }
             return _estates;
+        }
+        public Amirhome.Models.User getAgentById(int id)
+        {
+            Amirhome.Models.User agent = null;
+            using (var context = new AmirhomeEntities())
+            {
+                agent = (from U in context.Users
+                         where U.UserID == id
+                         select U).FirstOrDefault();
+            }
+            return agent;
+        }
+        public bool addFeedbackForEstate(Feedback fb)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    context.Feedbacks.Add(fb);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
         public bool approveEstate(int id, bool flag)
         {
@@ -299,10 +335,10 @@ namespace Amirhome.Models
                 switch (order)
                 {
                     case "date": query = query.OrderByDescending(e => e.Date); break;
-                    case "price_1": query = query.OrderBy(e => e.TotalPrice).OrderBy(e => e.PrepaymentPrice); break;
-                    case "price_2": query = query.OrderBy(e => e.PricePerMeter).OrderBy(e => e.MortgagePrice); break;
-                    case "price_1_desc": query = query.OrderByDescending(e => e.TotalPrice).OrderByDescending(e => e.PrepaymentPrice); break;
-                    case "price_2_desc": query = query.OrderByDescending(e => e.PricePerMeter).OrderByDescending(e => e.MortgagePrice); break;
+                    case "price_1": query = query.OrderBy(e => e.TotalPrice).ThenBy(e => e.PrepaymentPrice); break;
+                    case "price_2": query = query.OrderBy(e => e.PricePerMeter).ThenBy(e => e.MortgagePrice); break;
+                    case "price_1_desc": query = query.OrderByDescending(e => e.TotalPrice).ThenByDescending(e => e.PrepaymentPrice); break;
+                    case "price_2_desc": query = query.OrderByDescending(e => e.PricePerMeter).ThenByDescending(e => e.MortgagePrice); break;
                     case "area": query = query.OrderBy(e => e.Area); break;
                     case "area_desc": query = query.OrderByDescending(e => e.Area); break;
                     default: break;
@@ -364,7 +400,7 @@ namespace Amirhome.Models
             if (_params.HasImage)
                 query = query.Where(E => E.Images.Count > 0);
             if (_params.HasParking)
-                query = query.Where(E => E.Features.Any(F => F.ItemID == 15));
+                query = query.Where(E => E.Features.Any(F => F.ItemID == 12));
             return query;
         }
 

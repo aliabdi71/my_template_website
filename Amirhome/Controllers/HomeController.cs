@@ -57,6 +57,7 @@ namespace Amirhome.Controllers
         EstateManager _estateManager = new EstateManager();
         public ActionResult Index()
         {
+            ViewData["Province"] = _estateManager.getAllProvince();
             return View();
         }
 
