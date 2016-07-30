@@ -145,7 +145,7 @@ namespace Amirhome.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult SubmitEstate(State model, HttpPostedFileBase[] main_image, HttpPostedFileBase[] plan_image, HttpPostedFileBase[] street_image, int[] features, string latitude, string longitude)
+        public ActionResult SubmitEstate(State model, HttpPostedFileBase[] main_image, HttpPostedFileBase[] plan_image, HttpPostedFileBase[] street_image, int[] features, string map_latitude, string map_longitude)
         {
             try
             {
@@ -159,9 +159,9 @@ namespace Amirhome.Controllers
                     model.Parking = "ندارد";
                 if (model.Bathrooms == null)
                     model.Bathrooms = "1";
-                model.AgentID = 6036;
+                model.AgentID = 1;
 
-                model.GoogleMaps.Add(new GoogleMap() { latitude = latitude, longitude = longitude });
+                model.GoogleMaps.Add(new GoogleMap() { latitude = map_latitude, longitude = map_longitude });
 
                 //List<Feature> _features = _estateManager.fetchFeaturesById(features);
                 /*model.Features.Clear();

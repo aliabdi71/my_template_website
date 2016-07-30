@@ -571,9 +571,9 @@
                         <div class="col-md-10">
                             <div id="googleMap" style="min-height:270px;"></div>
                             <br />
-                            <label>مختصات طولی: </label><input name="latitude" id="latitude" class="form-control" value="35.7329636" type="text" disabled="disabled" />
+                            <label>مختصات طولی: </label><input name="map_latitude" id="latitude" style="background-color:#b9b0b0" class="form-control" value="35.7329636" type="text" readonly="readonly" />
                             <br />
-                            <label>مختصات عرضی: </label><input name="longitude" id="longitude" class="form-control" value="51.3779877" type="text" disabled="disabled" />
+                            <label>مختصات عرضی: </label><input name="map_longitude" id="longitude" style="background-color:#b9b0b0" class="form-control" value="51.3779877" type="text" readonly="readonly" />
                         </div>
                         <div class="col-md-1"></div>
                     </div>
@@ -605,6 +605,7 @@
     </script>
 
     <script type="text/javascript">
+        var map, marker;
 
         $(window).load(function () {
             $(".done").click(function () {
@@ -621,6 +622,10 @@
                     $(this).parent().parent("li").removeClass("active").addClass("completed");
                     $(this).parent(".wizard-content").slideUp();
                     $(this).parent().parent("li").next("li:not('.completed')").addClass('active').children('.wizard-content').slideDown();
+                }
+                if (this_li_ind === 1) {
+                    initMap();
+                    codeAddress($('#Address').val());
                 }
             });
 
@@ -640,14 +645,14 @@
         function initMap() {
             var _lat = 35.7329636;
             var _lng = 51.3779877;
-            var map = new google.maps.Map(document.getElementById('googleMap'), {
+            map = new google.maps.Map(document.getElementById('googleMap'), {
                 zoom: 16,
                 center: { lat: parseFloat(_lat), lng: parseFloat(_lng) }
             });
-            var marker = new google.maps.Marker({
-                draggable: true,
+            marker = new google.maps.Marker({
                 position: { lat: parseFloat(_lat), lng: parseFloat(_lng) },
                 map: map,
+                draggable: true,
                 title: 'ملک شما در اینجا قرار دارد'
             });
             google.maps.event.addListener(marker, 'dragend', function () {
@@ -674,6 +679,19 @@
              );
         }
 
+        function codeAddress(address) {
+            geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: address }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);//center the map over the result
+                    marker.setPosition(results[0].geometry.location);
+                    geocodePosition(results[0].geometry.location);
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
         function validate_form(index) {
             var flag = true;
             if (index === 0) {
@@ -688,7 +706,7 @@
                 });
             }
             else if (index === 1) {
-                $("li[data-step=1] .required").each(function () {
+                $("li[data-step=1] select.required").each(function () {
                     if (!$(this).is('[disabled]')) {
                         if ($(this).val() === '' || $(this).val() === '0') {
                             $(this).css('border', '2px solid red');
@@ -780,6 +798,8 @@
                     $("#Changable").removeAttr("disabled");
                 }
             });
+
+            $('select').select2();
 
             $("body").on({
                 keydown: function (e) {
