@@ -352,12 +352,17 @@ namespace Amirhome.Controllers
             {
                 case "mNg_dshbd":
                     {
-                        int uid = int.Parse(Session["user_id"].ToString());
+                        int uid = int.Parse(Session["UserID"].ToString());
                         var usr = _userManager.getUserByID(uid);
-                        var last_online_date = usr.LastTimeOnline;
-
+                        var last_online_date = usr.LastTimeOnline.Value;
+                        DashboardViewModel model = new DashboardViewModel();
+                        model.newUserCount = _userManager.getNumOfUsersRegisteredAfter(last_online_date);
+                        model.newEstateCount = _estateManager.getNumOfEstateSubmitedAfter(last_online_date);
+                        model.totalFeedbacks = _estateManager.getAllFedbacks();
+                        model.totalUsers = _userManager.getAllUser();
+                        model.totalAgents = _agentManager.getAllAgent();
                         ViewData["title"] = "داشبور مدیریت";
-                        break;
+                        return PartialView("_DashboardPartialView", model);
                     }
                 case "saLe_est":
                     {

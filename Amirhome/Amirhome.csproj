@@ -914,6 +914,7 @@
     <Content Include="Plugins\select2\release.sh" />
     <Content Include="Plugins\select2\select2.jquery.json" />
     <Content Include="Plugins\select2\select2_locale_en.js.template" />
+    <Content Include="Views\Estate\_DashboardPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -24,7 +24,7 @@
             @{
                 if (role_id == "1")
                 {
-                    <li><a href="javascript:void(0)">داشبورد مدیریت</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('mNg_dshbd'); return true;">داشبورد مدیریت</a></li>
                 }
                 if (role_id == "1" || role_id == "3")
                 {
@@ -141,6 +141,9 @@
 
         }
 
+        $(document).ready(function () {
+            render_content('mNg_dshbd');
+        });
     </script>
 }
 

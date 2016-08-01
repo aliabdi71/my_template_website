@@ -31,9 +31,42 @@ namespace Amirhome.Models
             }
             return res;
         }
-        public bool deleteAgent(User agent)
+        public bool deleteAgent(int id)
         {
-            return true;
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    User agent = (from A in context.Users
+                                  where A.UserID == id
+                                  select A).FirstOrDefault();
+                    context.Users.Remove(agent);
+                    context.Entry(agent).State = EntityState.Deleted;
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool editAgent(User agent)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    context.Users.Attach(agent);
+                    context.Entry(agent).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

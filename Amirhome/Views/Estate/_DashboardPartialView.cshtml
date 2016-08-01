@@ -1,0 +1,105 @@
+﻿@model Amirhome.Models.DashboardViewModel
+@using Amirhome.CustomHelpers
+
+<style>
+.noti-box {
+    min-height: 100px;
+    padding: 20px;
+}
+.panel-back {
+    background-color: #f8f8f8;
+}
+.noti-box .icon-box {
+    display: block;
+    float: left;
+    font-size: 40px;
+    height: 70px;
+    line-height: 75px;
+    margin: 0 15px 10px 0;
+    text-align: center;
+    vertical-align: middle;
+    width: 70px;
+}
+.set-icon {
+    border-radius: 50px;
+}
+.bg-color-red {
+    background-color: #db0630;
+    color: #fff;
+}
+.bg-color-green {
+    background-color: #00ce6f;
+    color: #fff;
+}
+.bg-color-blue {
+    background-color: #a95df0;
+    color: #fff;
+}
+.bg-color-brown {
+    background-color: #b94a00;
+    color: #fff;
+}
+.text-box p {
+    margin: 0 0 3px;
+}
+.main-text {
+    font-size: 25px;
+    font-weight: 600;
+}
+p {
+    font-size: 16px;
+    line-height: 25px;
+    padding-top: 20px;
+}
+.text-muted {
+    color: #999;
+}
+</style>
+<h1>@ViewData["title"].ToString()</h1>
+<hr />
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-back noti-box">
+            <span class="icon-box bg-color-red set-icon">
+                <i class="glyphicon glyphicon-home"></i>
+            </span>
+            <div class="text-box">
+                <p class="main-text">@Html.turnToPersianNumber(Model.newEstateCount.ToString())</p>
+                <p class="text-muted">مسکن جدید</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-back noti-box">
+            <span class="icon-box bg-color-green set-icon">
+                <i class="glyphicon glyphicon-envelope"></i>
+            </span>
+            <div class="text-box">
+                <p class="main-text">@Html.turnToPersianNumber(Model.totalFeedbacks.Count.ToString())</p>
+                <p class="text-muted">نظرات کاربران</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-back noti-box">
+            <span class="icon-box bg-color-blue set-icon">
+                <i class="glyphicon glyphicon-user"></i>
+            </span>
+            <div class="text-box">
+                <p class="main-text">@Html.turnToPersianNumber(Model.newUserCount.ToString())</p>
+                <p class="text-muted">کاربر جدید</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-back noti-box">
+            <span class="icon-box bg-color-brown set-icon">
+                <i class="glyphicon glyphicon-qrcode"></i>
+            </span>
+            <div class="text-box">
+                <p class="main-text">0</p>
+                <p class="text-muted">آگهی جدید</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -243,6 +243,16 @@ namespace Amirhome.Models
                 return false;
             }
         }
+        public List<Feedback> getAllFedbacks()
+        {
+            List<Feedback> feeds = null;
+            using (var context = new AmirhomeEntities())
+            {
+                feeds = (from F in context.Feedbacks.Include("State")
+                         select F).ToList();
+            }
+            return feeds;
+        }
         public bool approveEstate(int id, bool flag)
         {
             try
@@ -392,7 +402,17 @@ namespace Amirhome.Models
                 query = query.Where(E => E.Features.Any(F => F.ItemID == 12));
             return query;
         }
-
+        public int getNumOfEstateSubmitedAfter(DateTime date)
+        {
+            int count = 0;
+            using (var context = new AmirhomeEntities())
+            {
+                count = (from E in context.States
+                         where E.Date.Value > date
+                         select E).Count();
+            }
+            return count;
+        }
 
     }
 
@@ -402,5 +422,13 @@ namespace Amirhome.Models
         public string Condition { get; set; }
         public long Area { get; set; }
 
+    }
+    public class DashboardViewModel
+    {
+        public int newUserCount { get; set; }
+        public int newEstateCount { get; set; }
+        public List<Feedback> totalFeedbacks { get; set; }
+        public List<User> totalAgents { get; set; }
+        public List<UserAccouunt> totalUsers { get; set; }
     }
 }

@@ -191,7 +191,11 @@ namespace Amirhome.Models
                         select U).ToList();
             }
             if (res.Count > 0)
+            {
+                if (!res[0].Approved.Value)
+                    return -1;
                 return res.First().ID;
+            }
             return -1;
         }
 
@@ -260,6 +264,40 @@ namespace Amirhome.Models
                 throw ex;
             }
         }
-
+        public int getNumOfUsersRegisteredAfter(DateTime date)
+        {
+            int count = 0;
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    count = (from U in context.UserAccouunts
+                             where U.CreateDate.Value >= date
+                             select U).Count();
+                }
+                return count;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+        public List<UserAccouunt> getAllUser()
+        {
+            List<UserAccouunt> users = null;
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    users = (from U in context.UserAccouunts
+                             select U).ToList();
+                }
+                return users;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
