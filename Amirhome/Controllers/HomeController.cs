@@ -84,6 +84,8 @@ namespace Amirhome.Controllers
 
         public ActionResult SignOut()
         {
+            int id = int.Parse(Session["UserID"].ToString());
+            bool success = _userManager.refreshLastOnline(id);
             Session["UserID"] = null;
             return RedirectToAction("Index", "Home");
         }

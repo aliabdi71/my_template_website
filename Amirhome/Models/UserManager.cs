@@ -189,14 +189,6 @@ namespace Amirhome.Models
                 res = (from U in context.UserAccouunts
                        where U.Email == email && U.Passkey == passkey
                         select U).ToList();
-                if (res.Count > 0)
-                {
-                    UserAccouunt usr = res.First();
-                    usr.LastTimeOnline = DateTime.Now;
-                    context.UserAccouunts.Attach(usr);
-                    context.Entry(usr).State = System.Data.Entity.EntityState.Modified;
-                    context.SaveChanges();
-                }
             }
             if (res.Count > 0)
                 return res.First().ID;
@@ -223,6 +215,29 @@ namespace Amirhome.Models
             }
         }
 
+        public bool refreshLastOnline(int id)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    UserAccouunt res = (from U in context.UserAccouunts
+                                        where U.ID == id
+                                        select U).First();
+                    res.LastTimeOnline = DateTime.Now;
+                    context.UserAccouunts.Attach(res);
+                    context.Entry(res).State = System.Data.Entity.EntityState.Modified;
+                    context.Configuration.ValidateOnSaveEnabled = false;
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool createNewUser(UserAccouunt user)
         {
             if (getUserByEmail(user.Email) != null)
@@ -235,6 +250,7 @@ namespace Amirhome.Models
                 using (var context = new AmirhomeEntities())
                 {
                     context.UserAccouunts.Add(user);
+                    context.Configuration.ValidateOnSaveEnabled = false;
                     context.SaveChanges();
                 }
                 return true;

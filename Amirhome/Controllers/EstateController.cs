@@ -13,6 +13,7 @@ namespace Amirhome.Controllers
     {
         UserManager _userManager = new UserManager();
         EstateManager _estateManager = new EstateManager();
+        AgentManager _agentManager = new AgentManager();
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -78,7 +79,7 @@ namespace Amirhome.Controllers
                     ViewData["latitude"] = "35.688045";
                     ViewData["longitude"] = "51.392884";
                 }
-                ViewData["agent"] = _estateManager.getAgentById(estate_model.AgentID.Value);
+                ViewData["agent"] = _agentManager.getAgentById(estate_model.AgentID.Value);
                 return View(estate_model);
             }
             catch
@@ -351,6 +352,10 @@ namespace Amirhome.Controllers
             {
                 case "mNg_dshbd":
                     {
+                        int uid = int.Parse(Session["user_id"].ToString());
+                        var usr = _userManager.getUserByID(uid);
+                        var last_online_date = usr.LastTimeOnline;
+
                         ViewData["title"] = "داشبور مدیریت";
                         break;
                     }

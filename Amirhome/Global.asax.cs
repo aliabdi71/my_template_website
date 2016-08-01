@@ -17,5 +17,15 @@ namespace Amirhome
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+        protected void Session_End(object sender, EventArgs e)
+        {
+            Amirhome.Models.UserManager um = new Models.UserManager();
+            if (Session["UserID"] != null)
+            {
+                int id = int.Parse(Session["UserID"].ToString());
+                bool success = um.refreshLastOnline(id);
+            }
+            Session.Abandon();
+        }
     }
 }

@@ -223,20 +223,9 @@ namespace Amirhome.Models
             using (var context = new AmirhomeEntities())
             {
                 _estates = (from E in context.States.Include("District1").Include("StateType1")
-                            select E).ToList();
+                            select E).OrderByDescending(e => e.Date).ToList();
             }
             return _estates;
-        }
-        public Amirhome.Models.User getAgentById(int id)
-        {
-            Amirhome.Models.User agent = null;
-            using (var context = new AmirhomeEntities())
-            {
-                agent = (from U in context.Users
-                         where U.UserID == id
-                         select U).FirstOrDefault();
-            }
-            return agent;
         }
         public bool addFeedbackForEstate(Feedback fb)
         {
@@ -403,6 +392,7 @@ namespace Amirhome.Models
                 query = query.Where(E => E.Features.Any(F => F.ItemID == 12));
             return query;
         }
+
 
     }
 
