@@ -15,9 +15,38 @@ namespace Amirhome.Controllers
     {
         UserManager _userManager = new UserManager();
         AgentManager _agentManager = new AgentManager();
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+            if (Session["UserID"] != null)
+            {
+                if (Session["user_name"] == null)
+                {
+                    try
+                    {
+                        int uid = int.Parse(Session["UserID"].ToString());
+                        UserAccouunt user = _userManager.getUserByID(uid);
+                        string imageBase64 = Convert.ToBase64String(user.ProfileImage);
+                        string imageSrc = string.Format("data:image/jpg;base64,{0}", imageBase64);
+                        Session["user_name"] = user.Name;
+                        Session["user_image_src"] = imageSrc;
+                        Session["user_role_id"] = user.UserAccouuntsRole.ID;
+                        Session["user_role_access"] = user.UserAccouuntsRole.Username;
+                    }
+                    catch
+                    {
+                        Session["user_name"] = null;
+                        Session["user_image_src"] = null;
+                    }
+                }
+                ViewData["user_name"] = Session["user_name"];
+                ViewData["user_image_src"] = Session["user_image_src"];
+                ViewData["user_role_id"] = Session["user_role_id"];
+            }
+        }
         public ActionResult RegisterView()
         {
-            if (Session["UserID"] != null)
+            if (Session["UserID"] != null && Session["user_role_id"].ToString() != "1")
                 return RedirectToAction("Index", "Home");
             return View();
         }
@@ -47,11 +76,53 @@ namespace Amirhome.Controllers
                 else
                     ModelState.AddModelError("", "کاربر با این آدرس ایمیل قبلاً ثبت شده است");
             }
-            catch
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", "خطا در ثبت حساب کاربری");
             }
             return View(model);
+        }
+
+        public ActionResult EditAccountView()
+        {
+            if (Session["UserID"] == null)
+                return RedirectToAction("Index", "Home");
+            int id = int.Parse(Session["UserID"].ToString());
+            UserAccouunt model = _userManager.getUserByID(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditAccountView(UserAccouunt model)
+        {
+            if (Session["UserID"] == null)
+                return RedirectToAction("Index", "Home");
+            try
+            {
+                if (Request.Files.Count > 0)
+                {
+                    HttpPostedFileBase img = Request.Files[0];
+                    byte[] data = null;
+                    long numBytes = img.ContentLength;
+                    BinaryReader bin_reader = new BinaryReader(img.InputStream);
+                    data = bin_reader.ReadBytes((int)numBytes);
+                    model.ProfileImage = data;
+                }
+                model.RoleID = int.Parse(Session["user_role_id"].ToString());
+                bool res = _userManager.updateUser(model);
+                if (res)
+                    return RedirectToAction("Index", "Home");
+                else
+                {
+                    ModelState.AddModelError("", "خطا در ثبت تغییرات");
+                    return View(model);
+                }
+            }
+            catch
+            {
+                ModelState.AddModelError("", "لطفا عکس کم حجم تری ارسال نمایید");
+                return View(model);
+            }
         }
 
         [HttpPost]

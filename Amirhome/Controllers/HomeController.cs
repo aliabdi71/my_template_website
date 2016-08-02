@@ -86,7 +86,7 @@ namespace Amirhome.Controllers
         {
             int id = int.Parse(Session["UserID"].ToString());
             bool success = _userManager.refreshLastOnline(id);
-            Session["UserID"] = null;
+            Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
     }

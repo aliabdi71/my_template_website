@@ -1,0 +1,89 @@
+﻿@model Amirhome.Models.UserAccouunt
+
+@{
+    ViewBag.Title = "ویرایش مشخصات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container body-content" style=" margin-top: 50px; min-height:550px;">
+    <h2>ویرایش مشخصات کاربر</h2>
+    <form id="registerForm" action="/Account/EditAccountView" method="post" enctype="multipart/form-data">
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(model => model.ID)
+            @Html.HiddenFor(model => model.Approved)
+            @Html.HiddenFor(model => model.CreateDate)
+            @Html.HiddenFor(model => model.LastTimeOnline)
+            @Html.HiddenFor(model => model.ProfileImage)
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2">نام</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">کلمه عبور</label>
+                <div class="col-md-10">
+                    <input class="form-control" type="password" name="Passkey" id="Passkey" value="" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">تکرار کلمه عبور</label>
+                <div class="col-md-10">
+                    <input class="form-control" type="password" name="PasskeyConfirm" id="PasskeyConfirm" value="" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">تلفن</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">پست الکترونیک</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">عکس پروفایل</label>
+                <div class="col-md-10">
+                    <input type="file" name="profile_pic" id="profile_pic" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" onclick="validate_submit()" value="ذخیره" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+    @section scripts{
+        <script type="text/javascript">
+            function validate_submit() {
+                var pass = $("#Passkey").val();
+                var pass_confirm = $("#PasskeyConfirm").val();
+                if (pass === '') {
+                    $("#Passkey").after('<p class="text-danger">فیلد کلمه عبور نباید خالی باشد</p>');
+                    return false;
+                }
+                if (pass !== pass_confirm) {
+                    $("#Passkey").after('<p class="text-danger">فیلدهای کلمه عبور و تکرار کلمه عبور یکسان نیستند</p>');
+                    return false;
+                }
+                return true;
+            }
+        </script>
+    }

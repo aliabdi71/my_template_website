@@ -219,6 +219,26 @@ namespace Amirhome.Models
             }
         }
 
+        public bool updateUser(UserAccouunt user)
+        {
+            try
+            {
+                user.Passkey = encodePassword(user.Passkey);
+                using (var context = new AmirhomeEntities())
+                {
+                    context.UserAccouunts.Attach(user);
+                    context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    context.Configuration.ValidateOnSaveEnabled = false;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool refreshLastOnline(int id)
         {
             try
@@ -254,6 +274,7 @@ namespace Amirhome.Models
                 using (var context = new AmirhomeEntities())
                 {
                     context.UserAccouunts.Add(user);
+                    context.Entry(user).State = System.Data.Entity.EntityState.Added;
                     context.Configuration.ValidateOnSaveEnabled = false;
                     context.SaveChanges();
                 }

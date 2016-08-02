@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "ManagementPanel";
+    ViewBag.Title = "پنل کاربری";
     Layout = "~/Views/Shared/_ManagementPanelLayout.cshtml";
     string role_id = ViewData["user_role_id"].ToString();
 }
@@ -175,7 +175,7 @@
         }
 
         $(document).ready(function () {
-            render_content('mNg_dshbd');
+            $('ul.sidebar-nav li:nth-child(2) a').trigger('click');
         });
     </script>
 }

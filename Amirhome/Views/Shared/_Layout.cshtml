@@ -41,7 +41,7 @@
                         }
                         else
                         {
-                            <li><a href="javascript:void(0)" style="text-align:left;">@*<img  src='@ViewData["user_image_src"].ToString()' style="width:10%"/>*@
+                            <li><a href='@Url.Action("EditAccountView", "Account")' style="text-align:left;">@*<img  src='@ViewData["user_image_src"].ToString()' style="width:10%"/>*@
                                 &nbsp;
                                 @ViewData["user_name"].ToString()
                                 </a>
