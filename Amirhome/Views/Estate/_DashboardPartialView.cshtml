@@ -2,58 +2,78 @@
 @using Amirhome.CustomHelpers
 
 <style>
-.noti-box {
-    min-height: 100px;
-    padding: 20px;
-}
-.panel-back {
-    background-color: #f8f8f8;
-}
-.noti-box .icon-box {
-    display: block;
-    float: left;
-    font-size: 40px;
-    height: 70px;
-    line-height: 75px;
-    margin: 0 15px 10px 0;
-    text-align: center;
-    vertical-align: middle;
-    width: 70px;
-}
-.set-icon {
-    border-radius: 50px;
-}
-.bg-color-red {
-    background-color: #db0630;
-    color: #fff;
-}
-.bg-color-green {
-    background-color: #00ce6f;
-    color: #fff;
-}
-.bg-color-blue {
-    background-color: #a95df0;
-    color: #fff;
-}
-.bg-color-brown {
-    background-color: #b94a00;
-    color: #fff;
-}
-.text-box p {
-    margin: 0 0 3px;
-}
-.main-text {
-    font-size: 25px;
-    font-weight: 600;
-}
-p {
-    font-size: 16px;
-    line-height: 25px;
-    padding-top: 20px;
-}
-.text-muted {
-    color: #999;
-}
+    .noti-box {
+        min-height: 100px;
+        padding: 20px;
+    }
+    .panel-back {
+        background-color: #f8f8f8;
+    }
+    .noti-box .icon-box {
+        display: block;
+        float: left;
+        font-size: 40px;
+        height: 70px;
+        line-height: 75px;
+        margin: 0 15px 10px 0;
+        text-align: center;
+        vertical-align: middle;
+        width: 70px;
+    }
+    .set-icon {
+        border-radius: 50px;
+    }
+    .bg-color-red {
+        background-color: #db0630;
+        color: #fff;
+    }
+    .bg-color-green {
+        background-color: #00ce6f;
+        color: #fff;
+    }
+    .bg-color-blue {
+        background-color: #a95df0;
+        color: #fff;
+    }
+    .bg-color-brown {
+        background-color: #b94a00;
+        color: #fff;
+    }
+    .text-box p {
+        margin: 0 0 3px;
+    }
+    .main-text {
+        font-size: 25px;
+        font-weight: 600;
+    }
+    p {
+        font-size: 16px;
+        line-height: 25px;
+        padding-top: 20px;
+    }
+    .text-muted {
+        color: #999;
+    }
+    .users-panel-content, .agents-panel-content{
+        min-height:200px;
+        margin:8px;
+        padding: 6px;
+        border: 1px solid #999;
+        border-radius: 5px;
+    }
+    .chat-box {
+        list-style: outside none none;
+        margin: 0;
+        padding: 0;
+    }
+    .chat-box li {
+        border-bottom: 1px dotted #808080;
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+    }
+    .chat-box li .chat-body p {
+        margin: 0;
+    }
 </style>
 <h1>@ViewData["title"].ToString()</h1>
 <hr />
@@ -99,6 +119,140 @@ p {
             <div class="text-box">
                 <p class="main-text">0</p>
                 <p class="text-muted">آگهی جدید</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+            <i class="glyphicon glyphicon-user"></i>
+            کاربران سایت
+            </div>
+            <div class="panel-body">
+                <select id="all_users" onchange="fetch_user_info(this); return true;" style="min-width:145px;">
+                    <option value="0">انتخاب کاربر</option>
+                    @foreach (var user in Model.totalUsers)
+                    {
+                        <option value="@user.ID">@user.Name</option>
+                    }
+                </select>
+                <div class="users-panel-content  text-center">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+            <i class=" glyphicon glyphicon-star"></i>
+            مشاورین سایت
+            </div>
+            <div class="panel-body">
+                <select id="all_agents" onchange="fetch_agent_info(this); return true;" style="min-width:145px;">
+                    <option value="0">انتخاب مشاور</option>
+                    @foreach (var agent in Model.totalAgents)
+                    {
+                        <option value="@agent.UserID">@agent.DisplayName</option>
+                    }
+                </select>
+                <div class="agents-panel-content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("#all_agents").select2();
+        $("#all_users").select2();
+
+        function fetch_user_info(elem) {
+            var id = $(elem).val();
+            if (id === '0')
+                return;
+            $(".users-panel-content").html('<br /><img id="loading" style="margin:0 auto; display:block;" src="/Content/shared_images/loading.gif">');
+            var postData = { "id": id };
+            $.ajax({
+                type: 'GET',
+                url: "/Account/getUserInfo",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    var html = "<img style='margin: 0 auto; width: 30%;' src='" + data.imageUrl + "' />" +
+                                "<table style='min-width: 440px;'>" +
+                                "<tr>" + "<td>" + "<strong>نام</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.Name + "</label>" + "</td>" + "</tr>" +
+                                "<tr>" + "<td>" + "<strong>سطح کاربری</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.Role + "</label>" + "</td>" + "</tr>" +
+                                "<tr>" + "<td>" + "<strong>تلفن</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.Phone + "</label>" + "</td>" + "</tr>" +
+                                "<tr>" + "<td>" + "<strong>آخرین لاگین</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + convertToJalaliDate(data.LastOnline) + "</label>" + "</td>" + "</tr>" +
+                                "</tabel>";
+                    $(".users-panel-content").html(html);
+                },
+                error: function (error) {
+                    $(".users-panel-content").html('خطا در اتصال به سرور');
+                },
+            });
+        }
+
+        function fetch_agent_info(elem) {
+            var id = $(elem).val();
+            if (id === '0')
+                return;
+            $(".agents-panel-content").html('<br /><img id="loading" style="margin:0 auto; display:block;" src="/Content/shared_images/loading.gif">');
+            var postData = { "id": id };
+            $.ajax({
+                type: 'GET',
+                url: "/Account/getAgentInfo",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    var html =  "<table style='min-width: 440px;'>" +
+                                "<tr>" + "<td>" + "<strong>نام</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.DisplayName + "</label>" + "</td>" + "</tr>" +
+                                "<tr>" + "<td>" + "<strong>ایمیل</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.Email + "</label>" + "</td>" + "</tr>" +
+                                "<tr>" + "<td>" + "<strong>کد</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.UserId + "</label>" + "</td>" + "</tr>" +
+                                "</tabel>";
+                    $(".agents-panel-content").html(html);
+                },
+                error: function (error) {
+                    $(".agents-panel-content").html('خطا در اتصال به سرور');
+                },
+            });
+        }
+
+    </script>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="chat-panel panel panel-success chat-boder chat-panel-head">
+            <div class="panel-heading">
+                <i class="fa fa-comments fa-fw"></i>
+                نظرات کاربران
+            </div>
+            <div class="panel-body" style="max-height: 200px; overflow-y: scroll;">
+                <ul class="chat-box">
+                    @{
+                        foreach (var item in Model.totalFeedbacks)
+                        {
+                            <li class="left clearfix">
+                                <div class="chat-body">
+                                    <strong class="text-muted">@item.Name</strong>
+                                    <small class="pull-left">
+                                        <i class="glyphicon glyphicon-home"></i>@item.StateID
+                                    </small>
+                                    <p style="padding-top:10px;">
+                                        @item.Text
+                                    </p>
+                                    <label class="text-muted">ایمیل: @item.Email</label>
+                                </div>
+                            </li>
+                        }
+                    }
+                </ul>
             </div>
         </div>
     </div>

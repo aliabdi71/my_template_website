@@ -344,10 +344,11 @@ namespace Amirhome.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult ManagementCommand(string command)
+        public ActionResult ManagementCommand(string command, int page = 1)
         {
             object return_obj = null;
             List<State> all_estates = _estateManager.getAllStates();
+            ViewData["command"] = command;
             switch (command)
             {
                 case "mNg_dshbd":
@@ -367,28 +368,28 @@ namespace Amirhome.Controllers
                 case "saLe_est":
                     {
                         ViewData["title"] = "املاک فروش";
-                        all_estates = all_estates.Where(E => E.Condition == "فروش").ToList();
-                        return PartialView("_ManagementPartialView", all_estates);
+                        all_estates = all_estates.Where(E => E.Condition == "فروش" && E.Archived.Value == false).ToList();
+                        return PartialView("_ManagementPartialView", all_estates.Take(Math.Min(all_estates.Count, page * 10)).ToList());
                     }
                 case "mRtG_est":
                     {
                         ViewData["title"] = "املاک رهن و اجاره";
-                        all_estates = all_estates.Where(E => E.Condition != "فروش").ToList();
-                        return PartialView("_ManagementPartialView", all_estates);
+                        all_estates = all_estates.Where(E => E.Condition != "فروش" && E.Archived.Value == false).ToList();
+                        return PartialView("_ManagementPartialView", all_estates.Take(Math.Min(all_estates.Count, page * 10)).ToList());
                     }
                 case "all_The_est":
                     {
                         ViewData["title"] = "همه املاک";
-                        all_estates = all_estates.ToList();
-                        return PartialView("_ManagementPartialView", all_estates);
+                        all_estates = all_estates.Where(E => E.Archived.Value == false).ToList();
+                        return PartialView("_ManagementPartialView", all_estates.Take(Math.Min(all_estates.Count, page * 10)).ToList());
                     }
                 case "arsH_est":
                     {
                         ViewData["title"] = "املاک آرشیو شده";
                         all_estates = all_estates.Where(E => E.Archived == true).ToList();
-                        return PartialView("_ManagementPartialView", all_estates);
+                        return PartialView("_ManagementPartialView", all_estates.Take(Math.Min(all_estates.Count, page * 10)).ToList());
                     }
-                case "seE_USers":
+                case "seE_AdverT":
                     {
                         break;
                     }
@@ -411,9 +412,9 @@ namespace Amirhome.Controllers
         {
             bool res = _estateManager.archiveEstate(id, flag);
             if (res)
-                return Json("Success");
+                return Json("Success", JsonRequestBehavior.AllowGet);
             else
-                return Json("Error");
+                return Json("Error", JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult EditEstate(int id)
@@ -422,6 +423,7 @@ namespace Amirhome.Controllers
             ViewData["Features"] = _estateManager.getAllFeatures();
             ViewBag.Province = new SelectList(_estateManager.getAllProvince(), "id", "name", _estate.Province);
             ViewBag.City = new SelectList(_estateManager.getCityByProvince((int)_estate.Province), "id", "name", _estate.City);
+            ViewBag.AgentID = new SelectList(_agentManager.getAllAgent(), "UserID", "DisplayName", _estate.AgentID);
             #region InitializeSelectLists
             ViewBag.District = new SelectList(_estateManager.getAllDistricts(), "ID", "name", _estate.District);
             List<object> StateTypeList = new List<object>()

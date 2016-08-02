@@ -2,7 +2,8 @@
 
 @{
     List<Amirhome.Models.Feature> ftrs = ViewData["Features"] as List<Amirhome.Models.Feature>;
-    //IEnumerable<SelectListItem> prv = ViewData["Province"] as IEnumerable<SelectListItem>;
+    
+    
 }
 
 <div id="form_target">
@@ -30,21 +31,20 @@
             @Html.HiddenFor(model => model.Flooring)
             @Html.HiddenFor(model => model.Archived)
             @Html.HiddenFor(model => model.Approved)
-            @*@Html.HiddenFor(model => model.AgentID)*@
             @Html.HiddenFor(model => model.Date)
             @Html.HiddenFor(model => model.Description)
             @Html.HiddenFor(model => model.District1)
             @Html.HiddenFor(model => model.Features)
             @Html.HiddenFor(model => model.Feedbacks)
             @Html.HiddenFor(model => model.GoogleMaps)
-            @Html.HiddenFor(model => model.Occasion)
             @Html.HiddenFor(model => model.Owner.ID)
             @Html.HiddenFor(model => model.Plans)
             @Html.HiddenFor(model => model.Privacy)
-            @Html.HiddenFor(model => model.Serial)
             @Html.HiddenFor(model => model.StateType1)
             @Html.HiddenFor(model => model.province1)
 
+            <label>کد ملک:&nbsp;&nbsp;</label>@Html.TextBoxFor(M => M.Serial, new { @class="form-control", @readonly="readonly" })
+            <br />
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="col-md-3 control-label">نام مالک</label>
@@ -153,6 +153,18 @@
                     <label class="col-md-3 control-label">واحد در طبقه</label>
                     <div class="col-md-9">
                         @Html.DropDownList("Units", null, null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">مشاور</label>
+                    <div class="col-md-9">
+                        @Html.DropDownList("AgentID", null, null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">مورد ویژه </label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(M => M.OccasionFlag)
                     </div>
                 </div>
             </div>
@@ -277,6 +289,12 @@
                     <label class="col-md-3 control-label">تعداد طبقات ساختمان</label>
                     <div class="col-md-9">
                         @Html.DropDownList("Floors", null, null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">توضیحات موارد ویژه</label>
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(M => M.Occasion, new { @class = "form-control" })
                     </div>
                 </div>
             </div>

@@ -248,7 +248,7 @@ namespace Amirhome.Models
             List<Feedback> feeds = null;
             using (var context = new AmirhomeEntities())
             {
-                feeds = (from F in context.Feedbacks.Include("State")
+                feeds = (from F in context.Feedbacks
                          select F).ToList();
             }
             return feeds;
@@ -285,8 +285,10 @@ namespace Amirhome.Models
                                  where E.ID == id
                                  select E).First();
                     est.Archived = flag;
-                    bool res = updateEstate(est);
-                    return res;
+                    context.States.Attach(est);
+                    context.Entry(est).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
                 }
             }
             catch

@@ -14,6 +14,7 @@ namespace Amirhome.Controllers
     public class AccountController : Controller
     {
         UserManager _userManager = new UserManager();
+        AgentManager _agentManager = new AgentManager();
         public ActionResult RegisterView()
         {
             if (Session["UserID"] != null)
@@ -34,8 +35,10 @@ namespace Amirhome.Controllers
                     BinaryReader bin_reader = new BinaryReader(img.InputStream);
                     data = bin_reader.ReadBytes((int)numBytes);
                     model.ProfileImage = data;
-                    model.RoleID = 1;
+                    if (model.RoleID == null)
+                        model.RoleID = 5;
                     model.CreateDate = DateTime.Now;
+                    model.LastTimeOnline = DateTime.Now;
                 }
                 model.Approved = true;
                 bool res = _userManager.createNewUser(model);
@@ -81,6 +84,57 @@ namespace Amirhome.Controllers
                 return Json("خطا در برقراری ارتباط با سرور");
             }
         }
-        
+
+        public JsonResult getUserInfo(int id)
+        {
+            if (Session["user_role_id"] == null)
+                return Json(null, JsonRequestBehavior.AllowGet);
+            UserAccouunt user = _userManager.getUserByID(id);
+            var res_object = new
+            {
+                ID = user.ID,
+                Role = user.UserAccouuntsRole.Name,
+                Name = user.Name,
+                LastOnline = (user.LastTimeOnline != null) ? user.LastTimeOnline.ToString().Split(' ')[0] : "2016/01/01",
+                imageUrl = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(user.ProfileImage)),
+                Phone = user.Phone
+            };
+            return Json(res_object, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult deleteUser(int id)
+        {
+            if (Session["user_role_id"] == null)
+                return Json("error", JsonRequestBehavior.AllowGet);
+            bool res = _userManager.deleteUser(id);
+            if (res)
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            else
+                return Json("Error", JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getAgentInfo(int id)
+        {
+            if (Session["user_role_id"] == null)
+                return Json(null, JsonRequestBehavior.AllowGet);
+            User agent = _agentManager.getAgentById(id);
+            var res_object = new 
+            {
+                DisplayName = agent.DisplayName,
+                UserID = agent.UserID,
+                Email = agent.Email,
+            };
+            return Json(res_object, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult deleteAgent(int id)
+        {
+            if (Session["user_role_id"] == null)
+                return Json("error", JsonRequestBehavior.AllowGet);
+            bool res = _agentManager.deleteAgent(id);
+            if (res)
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            else
+                return Json("Error", JsonRequestBehavior.AllowGet);
+        }
     }
 }

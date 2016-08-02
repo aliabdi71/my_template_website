@@ -4,6 +4,8 @@
 
 @{
     string role_id = ViewData["user_role_id"].ToString();
+    int page = (Model.Count / 10) + 1;
+    string command = ViewData["command"].ToString();
 }
 
 <h1>@ViewData["title"].ToString()</h1>
@@ -30,8 +32,8 @@
                 <td>@Model[i].District1.name</td>
                 <td>@Html.turnToPersianNumber(Model[i].Bedrooms)</td>
                 <td>@Html.turnToPersianNumber(Model[i].Area.ToString())</td>
-                <td>@Html.SplitInParts(Model[i].TotalPrice.ToString(), 3)</td>
-                <td>@Html.SplitInParts(Model[i].PricePerMeter.ToString(), 3)</td>
+                <td>@Html.SplitInParts((Model[i].Condition == "فروش") ? Model[i].TotalPrice.ToString() : Model[i].PrepaymentPrice.ToString(), 3)</td>
+                <td>@Html.SplitInParts((Model[i].Condition == "فروش") ? Model[i].PricePerMeter.ToString() : Model[i].MortgagePrice.ToString(), 3)</td>
                 <td>@Html.turnToPersianNumber(Model[i].Serial.ToString())</td>
                 @{
                     if (!Model[i].Approved.Value)
@@ -48,11 +50,11 @@
                     {
                         if (!Model[i].Archived.Value)
                         {
-                            <td><button class="btn btn-primary" onclick="archive_estate(@Model[i].ID, true, this)">بایگانی</button></td>
+                            <td><button class="btn btn-primary" data-flag="true" onclick="archive_estate(@Model[i].ID, this)">بایگانی</button></td>
                         }
                         else
                         {
-                            <td><button class="btn btn-danger" onclick="archive_estate(@Model[i].ID, false, this)">احیا</button></td>
+                            <td><button class="btn btn-danger" data-flag="false" onclick="archive_estate(@Model[i].ID, this)">احیا</button></td>
                         }
                     }
                 }
@@ -61,3 +63,8 @@
         }
     </tbody>
 </table>
+
+<div class="row text-center">
+    <br />
+    <button class="btn btn-primary" onclick="render_content('@command' , @page)">مشاهده بیشتر</button>
+</div>

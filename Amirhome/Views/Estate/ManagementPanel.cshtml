@@ -24,27 +24,26 @@
             @{
                 if (role_id == "1")
                 {
-                    <li><a href="javascript:void(0)" onclick="render_content('mNg_dshbd'); return true;">داشبورد مدیریت</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('mNg_dshbd', 1); return true;">داشبورد مدیریت</a></li>
                 }
                 if (role_id == "1" || role_id == "3")
                 {
-                    <li><a href="javascript:void(0)" onclick="render_content('saLe_est'); return true;">املاک فروشی</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('saLe_est', 1); return true;">املاک فروشی</a></li>
                 }
                 if (role_id == "1" || role_id == "4")
                 {
-                    <li><a href="javascript:void(0)" onclick="render_content('mRtG_est'); return true;">املاک رهن و اجاره</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('mRtG_est', 1); return true;">املاک رهن و اجاره</a></li>
                 }
                 if (role_id == "1" || role_id == "2")
                 {
-                    <li><a href="javascript:void(0)" onclick="render_content('all_The_est'); return true;">همه املاک</a></li>
-                    <li><a href="javascript:void(0)" onclick="render_content('arsH_est'); return true;">املاک آرشیو شده</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('all_The_est', 1); return true;">همه املاک</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('arsH_est', 1); return true;">املاک آرشیو شده</a></li>
                 }
                 if (role_id == "1")
                 {
-                    <li><a href="javascript:void(0)">کاربران سایت</a></li>
+                    <li><a href="javascript:void(0)" onclick="render_content('seE_AdverT', 1); return true;">آگهی های سایت</a></li>
                 }
             }            
-            <li><a href="#">صفحه شخصی</a></li>
         </ul>
     </div>
     <div id="page-content-wrapper">
@@ -58,10 +57,10 @@
 
 @section scripts{
     <script type="text/javascript">
-        function render_content(content_type) {
+        function render_content(content_type, page) {
             $("#content").html('<img src="/Content/shared_images/loading.gif" style="margin:0 auto; display:block;" id="loading"/>');
             $("#loading").css('display', 'block');
-            var postData = { "command": content_type};
+            var postData = { "command": content_type, "page": page};
             $.ajax({
                 type: 'POST',
                 url: "/Estate/ManagementCommand",
@@ -137,8 +136,42 @@
             });
         }
 
-        function archive_estate(id, flag, elem) {
-
+        function archive_estate(id, elem) {
+            $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+            var flag = $(elem).attr('data-flag');
+            var postData = { "id": id, "flag": flag };
+            $.ajax({
+                type: 'GET',
+                url: "/Estate/EstateArchive",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    if (data === "Success") {
+                        if (flag === "false") {
+                            $(elem).html('بایگانی').removeClass('btn-danger').addClass('btn-primary').removeAttr('disabled');
+                            $(elem).attr('data-flag', "true");
+                        }
+                        else {
+                            $(elem).html('احیا').addClass('btn-danger').removeClass('btn-primary').removeAttr('disabled');
+                            $(elem).attr('data-flag', "false");
+                        }
+                    }
+                    else {
+                        if (flag === "true")
+                            $(elem).html('بایگانی').removeAttr('disabled');
+                        else
+                            $(elem).html('احیا').removeAttr('disabled');
+                        alert("خطا در انجام عملیات");
+                    }
+                },
+                error: function (data) {
+                    if (flag === "true")
+                        $(elem).html('بایگانی').removeAttr('disabled');
+                    else
+                        $(elem).html('احیا').removeAttr('disabled');
+                    alert("خطا در انجام عملیات");
+                },
+            });
         }
 
         $(document).ready(function () {
