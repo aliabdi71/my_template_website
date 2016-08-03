@@ -58,9 +58,12 @@
 @section scripts{
     <script type="text/javascript">
         function render_content(content_type, page) {
+            var postData = { "command": content_type, "page": page };
+            if ($("#serial-input").length && $("#serial-input").val().length) {
+                postData["serial"] = $("#serial-input").val();
+            }
             $("#content").html('<img src="/Content/shared_images/loading.gif" style="margin:0 auto; display:block;" id="loading"/>');
             $("#loading").css('display', 'block');
-            var postData = { "command": content_type, "page": page};
             $.ajax({
                 type: 'POST',
                 url: "/Estate/ManagementCommand",

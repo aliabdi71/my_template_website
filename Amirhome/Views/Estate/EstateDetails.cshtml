@@ -2,9 +2,9 @@
 @{
     ViewBag.Title = "مشاهده جزئیات ملک";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
     var agent = ViewData["agent"] as Amirhome.Models.User;
 }
+@using Amirhome.CustomHelpers
 
 @model Amirhome.Models.State
 
@@ -70,43 +70,66 @@
                             <td class="title-cell">
                                 آدرس
                             </td>
-                            <td colspan="3" style="font-weight:bold">
-                                @Model.Address
-                            </td>
+                            @if (ViewData["user_role_id"] != null && ViewData["user_role_id"].ToString() != "5")
+                            {
+                                <td colspan="3" style="font-weight:bold">
+                                    @Model.Address - @Html.turnToPersianNumber(Model.DetailedAddress)
+                                </td>
+                            }
+                            else
+                            {
+                                <td colspan="3" style="font-weight:bold">
+                                    @Model.Address
+                                </td>
+                            }
                         </tr>
                         <tr>
-                            <td class="title-cell">
-                                قیمت کل
-                            </td>
-                            <td colspan="3" class="red price">
-                                @{
-                                    if (Model.Condition == "فروش")
+                           @{
+                               if (Model.Condition == "فروش")
+                               {
+                                <td class="title-cell">
+                                    قیمت کل
+                                </td>
+                                <td colspan="3" class="red">
+                                    <span>@Html.SplitInParts(Model.TotalPrice.ToString(), 3)</span>
+                                </td>
+                               }
+                               else
+                               {
+                                <td class="title-cell">
+                                    پیش پرداخت
+                                </td>
+                                <td colspan="3" class="red">
+                                    <span>@Html.SplitInParts(Model.PrepaymentPrice.ToString(), 3)</span>
+                                    @if (Model.Changeable.HasValue && Model.Changeable.Value)
                                     {
-                                        <span>@Model.TotalPrice</span>
+                                        <span>قابل تبدیل</span>
                                     }
-                                    else
-                                    {
-                                        <span>@Model.PrepaymentPrice</span>
-                                    }
-                                }
-                            </td>
+                                </td>
+                               }
+                            }
                         </tr>
                         <tr>
-                            <td class="title-cell">
-                                قیمت هر متر
-                            </td>
-                            <td colspan="3" class="red price">
-                                @{
-                                    if (Model.Condition == "فروش")
-                                    {
-                                        <span>@Model.PricePerMeter</span>
-                                    }
-                                    else
-                                    {
-                                        <span>@Model.MortgagePrice</span>
-                                    }
+                            @{
+                                if (Model.Condition == "فروش")
+                                {
+                                    <td class="title-cell">
+                                        قیمت هر متر
+                                    </td>
+                                    <td colspan="3" class="red">
+                                        <span>@Html.SplitInParts(Model.PricePerMeter.ToString(), 3)</span>
+                                    </td>
                                 }
-                            </td>
+                                else
+                                {
+                                    <td class="title-cell">
+                                        قیمت اجاره
+                                    </td>
+                                    <td colspan="3" class="red">
+                                        <span>@Html.SplitInParts(Model.MortgagePrice.ToString(), 3)</span>
+                                    </td>
+                                }
+                            }
                         </tr>
                         <tr>
                             <td class="title-cell">
@@ -217,6 +240,10 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="row">
+                        <h3 style="margin-right:10px; font-size:19px;">توضیحات</h3>
+                        <p style="margin-right:20px;">@Model.Description</p>
+                    </div>
                 </div>
             </div>
             <br />
@@ -265,10 +292,20 @@
                 <div class="inner_content">
                     <img class="agent_img" src="~/Content/shared_images/logo3.png" />
                     <span>کد ملک: </span><label class="number">@Model.Serial</label><br />
-                    <span>نام مالک: </span><label class="number">@Model.Owner.Name</label><br />
+                    <span>تاریخ ثبت ملک: </span><label>@Html.gregorianToJalali(Model.Date.ToString().Split(' ')[0])</label><br />
                     <span>نام مشاور: </span><label class="number">@agent.DisplayName</label><br />
-                    <span>تلفن: </span><label class="number">@Model.Owner.Mobile - @Model.Owner.Telephone</label><br />
-                    <span>ایمیل: </span><label class="number">@Model.Owner.Email</label><br />
+                    @if (ViewData["user_role_id"] != null && ViewData["user_role_id"].ToString() != "5")
+                    {
+                        <span>نام مالک: </span><label class="number">@Model.Owner.Name</label><br />
+                        <span>تلفن: </span><label class="number">@Model.Owner.Mobile - @Model.Owner.Telephone</label><br />
+                        <span>ایمیل: </span><label class="number">@Model.Owner.Email</label><br />
+                    }
+                    else
+                    {
+                        <span>نام مالک: </span><label class="number"></label><br />
+                        <span>تلفن: </span><label class="number"></label><br />
+                        <span>ایمیل: </span><label class="number"></label><br />
+                    }
                 </div>
             </div>
             <br />
@@ -280,19 +317,19 @@
                         <table>
                             <tr>
                                 <td class="fblabel"><label>نام و نام خانوادگی</label></td>
-                                <td><input id="fb_name" type="text" /></td>
+                                <td><input class="form-control" id="fb_name" type="text" /></td>
                             </tr>
                             <tr>
                                 <td class="fblabel"><label>شماره تماس</label></td>
-                                <td><input id="fb_phone" type="text" /></td>
+                                <td><input class="form-control" id="fb_phone" type="text" /></td>
                             </tr>
                             <tr>
                                 <td class="fblabel"><label>ایمیل</label> </td>
-                                <td><input id="fb_email" type="text" /></td>
+                                <td><input class="form-control" id="fb_email" type="text" /></td>
                             </tr>
                             <tr>
                                 <td class="fblabel"><label>متن پیام</label></td>
-                                <td><textarea id="fb_text"></textarea></td>
+                                <td><textarea class="form-control" id="fb_text"></textarea></td>
                             </tr>
                             <tr>
                                 <td><button id="fb_send" onclick="send_feedback()" class="btn btn-primary">ارسال</button></td>

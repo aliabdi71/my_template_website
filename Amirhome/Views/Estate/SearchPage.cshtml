@@ -231,7 +231,7 @@
                     <div class="row advanced-section">
                         <div class="col-md-3">
                             <select id="EstateFloor">
-                                <option value="0" selected="selected">تعداد طبقات</option>
+                                <option value="0" selected="selected">طبقه</option>
                                 <option value="زیرزمین">زیرزمین</option>
                                 <option value="پیلوت">پیلوت</option>
                                 <option value="همکف">همکف</option>
@@ -394,7 +394,7 @@
 	                            '<div class="col-md-5">' + 
 		                            '<table></table>' + 
 		                            '<i class="glyphicon glyphicon-usd">&nbsp;</i><label class="price header">' + numberWithCommas(data[i].FirstPrice) + '</label><br />' +
-		                            '<i class="glyphicon glyphicon-pushpin">&nbsp;</i><label class="number sub-header">' + data[i].Address + ' - ' + turn2PersianNumber(data[i].Area) + ' متر - متری <span class="price">' + numberWithCommas(data[i].SecondPrice) + '</span></label>' +
+		                            '<i class="glyphicon glyphicon-pushpin">&nbsp;</i><label class="number sub-header">' + data[i].Address + ' - ' + turn2PersianNumber(data[i].Area) + ' متر - <span class="price">' + numberWithCommas(data[i].SecondPrice) + '</span></label>' +
 		                            '<p class="number" style="margin-top:8px;">' + custom_string + '</p>' +
 	                            '</div>' + 
 	                            '<div class="col-md-3" style="border: 1px outset black; margin-top:4px;">' + 
@@ -523,6 +523,21 @@
             clearSearchResult();
             (elem.checked) ? search_params['HasImage'] = true : search_params['HasImage'] = false;
             doSearch(search_params, 1);
+        }
+
+        function condition_change() {
+            if ($("#EstateCondition").val() === '1') {
+                $("#PrepaymentPriceFrom").attr('placeholder', 'حداقل قیمت کل (تومان)').attr('id', 'TotalPriceFrom');
+                $("#PrepaymentPriceTo").attr('placeholder', 'حداکثر قیمت کل (تومان)').attr('id', 'TotalPriceTo');
+                $("#MortagePriceFrom").attr('placeholder', 'حداقل قیمت هر متر (تومان)').attr('id', 'PricePerMeterFrom');
+                $("#MortagePriceTo").attr('placeholder', 'حداکثر قیمت هر متر (تومان)').attr('id', 'PricePerMeterTo');
+            }
+            else {
+                $("#TotalPriceFrom").attr('placeholder', 'حداقل قیمت ودیعه (تومان)').attr('id', 'PrepaymentPriceFrom');
+                $("#TotalPriceTo").attr('placeholder', 'حداکثر قیمت ودیعه (تومان)').attr('id', 'PrepaymentPriceTo');
+                $("#PricePerMeterFrom").attr('placeholder', 'حداقل قیمت اجاره (تومان)').attr('id', 'MortagePriceFrom');
+                $("#PricePerMeterTo").attr('placeholder', 'حداکثر قیمت اجاره (تومان)').attr('id', 'MortagePriceTo');
+            }
         }
 
         $(document).ready(function () {
@@ -666,7 +681,8 @@
                     EstateCondition: true,
                     EstateConditionValue: condition,
                 }
-                $("#EstateCondition").val(getQueryStringByName("cond")).trigger('change');
+                $("#EstateCondition").val(getQueryStringByName("cond"));
+                condition_change();
                 if (Province !== null) {
                     search_params["EstateProvince"] = true;
                     search_params["EstateProvinceValue"] = Province;
@@ -712,18 +728,7 @@
             }, "input");
 
             $("#EstateCondition").change(function () {
-                if ($(this).val() === '1') {
-                    $("#PrepaymentPriceFrom").attr('placeholder', 'حداقل قیمت کل (تومان)').attr('id', 'TotalPriceFrom');
-                    $("#PrepaymentPriceTo").attr('placeholder', 'حداکثر قیمت کل (تومان)').attr('id', 'TotalPriceTo');
-                    $("#MortagePriceFrom").attr('placeholder', 'حداقل قیمت هر متر (تومان)').attr('id', 'PricePerMeterFrom');
-                    $("#MortagePriceTo").attr('placeholder', 'حداکثر قیمت هر متر (تومان)').attr('id', 'PricePerMeterTo');
-                }
-                else {
-                    $("#TotalPriceFrom").attr('placeholder', 'حداقل قیمت ودیعه (تومان)').attr('id', 'PrepaymentPriceFrom');
-                    $("#TotalPriceTo").attr('placeholder', 'حداکثر قیمت ودیعه (تومان)').attr('id', 'PrepaymentPriceTo');
-                    $("#PricePerMeterFrom").attr('placeholder', 'حداقل قیمت اجاره (تومان)').attr('id', 'MortagePriceFrom');
-                    $("#PricePerMeterTo").attr('placeholder', 'حداکثر قیمت اجاره (تومان)').attr('id', 'MortagePriceTo');
-                }
+                condition_change();
             });
 
             $("#EstateCity").change(function () {

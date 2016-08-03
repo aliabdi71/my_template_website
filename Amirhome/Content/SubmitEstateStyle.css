@@ -103,3 +103,7 @@ label{
     padding:25px;
     background-color: #ddf3a5;
 }
+
+.select2-container.form-control{
+    width:92%;
+}

@@ -71,7 +71,7 @@
 
 /* Footer styles starts */
 footer .row{
-    background-color:#D8D8D8;
+    background-color:#c7dbf4;
     color: black;
     padding:20px 0 20px 0;
     text-align:center;
@@ -196,7 +196,7 @@ footer .row.blue{
     position:absolute;
     background-color:rgba(0, 0, 0, 0.6);
     height:190px;
-    width:80%;
+    width:81%;
     color:white;
     display:none;
     padding:20px;

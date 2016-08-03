@@ -110,7 +110,7 @@ namespace Amirhome.Controllers
                 ID = o.ID,
                 Area = o.Area,
                 FirstPrice = (o.TotalPrice == null || o.TotalPrice == 0) ? o.PrepaymentPrice : o.TotalPrice,
-                SecondPrice = (o.PricePerMeter == null || o.PricePerMeter == 0) ? o.MortgagePrice : o.PricePerMeter,
+                SecondPrice = (o.PricePerMeter == null || o.PricePerMeter == 0) ? "اجاره " + o.MortgagePrice.ToString() : "متری " + o.PricePerMeter.ToString(),
                 Date = o.Date.ToString().Split(' ')[0],
                 //Prepayment = o.PrepaymentPrice,
                 //Loan = o.Loan,
@@ -344,7 +344,7 @@ namespace Amirhome.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult ManagementCommand(string command, int page = 1)
+        public ActionResult ManagementCommand(string command, int page = 1, string serial = "")
         {
             object return_obj = null;
             List<State> all_estates = _estateManager.getAllStates();
@@ -353,6 +353,8 @@ namespace Amirhome.Controllers
             {
                 case "mNg_dshbd":
                     {
+                        if (Session["user_role_id"].ToString() != "1")
+                            break;
                         int uid = int.Parse(Session["UserID"].ToString());
                         var usr = _userManager.getUserByID(uid);
                         var last_online_date = usr.LastTimeOnline.Value;
@@ -368,25 +370,37 @@ namespace Amirhome.Controllers
                 case "saLe_est":
                     {
                         ViewData["title"] = "املاک فروش";
-                        all_estates = all_estates.Where(E => E.Condition == "فروش" && E.Archived.Value == false).ToList();
+                        if (!string.IsNullOrEmpty(serial))
+                            all_estates = all_estates.Where(E => E.Condition == "فروش" && E.Archived.Value == false && E.Serial.ToString().Equals(serial)).ToList();
+                        else
+                            all_estates = all_estates.Where(E => E.Condition == "فروش" && E.Archived.Value == false).ToList();
                         return PartialView("_ManagementPartialView", all_estates.Take(Math.Min(all_estates.Count, page * 10)).ToList());
                     }
                 case "mRtG_est":
                     {
                         ViewData["title"] = "املاک رهن و اجاره";
-                        all_estates = all_estates.Where(E => E.Condition != "فروش" && E.Archived.Value == false).ToList();
+                        if (!string.IsNullOrEmpty(serial))
+                            all_estates = all_estates.Where(E => E.Condition != "فروش" && E.Archived.Value == false && E.Serial.ToString().Equals(serial)).ToList();
+                        else
+                            all_estates = all_estates.Where(E => E.Condition != "فروش" && E.Archived.Value == false).ToList();
                         return PartialView("_ManagementPartialView", all_estates.Take(Math.Min(all_estates.Count, page * 10)).ToList());
                     }
                 case "all_The_est":
                     {
                         ViewData["title"] = "همه املاک";
-                        all_estates = all_estates.Where(E => E.Archived.Value == false).ToList();
+                        if (!string.IsNullOrEmpty(serial))
+                            all_estates = all_estates.Where(E => E.Archived.Value == false && E.Serial.ToString().Equals(serial)).ToList();
+                        else
+                            all_estates = all_estates.Where(E => E.Archived.Value == false).ToList();
                         return PartialView("_ManagementPartialView", all_estates.Take(Math.Min(all_estates.Count, page * 10)).ToList());
                     }
                 case "arsH_est":
                     {
                         ViewData["title"] = "املاک آرشیو شده";
-                        all_estates = all_estates.Where(E => E.Archived == true).ToList();
+                        if (!string.IsNullOrEmpty(serial))
+                            all_estates = all_estates.Where(E => E.Archived == true && E.Serial.ToString().Equals(serial)).ToList();
+                        else
+                            all_estates = all_estates.Where(E => E.Archived == true).ToList();
                         return PartialView("_ManagementPartialView", all_estates.Take(Math.Min(all_estates.Count, page * 10)).ToList());
                     }
                 case "seE_AdverT":

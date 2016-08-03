@@ -199,6 +199,21 @@ namespace Amirhome.Models
             return -1;
         }
 
+        public string generateCode()
+        {
+            string[] codes;
+            using (var context = new AmirhomeEntities())
+            {
+                codes = (from U in context.UserAccouunts
+                         select U.Code).ToArray();
+            }
+            Random rand = new Random();
+            int res = rand.Next(100, 1000);
+            while (codes.Contains(res.ToString()))
+                res = rand.Next(1000, 1000000);
+            return res.ToString();
+        }
+
         public bool deleteUser(int id)
         {
             try
@@ -232,6 +247,29 @@ namespace Amirhome.Models
                     context.SaveChanges();
                     return true;
                 }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool updateUserRole(int id, int role_id)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    UserAccouunt user = (from U in context.UserAccouunts
+                                         where U.ID == id
+                                         select U).First();
+                    user.RoleID = role_id;
+                    context.UserAccouunts.Attach(user);
+                    context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    context.Configuration.ValidateOnSaveEnabled = false;
+                    context.SaveChanges();
+                }
+                return true;
             }
             catch
             {

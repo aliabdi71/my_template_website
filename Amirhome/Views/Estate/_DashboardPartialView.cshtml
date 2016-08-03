@@ -184,11 +184,13 @@
                 data: postData,
                 success: function (data) {
                     var html = "<img style='margin: 0 auto; width: 30%;' src='" + data.imageUrl + "' />" +
-                                "<table style='min-width: 440px;'>" +
+                                "<table style='min-width: 200px;margin: 0 auto;'>" +
                                 "<tr>" + "<td>" + "<strong>نام</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.Name + "</label>" + "</td>" + "</tr>" +
                                 "<tr>" + "<td>" + "<strong>سطح کاربری</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.Role + "</label>" + "</td>" + "</tr>" +
                                 "<tr>" + "<td>" + "<strong>تلفن</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.Phone + "</label>" + "</td>" + "</tr>" +
                                 "<tr>" + "<td>" + "<strong>آخرین لاگین</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + convertToJalaliDate(data.LastOnline) + "</label>" + "</td>" + "</tr>" +
+                                "<tr>" + "<td>" + "<a href='/Account/EditAccountView?UserID=" + data.ID + "' class='btn btn-primary'>ویرایش</a>" + "</td>" + "<td>" + "<a href='javascript:void(0)' onclick='delete_user(" + data.ID + ")' class='btn btn-danger'>حذف</a>" + "</td>" + "</tr>" +
+                                "<tr>" + "<td>" + "<select id='RoleID' name='RoleID'><option value='1'>مدیر سایت</option><option value='2'>منشی</option><option value='3'>مسئول فروش</option><option value='4'>مسئول رهن و اجاره</option><option value='5'>کاربر عادی</option></select>" + "</td>" + "<td>" + "<a href='javascript:void(0)' onclick='change_role_of_user(" + data.ID + ")'>تغییر نقش</a>" + "</td>" + "</tr>" +
                                 "</tabel>";
                     $(".users-panel-content").html(html);
                 },
@@ -210,7 +212,7 @@
                 dataType: 'json',
                 data: postData,
                 success: function (data) {
-                    var html =  "<table style='min-width: 440px;'>" +
+                    var html =  "<table style='min-width: 200px; margin: 0 auto;'>" +
                                 "<tr>" + "<td>" + "<strong>نام</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.DisplayName + "</label>" + "</td>" + "</tr>" +
                                 "<tr>" + "<td>" + "<strong>ایمیل</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.Email + "</label>" + "</td>" + "</tr>" +
                                 "<tr>" + "<td>" + "<strong>کد</strong>" + "</td>" + "<td>" + "<label style='font-weight:normal;'>" + data.UserId + "</label>" + "</td>" + "</tr>" +
@@ -219,6 +221,50 @@
                 },
                 error: function (error) {
                     $(".agents-panel-content").html('خطا در اتصال به سرور');
+                },
+            });
+        }
+
+        function delete_user(id) {
+            var postData = { "id": id };
+            $.ajax({
+                type: 'GET',
+                url: "/Account/deleteGivenUser",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    if (data === 'Success') {
+                        alert('کاربر با موفقیت حذف گردید');
+                        location.reload();
+                    }
+                    else {
+                        alert('کاربر مورد نظر نمی تواند حذف شود');
+                    }
+                },
+                error: function (error) {
+                    alert('خطا در عملیات حذف کاربر');
+                },
+            });
+        }
+
+        function change_role_of_user(id) {
+            var rid = $("#RoleID").val();
+            var postData = { "uid": id, "rid": rid };
+            $.ajax({
+                type: 'GET',
+                url: "/Account/updateRoleForUser",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    if (data === 'Success') {
+                        alert('نقش کاربر با موفقیت تغییر کرد');
+                    }
+                    else {
+                        alert('خطا در عملیات تغییر نقش کاربر');
+                    }
+                },
+                error: function (error) {
+                    alert('خطا در عملیات تغییر نقش کاربر');
                 },
             });
         }

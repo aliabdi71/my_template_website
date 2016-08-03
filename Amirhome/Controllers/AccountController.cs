@@ -64,12 +64,13 @@ namespace Amirhome.Controllers
                     BinaryReader bin_reader = new BinaryReader(img.InputStream);
                     data = bin_reader.ReadBytes((int)numBytes);
                     model.ProfileImage = data;
-                    if (model.RoleID == null)
-                        model.RoleID = 5;
-                    model.CreateDate = DateTime.Now;
-                    model.LastTimeOnline = DateTime.Now;
                 }
+                if (model.RoleID == null)
+                    model.RoleID = 5;
+                model.CreateDate = DateTime.Now;
+                model.LastTimeOnline = DateTime.Now;
                 model.Approved = true;
+                model.Code = _userManager.generateCode();
                 bool res = _userManager.createNewUser(model);
                 if (res)
                     ViewBag.Message = "حساب کاربری با موفقیت ثبت گردید";
@@ -87,7 +88,15 @@ namespace Amirhome.Controllers
         {
             if (Session["UserID"] == null)
                 return RedirectToAction("Index", "Home");
-            int id = int.Parse(Session["UserID"].ToString());
+            int id;
+            if (Request.QueryString["UserID"] != null)
+            {
+                if (Session["user_role_id"].ToString() != "1")
+                    return RedirectToAction("Index", "Home");
+                id = int.Parse(Request.QueryString["UserID"].ToString());
+            }
+            else
+                id = int.Parse(Session["UserID"].ToString());
             UserAccouunt model = _userManager.getUserByID(id);
             return View(model);
         }
@@ -123,6 +132,17 @@ namespace Amirhome.Controllers
                 ModelState.AddModelError("", "لطفا عکس کم حجم تری ارسال نمایید");
                 return View(model);
             }
+        }
+
+        public JsonResult DeleteUser(int id)
+        {
+            if (Session["user_role_id"].ToString() != "1")
+                return Json("Error", JsonRequestBehavior.AllowGet);
+            bool res = _userManager.deleteUser(id);
+            if (res)
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            else
+                return Json("Error", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -173,11 +193,21 @@ namespace Amirhome.Controllers
             return Json(res_object, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult deleteUser(int id)
+        public JsonResult deleteGivenUser(int id)
         {
             if (Session["user_role_id"] == null)
-                return Json("error", JsonRequestBehavior.AllowGet);
+                return Json("Error", JsonRequestBehavior.AllowGet);
             bool res = _userManager.deleteUser(id);
+            if (res)
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            else
+                return Json("Error", JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult updateRoleForUser(int uid, int rid)
+        {
+            if (Session["user_role_id"] == null)
+                return Json("Error", JsonRequestBehavior.AllowGet);
+            bool res = _userManager.updateUserRole(uid, rid);
             if (res)
                 return Json("Success", JsonRequestBehavior.AllowGet);
             else
@@ -200,7 +230,7 @@ namespace Amirhome.Controllers
         public JsonResult deleteAgent(int id)
         {
             if (Session["user_role_id"] == null)
-                return Json("error", JsonRequestBehavior.AllowGet);
+                return Json("Error", JsonRequestBehavior.AllowGet);
             bool res = _agentManager.deleteAgent(id);
             if (res)
                 return Json("Success", JsonRequestBehavior.AllowGet);

@@ -1,11 +1,17 @@
 ﻿
 @{
-    ViewBag.Title = "ShowOccasions";
+    ViewBag.Title = "موارد ویژه";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @using Amirhome.CustomHelpers
 @model List<Amirhome.Models.State>
+
+<style>
+    .occasion .occasion-desc{
+        width:79% !important;
+    }
+</style>
 
 <div class="container body-content">
     <h2 style="text-align:center;">موارد ویژه</h2>
@@ -20,20 +26,28 @@
                     <a href="/Estate/EstateDetails?EstateID=@Model[j].ID">
                         <div class="panel panel-success">
                             <div class="panel-heading">
-                                <label>@Model[j].Condition - @Model[j].Area متری</label>
+                                <label>@Model[j].Condition - @Html.turnToPersianNumber(Model[j].Area.ToString()) متری</label>
                                 <h3 style="white-space: nowrap;">@Model[j].District1.name</h3>
                             </div>
                             <div class="panel-body">
                                 <div class="occasion-desc" style="display: none;">
-                                    <p>@Model[j].Occasion</p>
+                                    <p>@Html.turnToPersianNumber(@Model[j].Occasion)</p>
                                 </div>
                                 <img src='@string.Format("/Content/estate_images/{0}", Model[j].Images.Count > 0 ? Model[j].Images.First().url : "no-thumb.png")' />
                                 <div class="img-count">@Model[j].Images.Count عکس</div>
                             </div>
                             <div class="panel-footer">
-                                <p class="main-price">قیمت کل: @Model[j].TotalPrice تومان</p>
-                                <p class="second-price"> </p>
-                                <p class="date">@Model[j].Date </p>
+                                @if (Model[j].Condition == "فروش")
+                                {
+                                    <p class="main-price">قیمت کل: @Html.SplitInParts(Model[j].TotalPrice.ToString(), 3) </p>
+                                    <p class="second-price">قیمت متری:  @Html.SplitInParts(Model[j].PricePerMeter.ToString(), 3) </p>
+                                }
+                                else
+                                {
+                                    <p class="main-price">پیش پرداخت: @Html.SplitInParts(Model[j].PrepaymentPrice.ToString(), 3)</p>
+                                    <p class="second-price">قیمت اجاره:  @Html.SplitInParts(Model[j].MortgagePrice.ToString(), 3)</p>
+                                }
+                                <p class="date">@Html.gregorianToJalali(Model[j].Date.ToString().Split(' ')[0])</p>
                             </div>
                         </div>
                     </a>

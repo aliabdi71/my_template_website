@@ -11,6 +11,8 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <link rel="stylesheet" href="~/Plugins/select2/select2.css" />
+
 
 </head>
 <body>
@@ -68,7 +70,8 @@
             <div class="row blue">
                 <div class="col-md-4">
                     <h1><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;آدرس</h1>
-                    <h4>گیشا، بین خیابان پنجم و هفتم، پلاک ۲۲</h4>
+                    <h4>شعبه مرکزی: گیشا، بین خیابان پنجم و هفتم، پلاک ۷۲</h4>
+                    <h4>شعبه ۱: گیشا، نبش خیابان بیست و یکم، پلاک ۲۸۴</h4>
                 </div>
                 <div class="col-md-4">
                     <h1><i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;پست الکترونیک</h1>
@@ -76,22 +79,23 @@
                 </div>
                 <div class="col-md-4">
                     <h1><i class="glyphicon glyphicon-phone-alt"></i>&nbsp;&nbsp;شماره تماس</h1>
-                    <h4>۰۲۱-۸۸۲۸۰۶۱۰</h4>
+                    <h4>۰۲۱-۸۸۲۸۰۶۶۰</h4>
+                    <h4>۰۲۱-۸۸۲۸۱۰۱۰</h4>
                 </div>
                 @*persianNumbers = ["۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰"];*@
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <a href="javascript:void(0)"><img src="~/Content/shared_images/Social.png" /></a>
+                    <a href="javascript:void(0)"><img src="~/Content/shared_images/Contacts.png" style="width:70%;" /></a>
                 </div>
                 <div class="col-md-3">
-                    <a href="javascript:void(0)"><img src="~/Content/shared_images/DownloadApp.png" /></a>
+                    <a href="javascript:void(0)"><img src="~/Content/shared_images/Android.png" style="width:50%;" /></a>
                 </div>
                 <div class="col-md-3">
-                    <a href="javascript:void(0)"><img src="~/Content/shared_images/Insta.png" /></a>
+                    <a href="https://instagram.com/amir.home.ir"><img src="~/Content/shared_images/Instagram.png" style="width:70%;"/></a>
                 </div>
                 <div class="col-md-3">
-                    <a href="javascript:void(0)"><img src="~/Content/shared_images/JoinTelegram.png" /></a>
+                    <a href="https://telegram.me/amir_home"><img src="~/Content/shared_images/Telegram.png" style="width:70%;" /></a>
                 </div>
             </div>
         </section>
@@ -109,6 +113,8 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/custom_scripts")
+
+    <script type="text/javascript" src="~/Plugins/select2/select2.js"></script>
 
     @RenderSection("scripts", required: false)
 </body>
