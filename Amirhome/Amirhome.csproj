@@ -123,11 +123,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdvertiseController.cs" />
     <Compile Include="Controllers\EstateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdvertiseManager.cs" />
     <Compile Include="Models\Affiliate.cs">
       <DependentUpon>CoreModel.tt</DependentUpon>
     </Compile>
@@ -591,6 +593,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\advertise_images\no-thumb.png" />
     <Content Include="Content\banner_images\bg1.jpg" />
     <Content Include="Content\banner_images\bg2.jpg" />
     <Content Include="Content\banner_images\bg3.jpg" />
@@ -614,6 +617,7 @@
     <Content Include="Content\shared_images\loading_2.gif" />
     <Content Include="Content\shared_images\loading_button.gif" />
     <Content Include="Content\shared_images\logo1.png" />
+    <Content Include="Content\shared_images\logo2.png" />
     <Content Include="Content\shared_images\logo3.png" />
     <Content Include="Content\shared_images\Telegram.png" />
     <Content Include="Content\simple-sidebar.css" />
@@ -747,6 +751,8 @@
     <Content Include="Plugins\select2\select2_locale_en.js.template" />
     <Content Include="Views\Estate\_DashboardPartialView.cshtml" />
     <Content Include="Views\Account\EditAccountView.cshtml" />
+    <Content Include="Views\Home\AdvertisePartialView.cshtml" />
+    <Content Include="Views\Advertise\InsertAdvertise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

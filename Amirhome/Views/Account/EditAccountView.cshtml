@@ -91,18 +91,27 @@
 </div>
     @section scripts{
         <script type="text/javascript">
-            function validate_submit() {
+            $("#registerForm").submit( function() {
                 var pass = $("#Passkey").val();
                 var pass_confirm = $("#PasskeyConfirm").val();
                 if (pass === '') {
-                    $("#Passkey").after('<p class="text-danger">فیلد کلمه عبور نباید خالی باشد</p>');
+                    $("#Passkey").after('<h4 class="text-danger">فیلد کلمه عبور نباید خالی باشد</p>');
                     return false;
                 }
                 if (pass !== pass_confirm) {
-                    $("#Passkey").after('<p class="text-danger">فیلدهای کلمه عبور و تکرار کلمه عبور یکسان نیستند</p>');
+                    $("#Passkey").after('<h4 class="text-danger">فیلدهای کلمه عبور و تکرار کلمه عبور یکسان نیستند</p>');
+                    return false;
+                }
+                var email = $("#Email").val();
+                if(!validateEmail(email)){
+                    $("#Email").after('<h4 class="text-danger">لطفاً ایمیل معتبر وارد کنید</p>');
                     return false;
                 }
                 return true;
+            });
+            function validateEmail(email) {
+                var re = /^(([^<>()\[\]\\.,;:\s@('@')"]+(\.[^<>()\[\]\\.,;:\s@('@')"]+)*)|(".+"))@('@')((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
             }
         </script>
     }

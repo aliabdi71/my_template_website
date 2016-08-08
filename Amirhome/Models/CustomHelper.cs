@@ -67,12 +67,11 @@ namespace Amirhome.CustomHelpers
             {
                 j_day_number -= j_days_in_month[index];
             }
-            int jm = index;
+            int jm = index + 1;
             int jd = j_day_number + 1;
             string result = jy.ToString() + "/" + jm.ToString() + "/" + jd.ToString();
 
             return turnToPersianNumber(helper, result);
         }
-
     }
 }

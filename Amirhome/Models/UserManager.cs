@@ -187,7 +187,7 @@ namespace Amirhome.Models
             using (var context = new AmirhomeEntities())
             {
                 res = (from U in context.UserAccouunts
-                       where U.Email == email && U.Passkey == passkey
+                       where U.Email.ToLower() == email.ToLower() && U.Passkey == passkey
                         select U).ToList();
             }
             if (res.Count > 0)
@@ -307,6 +307,7 @@ namespace Amirhome.Models
                 return false;
             }
             user.Passkey = encodePassword(user.Passkey);
+            user.Email = user.Email.ToLower();
             try
             {
                 using (var context = new AmirhomeEntities())

@@ -3,6 +3,16 @@
     ViewBag.Title = "مشاهده جزئیات ملک";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var agent = ViewData["agent"] as Amirhome.Models.User;
+    int rid;
+    if (ViewData["user_role_id"] == null)
+    {
+        rid = 0;        
+    }
+    else
+    {
+        rid = int.Parse(ViewData["user_role_id"].ToString());        
+    }
+        
 }
 @using Amirhome.CustomHelpers
 
@@ -70,7 +80,7 @@
                             <td class="title-cell">
                                 آدرس
                             </td>
-                            @if (ViewData["user_role_id"] != null && ViewData["user_role_id"].ToString() != "5")
+                            @if ((rid == 1) || (rid == 2) || (rid == 6) || (rid == 3 && Model.Condition == "فروش") || (rid == 4 && Model.Condition != "فروش"))
                             {
                                 <td colspan="3" style="font-weight:bold">
                                     @Model.Address - @Html.turnToPersianNumber(Model.DetailedAddress)
@@ -186,13 +196,13 @@
                     <div class="row extra-info">
                         <div class="col-md-4">
                             @{
-                                if (Model.Images.FirstOrDefault(i => i.Primary == true) == null)
+                                if (Model.Images.Count() == 0)
                                 {
                                     <img class="thumb-img" src='/Content/estate_images/no-thumb.png' />
                                 }
                                 else
                                 {
-                                    <img class="thumb-img" onclick="display_slider()" src='@string.Format("/Content/estate_images/{0}", Model.Images.FirstOrDefault(i => i.Primary == true).url)' />
+                                    <img class="thumb-img" onclick="display_slider()" src='@string.Format("/Content/estate_images/{0}", Model.Images.FirstOrDefault().url)' />
                                     <label class="img-count number">مشاهده @Model.Images.Count عکس</label>
                                 }
                             }
@@ -262,7 +272,7 @@
                     </div>
                     <div id="street" class="tab-pane fade">
                         @{
-                            if (Model.StreetViews.FirstOrDefault() == null)
+                            if (Model.StreetViews.Count() == 0)
                             {
                                 <img class="thumb-img" src='~/Content/estate_images/no-thumb.png' style="max-width: 100%; max-height: 100%;" />
                             }
@@ -274,7 +284,7 @@
                     </div>
                     <div id="plan" class="tab-pane fade">
                         @{
-                            if (Model.Plans.FirstOrDefault() == null)
+                            if (Model.Plans.Count() == 0)
                             {
                                 <img class="thumb-img" style="max-width: 100%; max-height: 100%;" src='~/Content/estate_images/no-thumb.png' />
                             }
@@ -294,7 +304,7 @@
                     <span>کد ملک: </span><label class="number">@Model.Serial</label><br />
                     <span>تاریخ ثبت ملک: </span><label>@Html.gregorianToJalali(Model.Date.ToString().Split(' ')[0])</label><br />
                     <span>نام مشاور: </span><label class="number">@agent.DisplayName</label><br />
-                    @if (ViewData["user_role_id"] != null && ViewData["user_role_id"].ToString() != "5")
+                    @if ((rid == 1) || (rid == 2) || (rid == 6) || (rid == 3 && Model.Condition == "فروش") || (rid == 4 && Model.Condition != "فروش"))
                     {
                         <span>نام مالک: </span><label class="number">@Model.Owner.Name</label><br />
                         <span>تلفن: </span><label class="number">@Model.Owner.Mobile - @Model.Owner.Telephone</label><br />

@@ -117,7 +117,8 @@ namespace Amirhome.Controllers
                     data = bin_reader.ReadBytes((int)numBytes);
                     model.ProfileImage = data;
                 }
-                model.RoleID = int.Parse(Session["user_role_id"].ToString());
+                if(model.RoleID == null)
+                    model.RoleID = int.Parse(Session["user_role_id"].ToString());
                 bool res = _userManager.updateUser(model);
                 if (res)
                     return RedirectToAction("Index", "Home");

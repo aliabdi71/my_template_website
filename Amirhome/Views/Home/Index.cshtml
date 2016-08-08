@@ -173,6 +173,10 @@
     <div class="about-banner"></div>
 </section>
 
+<section id="addvertise" class="addvertise-section fade-animate">
+    @Html.Partial("AdvertisePartialView", ViewData["adverModel"])
+</section>
+
 @section scripts{
     <script type="text/javascript" src="~/Scripts/jquery.backstretch.min.js"></script>
     <script type="text/javascript" src="~/Scripts/slick.js"></script>
@@ -220,7 +224,7 @@
             var $panel_footer = $("<div>").addClass("panel-footer");
             var $footer_main_price = $("<p>").addClass("main-price");
             var $footer_second_price = $("<p>").addClass("second-price");
-            var $footer_date = $("<p>").addClass("date").html(turn2PersianNumber(data[i].Date));
+            var $footer_date = $("<p>").addClass("date").html(convertToJalaliDate(data[i].Date));
             switch (data[i].Condition) {
                 case 'فروش': $footer_main_price.html('قیمت کل: ' + numberWithCommas(data[i].TotalPrice)); $footer_second_price.html("&nbsp;"); break;
                 case 'رهن': $footer_main_price.html('قیمت رهن: ' + numberWithCommas(data[i].Prepayment)); $footer_second_price.html("&nbsp;"); break;

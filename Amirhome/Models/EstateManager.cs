@@ -253,6 +253,24 @@ namespace Amirhome.Models
             }
             return feeds;
         }
+        public int getImageCountOfEstate(int id)
+        {
+            int count = 0;
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    count = (from I in context.Images
+                             where I.StateID == id
+                             select I).Count();
+                }
+                return count;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
         public bool approveEstate(int id, bool flag)
         {
             try
@@ -297,12 +315,27 @@ namespace Amirhome.Models
             }
 
         }
-        public bool updateEstate(State model)
+        public bool updateEstate(State model, int[] img_ids, List<Image> images_to_create, out List<string> urls_for_delete)
         {
+            urls_for_delete = new List<string>();
             try
             {
                 using (var context = new AmirhomeEntities())
                 {
+                    Image[] imgs = (from I in context.Images
+                                    where I.StateID == model.ID && !img_ids.Contains(I.ID)
+                                    select I).ToArray();
+                    foreach (var item in imgs)
+                    {
+                        urls_for_delete.Add(item.url);
+                        context.Images.Remove(item);
+                        context.Entry(item).State = EntityState.Deleted;
+                    }
+                    foreach (var img in images_to_create)
+                    {
+                        context.Images.Add(img);
+                        context.Entry(img).State = EntityState.Added;
+                    }
                     context.States.Attach(model);
                     context.Entry(model).State = EntityState.Modified;
                     context.SaveChanges();
@@ -322,7 +355,7 @@ namespace Amirhome.Models
 
                 _states = (from E in context.States.Include("Images").Include("District1")
                            where E.OccasionFlag == true
-                           select E).ToList();
+                           select E).OrderByDescending(E => E.Date).ToList();
             }
             return _states;
         }
@@ -351,7 +384,7 @@ namespace Amirhome.Models
         private IQueryable<State> EstateQueryBuilder(AmirhomeEntities context, SearchParams _params)
         {
             IQueryable<State> query = from E in context.States.Include("Images").Include("District1").Include("StateType1") select E;
-            query = query.Where(E => E.Approved == true);
+            query = query.Where(E => E.Approved == true && E.Archived == false);
             if (_params.EstateCondition)
                 query = query.Where(E => E.Condition == _params.EstateConditionValue);
             if (_params.EstateDistrict)

@@ -164,11 +164,6 @@ namespace Amirhome.Controllers
 
                 model.GoogleMaps.Add(new GoogleMap() { latitude = map_latitude, longitude = map_longitude });
 
-                //List<Feature> _features = _estateManager.fetchFeaturesById(features);
-                /*model.Features.Clear();
-                foreach (var item in features)
-                    model.Features.Add(new Feature() { ItemID = item });*/
-
                 string filePath = "~/Content/estate_images/",
                        tempFilePath = "~/Content/temp_img_folder/";
 
@@ -181,7 +176,7 @@ namespace Amirhome.Controllers
                         break;
                     Models.Image img = new Models.Image();
                     img.Primary = (index == 0) ? true : false;
-                    string file_name = "estate_" + model.Serial.ToString() + "_" + index.ToString() + ".jpg";
+                    string file_name = "estate_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
                     img.url = file_name;
 
                     int nFileLen = item.ContentLength;
@@ -199,7 +194,7 @@ namespace Amirhome.Controllers
                     if (item == null)
                         break;
                     Models.Plan plan = new Models.Plan();
-                    string file_name = "estate_plan_" + model.Serial.ToString() + "_" + index.ToString() + ".jpg";
+                    string file_name = "estate_plan_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
                     plan.url = file_name;
 
                     int nFileLen = item.ContentLength;
@@ -217,7 +212,7 @@ namespace Amirhome.Controllers
                     if (item == null)
                         break;
                     Models.StreetView street = new Models.StreetView();
-                    string file_name = "estate_street_" + model.Serial.ToString() + "_" + index.ToString() + ".jpg";
+                    string file_name = "estate_street_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
                     street.url = file_name;
 
                     int nFileLen = item.ContentLength;
@@ -271,8 +266,9 @@ namespace Amirhome.Controllers
             {
                 // Declare variable for the conversion
                 float ratio;
-                // Create variable to hold the image
+                // Create variable to hold the image 
                 System.Drawing.Image thisImage = System.Drawing.Image.FromStream(newFile);
+                System.Drawing.Image waterMark = System.Drawing.Image.FromFile(System.Web.Hosting.HostingEnvironment.MapPath("~/Content/shared_images/logo2.png"));
                 // Get height and width of current image
                 int width = (int)thisImage.Width;
                 int height = (int)thisImage.Height;
@@ -297,6 +293,7 @@ namespace Amirhome.Controllers
                 // Fill "blank" with new sized image
                 outGraphics.FillRectangle(sb, 0, 0, outImage.Width, outImage.Height);
                 outGraphics.DrawImage(thisImage, 0, 0, outImage.Width, outImage.Height);
+                outGraphics.DrawImage(waterMark, (outImage.Width - waterMark.Width) / 2, (outImage.Height - waterMark.Height) / 2, waterMark.Width, waterMark.Height);
                 sb.Dispose();
                 outGraphics.Dispose();
                 thisImage.Dispose();
@@ -346,7 +343,8 @@ namespace Amirhome.Controllers
         [HttpPost]
         public ActionResult ManagementCommand(string command, int page = 1, string serial = "")
         {
-            object return_obj = null;
+            if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+                return Json("Stop Trying Please!");
             List<State> all_estates = _estateManager.getAllStates();
             ViewData["command"] = command;
             switch (command)
@@ -412,10 +410,12 @@ namespace Amirhome.Controllers
                         break;
                     }
             }
-            return Json(return_obj);
+            return Json("Invalid Command");
         }
         public JsonResult EstateApprovement(int id, bool flag)
         {
+            if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+                return Json("Don't you have a job??");
             bool res = _estateManager.approveEstate(id, flag);
             if (res)
                 return Json("Success", JsonRequestBehavior.AllowGet);
@@ -424,6 +424,8 @@ namespace Amirhome.Controllers
         }
         public JsonResult EstateArchive(int id, bool flag)
         {
+            if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+                return Json("Don't you have a job??");
             bool res = _estateManager.archiveEstate(id, flag);
             if (res)
                 return Json("Success", JsonRequestBehavior.AllowGet);
@@ -433,6 +435,8 @@ namespace Amirhome.Controllers
         [HttpPost]
         public ActionResult EditEstate(int id)
         {
+            if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+                return Json("We are not stupid you know!!");
             State _estate = _estateManager.getStateByID(id);
             ViewData["Features"] = _estateManager.getAllFeatures();
             ViewBag.Province = new SelectList(_estateManager.getAllProvince(), "id", "name", _estate.Province);
@@ -576,14 +580,70 @@ namespace Amirhome.Controllers
             #endregion
             return PartialView("_EditEstatePartialView", _estate);
         }
+        private int generetareIndexForImage()
+        {
+            Random rand = new Random();
+            int res = rand.Next(1000, 10000);
+            return res;
+        }
         [HttpPost]
-        public ActionResult SubmitEditEstate(State model)
+        public ActionResult SubmitEditEstate(State model, int[] img_ids, HttpPostedFileBase[] added_image)
         {
             if (Session["user_role_id"] == null)
                 return Json("هویت شما مورد تأیید نیست");
-            bool success = _estateManager.updateEstate(model);
+            List<string> urls_to_delete;
+            List<Amirhome.Models.Image> images_to_create = new List<Models.Image>();
+
+            //Add objects of new uploaded images to estate model
+            List<Tuple<byte[], string>> posted_files_img = new List<Tuple<byte[], string>>();
+            int index = _estateManager.getImageCountOfEstate(model.ID);
+            foreach (HttpPostedFileBase item in added_image)
+            {
+                if (item == null)
+                    break;
+                //Create Image object and add it to model
+                Models.Image img = new Models.Image();
+                img.Primary = (index == 0) ? true : false;
+                string file_name = "estate_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                img.url = file_name;
+                img.StateID = model.ID;
+
+                //Create image InputStream for saving it a little after
+                int nFileLen = item.ContentLength;
+                byte[] myData = new Byte[nFileLen];
+                item.InputStream.Read(myData, 0, nFileLen);
+                item.InputStream.Dispose();
+                posted_files_img.Add(new Tuple<byte[], string>(myData, file_name));
+
+                images_to_create.Add(img);
+                index++;
+            }
+
+            //Update the model and get the result
+            bool success = _estateManager.updateEstate(model, img_ids, images_to_create, out urls_to_delete);
             if (success)
+            {
+                //Delete the actual image file from server
+                foreach (var url in urls_to_delete)
+                    System.IO.File.Delete(Server.MapPath("~/Content/estate_images/" + url));
+
+                //Save new uploaded files to server
+                string filePath = "~/Content/estate_images/",
+                       tempFilePath = "~/Content/temp_img_folder/";
+                foreach (var item in posted_files_img)
+                {
+                    System.IO.FileStream newFile
+                                = new System.IO.FileStream(Server.MapPath(tempFilePath + "_temp.jpg"),
+                                                           System.IO.FileMode.Create);
+                    newFile.Write(item.Item1, 0, item.Item1.Length);
+                    bool save_img_success = ResizeImageAndUpload(newFile, filePath + (item.Item2), 460, 700);//Save image your normal image path
+                    //delete the temp file.
+                    newFile.Close();
+                    System.IO.File.Delete(Server.MapPath(tempFilePath + "_temp.jpg"));
+                }
+
                 return RedirectToAction("ManagementPanel", "Estate", new { message = "تغییرات با موفقیت ثبت گردید" });
+            }
             else
                 return RedirectToAction("ManagementPanel", "Estate", new { message = "خطا در ثبت تغییرات" });
         }

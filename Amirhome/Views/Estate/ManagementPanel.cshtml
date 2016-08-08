@@ -26,11 +26,11 @@
                 {
                     <li><a href="javascript:void(0)" onclick="render_content('mNg_dshbd', 1); return true;">داشبورد مدیریت</a></li>
                 }
-                if (role_id == "1" || role_id == "3")
+                if (role_id == "1" || role_id == "2")
                 {
                     <li><a href="javascript:void(0)" onclick="render_content('saLe_est', 1); return true;">املاک فروشی</a></li>
                 }
-                if (role_id == "1" || role_id == "4")
+                if (role_id == "1" || role_id == "2")
                 {
                     <li><a href="javascript:void(0)" onclick="render_content('mRtG_est', 1); return true;">املاک رهن و اجاره</a></li>
                 }
@@ -120,9 +120,8 @@
                             $(elem).attr('data-flag', "false");
                         }
                     }
-                    else
-                    {
-                        if(flag === "true")
+                    else {
+                        if (flag === "true")
                             $(elem).html('تأیید').removeAttr('disabled');
                         else
                             $(elem).html('رد').removeAttr('disabled');

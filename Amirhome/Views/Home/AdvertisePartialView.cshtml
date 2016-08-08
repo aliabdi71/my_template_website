@@ -1,0 +1,77 @@
+﻿@model List<Amirhome.Models.AdverShowModelView>
+
+@using Amirhome.CustomHelpers
+
+<style>
+    .adver-link{
+        text-decoration:none;
+        color: black;
+    }
+    .adver-link:hover{
+        text-decoration:none;
+        color: black;
+    }
+    .adver-content > .adver-image{
+        width:50%;
+        
+        position: relative;
+        float:right;
+        border-color: #00578f;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px 1px #00578f;
+    }
+    .adver-content > .adver-image > img{
+        width:100%;
+        min-height: 205px;
+    }
+    .adver-content > .adver-description{
+        width:50%;
+        min-height: 205px;
+        position: relative;
+        float:right;
+        border-color: #00578f;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px 1px #00578f;
+    }
+    .adver-content > .adver-description > h1{
+        font-size:15px;
+        font-weight:bold;
+        margin-top: 12px;
+    }
+    .adver-content > .adver-description > h2{
+        font-size:14px;
+        font-weight:normal;
+    }
+</style>
+
+<h1 class="text-center" style="color:#00578f; font-weight:bold; margin-bottom:30px;">آگهی های شما</h1>
+
+@for (int i = 0; i < Model.Count; i = i + 4)
+{
+    <div class="row" style="margin: 20px 20px 0;">
+        @for (int j = i; j < i + 4 && j < Model.Count; j++)
+        {
+            <div class="col-md-4">
+                <a class="adver-link" href="#">
+                    <div class="adver-content">
+                        <div class="adver-image">
+                            <img src='@string.Format("/Content/advertise_images/{0}", Model[j].ImgUrl)' />
+                        </div>
+                        <div class="adver-description text-center">
+                            <h1>@Model[j].Title</h1>
+                            <h2>@Model[j].Condition - @Model[j].District</h2>
+                            <br />
+                            <h1>کل/رهن: @Html.SplitInParts(Model[j].FirstPrice, 3)</h1>
+                            <h2>متری/اجاره: @Html.SplitInParts(Model[j].SecondPrice, 3)</h2>
+                            <h2>@Html.turnToPersianNumber(Model[j].Date)</h2>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+}
+<div class="row text-center">
+    <a class="btn btn-primary" href="#" style="min-width:100px;">ثبت آگهی</a>
+</div>
+

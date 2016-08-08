@@ -2,23 +2,13 @@
 
 @{
     List<Amirhome.Models.Feature> ftrs = ViewData["Features"] as List<Amirhome.Models.Feature>;
-    
+    List<Amirhome.Models.Image> images = Model.Images.ToList();
     
 }
 
 <div id="form_target">
 
-    @using (Ajax.BeginForm("SubmitEditEstate", "Estate",
-                                            new AjaxOptions
-                                            {
-                                                HttpMethod = "POST",
-                                                InsertionMode = InsertionMode.InsertAfter,
-                                                UpdateTargetId = "form_target",
-                                                OnBegin = "$('#form-submit-btn').html('<i class=\"fa fa-refresh fa-spin\"></i>').attr('disabled', 'disabled');",
-                                                OnComplete = "$('#estate_edit_form').html('ذخیره').removeAttr('disabled');",
-                                                OnSuccess = "$('#server-message').addClass('text-success').html('تغییرات مورد نظر ذخیره شد');",
-                                                OnFailure = "$('#server-message').addClass('text-danger').html('خطا در ثبت تغییرات');",
-                                            }))
+    @using (Html.BeginForm("SubmitEditEstate", "Estate", FormMethod.Post, new { @enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
     
@@ -37,13 +27,15 @@
             @Html.HiddenFor(model => model.Features)
             @Html.HiddenFor(model => model.Feedbacks)
             @Html.HiddenFor(model => model.GoogleMaps)
+            @*@Html.HiddenFor(model => model.StreetViews)
+            @Html.HiddenFor(model => model.Images)*@
             @Html.HiddenFor(model => model.Owner.ID)
-            @Html.HiddenFor(model => model.Plans)
+            @*@Html.HiddenFor(model => model.Plans)*@
             @Html.HiddenFor(model => model.Privacy)
             @Html.HiddenFor(model => model.StateType1)
             @Html.HiddenFor(model => model.province1)
 
-            <label>کد ملک:&nbsp;&nbsp;</label>@Html.TextBoxFor(M => M.Serial, new { @class="form-control", @readonly="readonly" })
+            <label>کد ملک:&nbsp;&nbsp;</label>@Html.TextBoxFor(M => M.Serial, new { @class = "form-control", @readonly = "readonly" })
             <br />
             <div class="col-md-6">
                 <div class="form-group">
@@ -258,7 +250,7 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">قابل تبدیل</label>
                     <div class="col-md-9">
-                        @Html.CheckBox("Changeable", Model.Changeable.HasValue ? Model.Changeable.Value : false ,new { @style = "maegin-top:5px;" })
+                        @Html.CheckBox("Changeable", Model.Changeable.HasValue ? Model.Changeable.Value : false, new { @style = "maegin-top:5px;" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -302,7 +294,31 @@
             <div class="form-group">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
-                
+                    <h3>عکس های ملک</h3>
+                    <table>
+                        @for (int i = 0; i < Model.Images.Count(); i = i + 4)
+                        {
+                            <tr>
+                                @for (int j = i; j < i + 4 && j < Model.Images.Count(); j++)
+                                {
+                                    <td>
+                                        <img src="~/Content/estate_images/@images[j].url" style="width:90%;"/>
+                                        <br />
+                                        <input type="checkbox" name="img_ids" value="@images[j].ID" checked="checked" />
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </table>
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3">اضافه کردن عکس</div>
+                        <div class="col-md-9">
+                            <input type="file" name="added_image" />
+                            <a href="javascript:void(0)" onclick="$(this).before($('<input>').attr({ 'type': 'file', 'name': 'added_image' }));">عکس بیشتر</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-2"></div>
             </div>
