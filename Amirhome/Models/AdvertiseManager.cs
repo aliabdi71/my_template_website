@@ -27,7 +27,7 @@ namespace Amirhome.Models
                 using (var context = new AmirhomeEntities())
                 {
                     all_advers = (from AD in context.FreeAdvertises
-                                  where AD.expire_date >= DateTime.Now
+                                  where AD.expire_date >= DateTime.Now & AD.approved == true
                                   select AD).ToList();
                 }
                 return all_advers;

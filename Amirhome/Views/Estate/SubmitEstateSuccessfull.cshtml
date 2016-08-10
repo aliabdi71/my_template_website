@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "ثبت موفقیت آمیز";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Amirhome.CustomHelpers
+
+<style>
+    .wrap{
+        padding:50px;
+        min-height:580px;
+    }
+    .text{
+        font-size:19px;
+    }
+    .note{
+        background-color:#ddf3a5;
+        padding:40px;
+    }
+</style>
+
+<div class="wrap">
+    <h1 class="text-center"><img src="~/Content/shared_images/logo1.png" style="margin: 0 auto;" /></h1>
+    <div class="note">
+        <p class="text">
+            ملک شما با موفقیت ثبت گردید.
+        </p>
+        <p class="text">
+            کد اختصاص داده به ملک شما @Html.turnToPersianNumber(ViewData["serial"].ToString()) می باشد. شما می توانید پس از تأیید ملک توسط مشاورین سایت، با استفاده از این کد نسبت به جستجو و مشاهده ملک خود اقدام نمایید.
+        </p>
+        <p class="text">
+            با تشکر از انتخاب شما
+        </p>
+    </div>
+</div>
+

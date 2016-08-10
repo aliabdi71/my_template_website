@@ -322,20 +322,24 @@ namespace Amirhome.Models
             {
                 using (var context = new AmirhomeEntities())
                 {
-                    Image[] imgs = (from I in context.Images
-                                    where I.StateID == model.ID && !img_ids.Contains(I.ID)
-                                    select I).ToArray();
-                    foreach (var item in imgs)
+                    if (img_ids != null)
                     {
-                        urls_for_delete.Add(item.url);
-                        context.Images.Remove(item);
-                        context.Entry(item).State = EntityState.Deleted;
+                        Image[] imgs = (from I in context.Images
+                                        where I.StateID == model.ID && !img_ids.Contains(I.ID)
+                                        select I).ToArray();
+                        foreach (var item in imgs)
+                        {
+                            urls_for_delete.Add(item.url);
+                            context.Images.Remove(item);
+                            context.Entry(item).State = EntityState.Deleted;
+                        }
                     }
                     foreach (var img in images_to_create)
                     {
                         context.Images.Add(img);
                         context.Entry(img).State = EntityState.Added;
                     }
+                    model.Date = DateTime.Now;
                     context.States.Attach(model);
                     context.Entry(model).State = EntityState.Modified;
                     context.SaveChanges();
@@ -448,7 +452,25 @@ namespace Amirhome.Models
             }
             return count;
         }
-
+        public List<State> searchForOwner(string field, string value)
+        {
+            List<State> res;
+            int[] owner_ids = {};
+            using (var context = new AmirhomeEntities())
+            {
+                switch (field)
+                {
+                    case "Name": owner_ids = (from O in context.Owners where O.Name.Contains(value) select O.ID).ToArray() ;break;
+                    case "Mob": owner_ids = (from O in context.Owners where O.Mobile.Equals(value) select O.ID).ToArray(); break;
+                    case "Tel": owner_ids = (from O in context.Owners where O.Telephone.Equals(value) select O.ID).ToArray(); break;
+                    default: break;
+                }
+                res = (from E in context.States.Include("Owner")
+                       where owner_ids.Contains(E.OwnerID.Value)
+                       select E).ToList();
+            }
+            return res;
+        }
     }
 
     public class OccasionViewModel
@@ -465,5 +487,14 @@ namespace Amirhome.Models
         public List<Feedback> totalFeedbacks { get; set; }
         public List<User> totalAgents { get; set; }
         public List<UserAccouunt> totalUsers { get; set; }
+    }
+    public class OwnerSearchViewModel
+    {
+        public int EstateID { get; set; }
+        public int EstateSerial { get; set; }
+        public string OwnerName { get; set; }
+        public string OwnerAddress { get; set; }
+        public string OwnerPhone { get; set; }
+        public string OwnerMobile { get; set; }
     }
 }

@@ -720,7 +720,9 @@
     <Content Include="Scripts\shared_script.js" />
     <Content Include="Scripts\slick.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -753,6 +755,9 @@
     <Content Include="Views\Account\EditAccountView.cshtml" />
     <Content Include="Views\Home\AdvertisePartialView.cshtml" />
     <Content Include="Views\Advertise\InsertAdvertise.cshtml" />
+    <Content Include="Views\Estate\SearchOwnerPartialView.cshtml" />
+    <Content Include="Views\Estate\SubmitEstateSuccessfull.cshtml" />
+    <Content Include="Views\Advertise\InsertAdvertiseSuccessful.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

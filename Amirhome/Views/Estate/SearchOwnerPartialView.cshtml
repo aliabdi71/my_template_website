@@ -1,0 +1,38 @@
+﻿@model List<Amirhome.Models.OwnerSearchViewModel>
+@using Amirhome.CustomHelpers
+
+@if (Model.Count == 0)
+{
+    <h3 class="text-center">موردی یافت نشد</h3>
+}
+else 
+{
+
+<table class="owner-table-view" border="1">
+    <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>نام مالک</th>
+            <th>تلفن مالک</th>
+            <th>موبایل مالک</th>
+            <th>آدرس مالک</th>
+            <th>کد ملک</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="owner-table-body">
+        @for (int i = 0; i < Model.Count; i++ )
+        {
+            <tr>
+                <td>@Html.turnToPersianNumber((i+1).ToString())</td>
+                <td>@Model[i].OwnerName</td>
+                <td>@Html.turnToPersianNumber(@Model[i].OwnerPhone)</td>
+                <td>@Html.turnToPersianNumber(@Model[i].OwnerMobile)</td>
+                <td>@Html.turnToPersianNumber(@Model[i].OwnerAddress)</td>
+                <td>@Html.turnToPersianNumber(@Model[i].EstateSerial.ToString())</td>
+                <td>@Html.ActionLink("مشاهده ملک", "EstateDetails", "Estate", new { @EstateID = Model[i].EstateID }, new { @class="btn btn-primary", @target="_blank" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+}

@@ -91,63 +91,12 @@
                         <p style="margin:0;">(برای خرید یا اجاره)</p>
                     </div>
                     <div class="panel-body">
-                        <table>
-                            <tr>
-                                <td>
-                                    <select id="states_submit">
-                                        <option value="0">استان</option>
-                                        @foreach (var item in prv)
-                                        {
-                                            <option value="@item.id">@item.name</option>
-                                        }
-                                    </select>
-                                </td>
-                                <td>
-                                    <select id="city_submit">
-                                        <option value="0">شهر</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select id="district_submit">
-                                        <option value="0">محله</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <select id="condition_submit">
-                                        <option value="0">نوع واگذاری</option>
-                                        <option value="1">فروش</option>
-                                        <option value="2">رهن</option>
-                                        <option value="3">اجاره</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select id="usage_submit">
-                                        <option value="0">نوع کاربری ملک</option>
-                                        <option value="1">مسکونی</option>
-                                        <option value="2">کلنگی و مشارکتی</option>
-                                        <option value="3">تجاری و اداری</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select id="type_submit">
-                                        <option value="0">نوع ملک</option>
-                                        <option value="1">آپارتمان</option>
-                                        <option value="2">ویلا</option>
-                                        <option value="8">سوئیت</option>
-                                        <option value="9">سایر</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td style="text-align:center;">
-                                    <input style="min-width:100px;" id="submit_estate" type="button" class="btn btn-primary" value="سپردن ملک" />
-                                </td>
-                                <td></td>
-                            </tr>
-                        </table>
+                        <div class="submit-note">
+                            شما می توانید با ثبت ملک خود در وبسایت مشاورین املاک مسکن امیر از بسیاری از تسهیلات این بنگاه بهره مند شوید. کافیست اطلاعات ملک خود را ثبت نمایید تا مشاورین ما در اولین فرصت با شما ارتباط برقرار نمایند.
+                        </div>
+                        <div class="text-center">
+                            <input style="min-width:100px;" id="submit_estate" type="button" class="btn btn-primary" value="سپردن ملک" />
+                        </div>
                     </div>
                 </div>
             </div>

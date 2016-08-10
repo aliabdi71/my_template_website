@@ -235,7 +235,7 @@ namespace Amirhome.Controllers
                                     = new System.IO.FileStream(Server.MapPath(tempFilePath + "_temp.jpg"),
                                                                System.IO.FileMode.Create);
                         newFile.Write(item.Item1, 0, item.Item1.Length);
-                        bool success = ResizeImageAndUpload(newFile, filePath + (item.Item2), 460, 700);//Save image your normal image path
+                        bool success = ResizeImageAndUpload(newFile, filePath + (item.Item2), 500, 700);//Save image your normal image path
                         //delete the temp file.
                         newFile.Close();
                         System.IO.File.Delete(Server.MapPath(tempFilePath + "_temp.jpg"));
@@ -249,7 +249,7 @@ namespace Amirhome.Controllers
                     return View(model);
                 }
                 ViewBag.SucsMsg = "ملک شما با موفقیت ثبت گردید";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("SubmitEstateSuccessfull", "Estate", new { serial = model.Serial });
             }
             catch
             {
@@ -258,6 +258,12 @@ namespace Amirhome.Controllers
                 ViewData["Province"] = _estateManager.getAllProvince();
                 return View(model);
             }
+        }
+
+        public ActionResult SubmitEstateSuccessfull(string serial)
+        {
+            ViewData["serial"] = serial;
+            return View();
         }
 
         private bool ResizeImageAndUpload(System.IO.FileStream newFile, string folderPathAndFilename, double maxHeight, double maxWidth)
@@ -362,7 +368,7 @@ namespace Amirhome.Controllers
                         model.totalFeedbacks = _estateManager.getAllFedbacks();
                         model.totalUsers = _userManager.getAllUser();
                         model.totalAgents = _agentManager.getAllAgent();
-                        ViewData["title"] = "داشبور مدیریت";
+                        ViewData["title"] = "داشبورد مدیریت";
                         return PartialView("_DashboardPartialView", model);
                     }
                 case "saLe_est":
@@ -646,6 +652,26 @@ namespace Amirhome.Controllers
             }
             else
                 return RedirectToAction("ManagementPanel", "Estate", new { message = "خطا در ثبت تغییرات" });
+        }
+
+        [HttpPost]
+        public PartialViewResult SearchOwner(string field, string value)
+        {
+            var estates = _estateManager.searchForOwner(field, value);
+            List<OwnerSearchViewModel> model = new List<OwnerSearchViewModel>();
+            foreach (var e in estates)
+            {
+                model.Add(new OwnerSearchViewModel()
+                {
+                    EstateID = e.ID,
+                    EstateSerial = e.Serial,
+                    OwnerAddress = e.Owner.Address,
+                    OwnerMobile = e.Owner.Mobile,
+                    OwnerName = e.Owner.Name,
+                    OwnerPhone = e.Owner.Telephone
+                });
+            }
+            return PartialView("SearchOwnerPartialView", model);
         }
 
         [HttpPost]

@@ -9,9 +9,26 @@
 @{
     List<Amirhome.Models.Feature> ftrs = ViewData["Features"] as List<Amirhome.Models.Feature>;
     List<Amirhome.Models.province> prv = ViewData["Province"] as List<Amirhome.Models.province>;
+
+    int uid_role = 0;
+    if (ViewData["user_role_id"] != null)
+    {
+        uid_role = int.Parse(ViewData["user_role_id"].ToString());   
+    }
 }
 
 <link rel="stylesheet" href="~/Content/SubmitEstateStyle.css" />
+
+<div style="width: 550px; display: none;  margin: 10% auto 0;" id="OwnerSearch" class="popup modal fade">
+    <div class="header">جستجوی مالک</div>
+    <div align="right">
+        <a class="close" href="javascript:void(0);" onclick="$('#OwnerSearch').modal('hide');">
+            <span class="fa fa-times-circle fa-fw"></span>
+        </a>
+    </div>
+    <div class="body" id="OwnerSearchBody">
+    </div>
+</div>
 
 <div class="container body-content">
     <h1>سپردن ملک</h1>
@@ -33,6 +50,10 @@
                         </div>
                         <div class="col-md-3">
                             @Html.TextBoxFor(m => m.Owner.Name, new { @class="required form-control" })
+                            @if (uid_role < 5 && uid_role > 0)
+                            {
+                                <a href="javascript:void(0)" onclick="search_owner('Name');"><i class="glyphicon glyphicon-search"></i></a>
+                            }
                         </div>
                         <div class="col-md-2 left">
                             <label>پست الکترونیک</label>
@@ -49,6 +70,10 @@
                         </div>
                         <div class="col-md-3">
                             @Html.TextBoxFor(m => m.Owner.Mobile, new { @style = "margin-bottom: 5px;", @class = "required form-control" })
+                            @if (uid_role < 5 && uid_role > 0)
+                            {
+                                <a href="javascript:void(0)" onclick="search_owner('Mob');"><i class="glyphicon glyphicon-search"></i></a>
+                            }
                             @Html.TextBoxFor(m => m.Owner.Mobile2, new { @class = "form-control" })
                         </div>
                         <div class="col-md-2  left">
@@ -56,6 +81,10 @@
                         </div>
                         <div class="col-md-3">
                             @Html.TextBoxFor(m => m.Owner.Telephone, new { @style = "margin-bottom: 5px;", @class = "form-control" })
+                            @if (uid_role < 5 && uid_role > 0)
+                            {
+                                <a href="javascript:void(0)" onclick="search_owner('Tel');"><i class="glyphicon glyphicon-search"></i></a>
+                            }
                             @Html.TextBoxFor(m => m.Owner.Tell2, new { @class = "form-control" })
                         </div>
                         <div class="col-md-1"></div>
@@ -744,6 +773,35 @@
         }
         function add_street_img(elem) {
             $(elem).before('<input type="file" name="street_image" accept=".jpg,.jpeg,.png"/>');
+        }
+
+        function search_owner(field_to_search) {
+            var value = '';
+            switch (field_to_search) {
+                case "Name": value = $("#Owner_Name").val(); break;
+                case "Mob": value = $("#Owner_Mobile").val(); break;
+                case "Tel": value = $("#Owner_Telephone").val(); break;
+                default: break;
+            }
+            if (value === '') {
+                return false;
+            }
+            $('#OwnerSearchBody').html('<img src="~/Content/shared_images/loading.gif" style="margin:0 auto; display:block;" id="loading" />');
+            $("#OwnerSearch").modal('show');
+            var postData = { "field": field_to_search, "value": value };
+            $.ajax({
+                type: 'POST',
+                url: "/Estate/SearchOwner",
+                dataType: 'json',
+                data: postData,
+                success: function (partial) {
+                    $('#OwnerSearchBody').html(partial.responseText);
+                },
+                error: function (data) {
+                    $("#OwnerSearchBody").html(data.responseText);
+                },
+            });
+
         }
 
         $(document).ready(function () {

@@ -1,0 +1,212 @@
+﻿
+@{
+    ViewBag.Title = "ثبت آگهی";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Amirhome.Models.FreeAdvertise
+
+<style>
+    .left{
+        text-align:left;
+    }
+    @@media only screen and (max-width: 765px){
+        .left{
+            text-align:right;
+        }
+    }
+</style>
+
+<div class="container body-content" style=" margin-top: 50px;">
+    <h2>ثبت آگهی</h2>
+    <hr />
+    <form action="/Advertise/InsertAdvertise" method="post" id="adver_form" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-8">
+                <p class="text-danger"> @ViewBag.ErrMsg </p>
+                <div class="row form-group">
+                    <div class="col-md-3 left">
+                        <lable>عنوان *</lable>
+                    </div>
+                    <div class="col-md-9 left">
+                        @Html.TextBoxFor(m => m.title, new { @class = "form-control required", @placeholder = "حداکثر ۲۰ کاراکتر", @style = "max-width: 450px;" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3 left">
+                        <lable>توضیحات</lable>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(m => m.title2, new { @class = "form-control", @placeholder = "توضیحات آگهی", @style = "height: 100px; max-width: 450px;" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>نوع ملک *</lable>
+                    </div>
+                    <div class="col-md-8 ">
+                        <select id="condition" name="condition" class="form-control required">
+                            <option value="فروش">فروش</option>
+                            <option value="رهن">رهن</option>
+                            <option value="اجاره">اجاره</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>شهر *</lable>
+                    </div>
+                    <div class="col-md-8 ">
+                        @Html.TextBoxFor(m => m.city, new { @class = "form-control required" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>قیمت کل *</lable>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.price_total, new { @class = "form-control input-price required", @placeholder = "تومان" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>قیمت هر متر *</lable>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.price_per_meter, new { @class = "form-control input-price required", @placeholder = "تومان" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>ایمیل</lable>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>آپلود عکس</lable>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="file" name="upload_image" />
+                        <a href="javascript:void(0)" onclick="add_image(this);">عکس بیشتر</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>متراژ *</lable>
+                    </div>
+                    <div class="col-md-8 ">
+                        @Html.TextBoxFor(m => m.area, new { @class = "form-control required", @placeholder = "متر مربع" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>آدرس *</lable>
+                    </div>
+                    <div class="col-md-8 ">
+                        @Html.TextBoxFor(m => m.district, new { @class = "form-control required", @placeholder = "متر مربع" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>قیمت ودیعه *</lable>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.price_prepayment, new { @class = "form-control input-price required", @placeholder = "تومان", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>قیمت اجاره *</lable>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.price_mortage, new { @class = "form-control input-price required", @placeholder = "تومان", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4 left">
+                        <lable>شماره تماس *</lable>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.phone, new { @class = "form-control required" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center" style="padding:40px;">
+            <button class="btn btn-primary text-center" style="min-width:180px;" type="submit" onclick="fix_input_formats(); return true;">ثبت نهایی</button>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function add_image(elem) {
+            $(elem).before('<input type="file" name="upload_image" />');
+        }
+
+        function fix_input_formats() {
+            $(".input-price").each(function () {
+                var val = $(this).val().replace(/,/g, '');
+                $(this).val(val);
+            })
+        }
+
+        $(document).ready(function () {
+            $("body").on({
+                keydown: function (e) {
+                    if ((notInRange(e.keyCode, 48, 57) && notInRange(e.keyCode, 96, 105) && e.keyCode !== 8 && e.keyCode !== 9 && e.keyCode !== 46) || e.shiftKey) {
+                        e.preventDefault();
+                    }
+                    return true;
+                },
+                focus: function () {
+                    $(this).select();
+                },
+                keyup: function () {
+                    var $self = $(this);
+                    var new_val = $self.val().replace(/,/g, '');
+                    $self.val(inputNumberWithCommasEnglish(new_val));
+                },
+            }, ".input-price");
+
+            $("#adver_form").submit(function () {
+                var flag = true;
+                $('.required:enabled').each(function () {
+                    if ($(this).val() === '') {
+                        flag = false;
+                        $(this).css('border', '2px solid red');
+                    }
+                    else {
+                        $(this).css('border', '1px solid #cccccc');
+                    }
+                });
+                return flag;
+            });
+
+            $("#condition").change(function () {
+                if ($(this).val() === 'فروش') {
+                    $("#price_total").removeAttr('disabled');
+                    $("#price_per_meter").removeAttr('disabled');
+                    $("#price_prepayment").attr('disabled', 'disabled');
+                    $("#price_mortage").attr('disabled', 'disabled');
+                }
+                else {
+                    $("#price_prepayment").removeAttr('disabled');
+                    $("#price_mortage").removeAttr('disabled');
+                    $("#price_total").attr('disabled', 'disabled');
+                    $("#price_per_meter").attr('disabled', 'disabled');
+                }
+            });
+        });
+    </script>
+}
+

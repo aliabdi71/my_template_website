@@ -146,12 +146,21 @@ footer .row.blue{
     min-height:35px !important;
     padding: 3px 10px !important;
 }
+.submit-note{
+    margin: 10px;
+    padding:20px;
+    font-size: 16px;
+    text-align: justify;
+}
 @media only screen and (max-width: 1265px){
     .banner-panel table{
         min-width: 467px;
     }
     .banner-panel table td > .select2-container{
         width: 120px !important;
+    }
+    .submit-note{
+        padding:10px;
     }
 }
 @media only screen and (max-width: 985px) {

@@ -107,3 +107,62 @@ label{
 .select2-container.form-control{
     width:92%;
 }
+
+.popup{
+    background-color: #f4f4f4;
+    border: 0 solid #6f6f6f;
+    display: none;
+    min-height: 150px;
+    max-height: 350px;
+    padding: 0;
+    position: fixed;
+    z-index: 2000;
+}
+.popup .header {
+    background-color: #0090cb;
+    color: White;
+    font-size: 16px;
+    padding: 10px 5px;
+    text-align:center;
+}
+.popup .close, .popup .close:hover {
+    cursor: pointer;
+    display: block;
+    font-size: 14pt;
+    height: 30px;
+    opacity: 1;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    width: 26px;
+}
+.popup .body {
+    padding: 10px !important;
+    overflow-y: scroll;
+}
+.modal{
+    overflow-y: auto;
+}
+.estate-table-view{
+    width:100%;
+    font-size: 15px;
+    display:none;
+}
+.owner-table-view tr{
+    min-height:20px;
+}
+.owner-table-view th{
+    color: white;
+    padding:6px;
+    background-color:#2972b1;
+    font-weight:normal;
+    text-align:center;
+}
+.owner-table-view tr > td{
+    background-color:#d3e6e9;
+    text-align:center;
+    padding:6px;
+}
+.owner-table-view tr:nth-child(2n+1) > td{
+    background-color:white;
+}

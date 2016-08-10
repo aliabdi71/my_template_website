@@ -32,14 +32,18 @@
         border-color: #00578f;
         border-radius: 4px;
         box-shadow: 0 1px 2px 1px #00578f;
+        background-color:white;
     }
     .adver-content > .adver-description > h1{
         font-size:15px;
         font-weight:bold;
-        margin-top: 12px;
+        margin-top: 10px;
+        margin-top: 10px;
     }
     .adver-content > .adver-description > h2{
         font-size:14px;
+        margin-top: 10px;
+        margin-top: 10px;
         font-weight:normal;
     }
 </style>
@@ -61,6 +65,7 @@
                             <h1>@Model[j].Title</h1>
                             <h2>@Model[j].Condition - @Model[j].District</h2>
                             <br />
+                            <br />
                             <h1>کل/رهن: @Html.SplitInParts(Model[j].FirstPrice, 3)</h1>
                             <h2>متری/اجاره: @Html.SplitInParts(Model[j].SecondPrice, 3)</h2>
                             <h2>@Html.turnToPersianNumber(Model[j].Date)</h2>
@@ -71,7 +76,7 @@
         }
     </div>
 }
-<div class="row text-center">
-    <a class="btn btn-primary" href="#" style="min-width:100px;">ثبت آگهی</a>
+<div class="row text-center" style="margin-top:20px;">
+    @Html.ActionLink("ثبت آگهی", "InsertAdvertise", "Advertise", new { }, new { @class = "btn btn-primary", @style = "min-width:100px;" })
 </div>
 

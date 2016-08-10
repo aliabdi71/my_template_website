@@ -10,6 +10,8 @@ namespace Amirhome.CustomHelpers
     {
         public static MvcHtmlString turnToPersianNumber(this HtmlHelper helper, string value)
         {
+            if (string.IsNullOrEmpty(value))
+                return new MvcHtmlString(String.Empty);
             char[] englishNumbers = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
             char[] persianNumbers = { '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۰' };
             for (int i = 0; i < 10; i++)
@@ -20,6 +22,8 @@ namespace Amirhome.CustomHelpers
         }
         public static MvcHtmlString SplitInParts(this HtmlHelper helper, string text, int size)
         {
+            if (string.IsNullOrEmpty(text))
+                return new MvcHtmlString(String.Empty);
             List<String> ret = new List<String>(((text.Length + size - 1) / size) + 1);
             if ((text.Length + size) % size != 0)
                 ret.Add(text.Substring(0, (text.Length + size) % size));
@@ -36,6 +40,8 @@ namespace Amirhome.CustomHelpers
         }
         public static MvcHtmlString gregorianToJalali(this HtmlHelper helper, string date)
         {
+            if (string.IsNullOrEmpty(date))
+                return new MvcHtmlString(String.Empty);
             string[] splited = date.Split('/');
             int m = int.Parse(splited[0]),
                 d = int.Parse(splited[1]),
