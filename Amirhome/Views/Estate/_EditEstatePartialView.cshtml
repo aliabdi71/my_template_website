@@ -294,7 +294,7 @@
             <div class="form-group">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
-                    <h3>عکس های ملک</h3>
+                    <h3>عکس های داخل ساختمان</h3>
                     <table>
                         @for (int i = 0; i < Model.Images.Count(); i = i + 4)
                         {
@@ -302,7 +302,7 @@
                                 @for (int j = i; j < i + 4 && j < Model.Images.Count(); j++)
                                 {
                                     <td>
-                                        <img src="~/Content/estate_images/@images[j].url" style="width:90%;"/>
+                                        <img src="~/Content/estate_images/@images[j].url" style="width:70%;"/>
                                         <br />
                                         <input type="checkbox" name="img_ids" value="@images[j].ID" checked="checked" />
                                     </td>
@@ -317,6 +317,29 @@
                         <div class="col-md-9">
                             <input type="file" name="added_image" />
                             <a href="javascript:void(0)" onclick="$(this).before($('<input>').attr({ 'type': 'file', 'name': 'added_image' }));">عکس بیشتر</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <h3>عکس های نمای خیابان</h3>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="file" name="added_street_image" />
+                            <a href="javascript:void(0)" onclick="$(this).before($('<input>').attr({ 'type': 'file', 'name': 'added_street_image' }));">عکس بیشتر</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3>عکس های نقشه ساختمان</h3>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="file" name="added_plan_image" />
+                            <a href="javascript:void(0)" onclick="$(this).before($('<input>').attr({ 'type': 'file', 'name': 'added_plan_image' }));">عکس بیشتر</a>
                         </div>
                     </div>
                 </div>

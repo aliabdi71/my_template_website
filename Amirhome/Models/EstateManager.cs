@@ -315,7 +315,7 @@ namespace Amirhome.Models
             }
 
         }
-        public bool updateEstate(State model, int[] img_ids, List<Image> images_to_create, out List<string> urls_for_delete)
+        public bool updateEstate(State model, int[] img_ids, List<Image> images_to_create, List<Plan> plans_to_create, List<StreetView> streets_to_create, out List<string> urls_for_delete)
         {
             urls_for_delete = new List<string>();
             try
@@ -337,6 +337,16 @@ namespace Amirhome.Models
                     foreach (var img in images_to_create)
                     {
                         context.Images.Add(img);
+                        context.Entry(img).State = EntityState.Added;
+                    }
+                    foreach (var img in plans_to_create)
+                    {
+                        context.Plans.Add(img);
+                        context.Entry(img).State = EntityState.Added;
+                    }
+                    foreach (var img in streets_to_create)
+                    {
+                        context.StreetViews.Add(img);
                         context.Entry(img).State = EntityState.Added;
                     }
                     model.Date = DateTime.Now;
@@ -441,16 +451,23 @@ namespace Amirhome.Models
                 query = query.Where(E => E.Features.Any(F => F.ItemID == 12));
             return query;
         }
-        public int getNumOfEstateSubmitedAfter(DateTime date)
+        public int[] getEstateSubmitedAfter(DateTime date)
         {
-            int count = 0;
-            using (var context = new AmirhomeEntities())
+            int[] ids = {};
+            try
             {
-                count = (from E in context.States
-                         where E.Date.Value > date
-                         select E).Count();
+                using (var context = new AmirhomeEntities())
+                {
+                    ids = (from E in context.States
+                             where E.Date.Value > date
+                             select E.ID).ToArray();
+                }
+                return ids;
             }
-            return count;
+            catch
+            {
+                return ids;
+            }
         }
         public List<State> searchForOwner(string field, string value)
         {
@@ -482,8 +499,8 @@ namespace Amirhome.Models
     }
     public class DashboardViewModel
     {
-        public int newUserCount { get; set; }
-        public int newEstateCount { get; set; }
+        public int[] newUserIDs { get; set; }
+        public int[] newEstateIDs { get; set; }
         public List<Feedback> totalFeedbacks { get; set; }
         public List<User> totalAgents { get; set; }
         public List<UserAccouunt> totalUsers { get; set; }

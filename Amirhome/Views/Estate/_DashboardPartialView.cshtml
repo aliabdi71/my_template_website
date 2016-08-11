@@ -84,7 +84,7 @@
                 <i class="glyphicon glyphicon-home"></i>
             </span>
             <div class="text-box">
-                <p class="main-text">@Html.turnToPersianNumber(Model.newEstateCount.ToString())</p>
+                <p class="main-text">@Html.turnToPersianNumber(Model.newEstateIDs.Count().ToString())</p>
                 <p class="text-muted">مسکن جدید</p>
             </div>
         </div>
@@ -106,7 +106,7 @@
                 <i class="glyphicon glyphicon-user"></i>
             </span>
             <div class="text-box">
-                <p class="main-text">@Html.turnToPersianNumber(Model.newUserCount.ToString())</p>
+                <p class="main-text">@Html.turnToPersianNumber(Model.newUserIDs.Count().ToString())</p>
                 <p class="text-muted">کاربر جدید</p>
             </div>
         </div>
@@ -136,9 +136,18 @@
             <div class="panel-body">
                 <select id="all_users" onchange="fetch_user_info(this); return true;" style="min-width:145px;">
                     <option value="0">انتخاب کاربر</option>
-                    @foreach (var user in Model.totalUsers)
-                    {
-                        <option value="@user.ID">@user.Name</option>
+                    @{
+                        foreach (var user in Model.totalUsers)
+                        {
+                            if (Model.newUserIDs.Contains(user.ID))
+                            {
+                                <option style="color: red;" value="@user.ID">@user.Name (جدید)</option>
+                            }
+                            else
+                            {
+                                <option value="@user.ID">@user.Name</option>
+                            }
+                        }
                     }
                 </select>
                 <div class="users-panel-content  text-center">

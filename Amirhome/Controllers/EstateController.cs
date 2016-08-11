@@ -363,8 +363,8 @@ namespace Amirhome.Controllers
                         var usr = _userManager.getUserByID(uid);
                         var last_online_date = usr.LastTimeOnline.Value;
                         DashboardViewModel model = new DashboardViewModel();
-                        model.newUserCount = _userManager.getNumOfUsersRegisteredAfter(last_online_date);
-                        model.newEstateCount = _estateManager.getNumOfEstateSubmitedAfter(last_online_date);
+                        model.newUserIDs = _userManager.getUsersRegisteredAfter(last_online_date);
+                        model.newEstateIDs = _estateManager.getEstateSubmitedAfter(last_online_date);
                         model.totalFeedbacks = _estateManager.getAllFedbacks();
                         model.totalUsers = _userManager.getAllUser();
                         model.totalAgents = _agentManager.getAllAgent();
@@ -593,40 +593,81 @@ namespace Amirhome.Controllers
             return res;
         }
         [HttpPost]
-        public ActionResult SubmitEditEstate(State model, int[] img_ids, HttpPostedFileBase[] added_image)
+        public ActionResult SubmitEditEstate(State model, int[] img_ids, HttpPostedFileBase[] added_image, HttpPostedFileBase[] added_street_image, HttpPostedFileBase[] added_plan_image)
         {
             if (Session["user_role_id"] == null)
                 return Json("هویت شما مورد تأیید نیست");
             List<string> urls_to_delete;
             List<Amirhome.Models.Image> images_to_create = new List<Models.Image>();
+            List<Amirhome.Models.Plan> plans_to_create = new List<Models.Plan>();
+            List<Amirhome.Models.StreetView> streets_to_create = new List<Models.StreetView>();
 
+            #region Managing Images
             //Add objects of new uploaded images to estate model
             List<Tuple<byte[], string>> posted_files_img = new List<Tuple<byte[], string>>();
             int index = _estateManager.getImageCountOfEstate(model.ID);
             foreach (HttpPostedFileBase item in added_image)
             {
-                if (item == null)
-                    break;
-                //Create Image object and add it to model
-                Models.Image img = new Models.Image();
-                img.Primary = (index == 0) ? true : false;
-                string file_name = "estate_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
-                img.url = file_name;
-                img.StateID = model.ID;
+                if (item != null)
+                {
+                    //Create Image object and add it to model
+                    Models.Image img = new Models.Image();
+                    img.Primary = (index == 0) ? true : false;
+                    string file_name = "estate_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                    img.url = file_name;
+                    img.StateID = model.ID;
 
-                //Create image InputStream for saving it a little after
-                int nFileLen = item.ContentLength;
-                byte[] myData = new Byte[nFileLen];
-                item.InputStream.Read(myData, 0, nFileLen);
-                item.InputStream.Dispose();
-                posted_files_img.Add(new Tuple<byte[], string>(myData, file_name));
+                    //Create image InputStream for saving it a little after
+                    int nFileLen = item.ContentLength;
+                    byte[] myData = new Byte[nFileLen];
+                    item.InputStream.Read(myData, 0, nFileLen);
+                    item.InputStream.Dispose();
+                    posted_files_img.Add(new Tuple<byte[], string>(myData, file_name));
 
-                images_to_create.Add(img);
-                index++;
+                    images_to_create.Add(img);
+                    index++;
+                }
             }
+            foreach (HttpPostedFileBase item in added_plan_image)
+            {
+                if (item != null)
+                {
+                    Models.Plan img = new Models.Plan();
+                    string file_name = "estate_plan_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                    img.url = file_name;
+                    img.StateID = model.ID;
 
+                    int nFileLen = item.ContentLength;
+                    byte[] myData = new Byte[nFileLen];
+                    item.InputStream.Read(myData, 0, nFileLen);
+                    item.InputStream.Dispose();
+                    posted_files_img.Add(new Tuple<byte[], string>(myData, file_name));
+
+                    plans_to_create.Add(img);
+                }
+
+            }
+            foreach (HttpPostedFileBase item in added_street_image)
+            {
+                if (item != null)
+                {
+                    Models.StreetView img = new Models.StreetView();
+                    string file_name = "estate_street_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                    img.url = file_name;
+                    img.StateID = model.ID;
+
+                    int nFileLen = item.ContentLength;
+                    byte[] myData = new Byte[nFileLen];
+                    item.InputStream.Read(myData, 0, nFileLen);
+                    item.InputStream.Dispose();
+                    posted_files_img.Add(new Tuple<byte[], string>(myData, file_name));
+
+                    streets_to_create.Add(img);
+                }
+            }
+            #endregion
             //Update the model and get the result
-            bool success = _estateManager.updateEstate(model, img_ids, images_to_create, out urls_to_delete);
+            bool success = _estateManager.updateEstate(model, img_ids, images_to_create, plans_to_create, streets_to_create, out urls_to_delete);
             if (success)
             {
                 //Delete the actual image file from server

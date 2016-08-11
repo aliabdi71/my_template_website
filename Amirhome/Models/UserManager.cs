@@ -324,22 +324,22 @@ namespace Amirhome.Models
                 throw ex;
             }
         }
-        public int getNumOfUsersRegisteredAfter(DateTime date)
+        public int[] getUsersRegisteredAfter(DateTime date)
         {
-            int count = 0;
+            int[] ids = { };
             try
             {
                 using (var context = new AmirhomeEntities())
                 {
-                    count = (from U in context.UserAccouunts
+                    ids = (from U in context.UserAccouunts
                              where U.CreateDate.Value >= date
-                             select U).Count();
+                             select U.ID).ToArray();
                 }
-                return count;
+                return ids;
             }
             catch
             {
-                return 0;
+                return ids;
             }
         }
         public List<UserAccouunt> getAllUser()
