@@ -56,14 +56,14 @@ namespace Amirhome.Models
         }
         public FreeAdvertise getAdvertiseById(int id)
         {
-            FreeAdvertise model;
+            FreeAdvertise model = null;
             try
             {
                 using (var context = new AmirhomeEntities())
                 {
                     model = (from AD in context.FreeAdvertises
-                             where AD.ID == id
-                             select AD).First();
+                             where AD.ID == id && AD.approved == true
+                             select AD).FirstOrDefault();
                 }
                 return model;
             }

@@ -73,6 +73,15 @@ namespace Amirhome.Controllers
             return View();
         }
 
+        public ActionResult AddvertiseDetail(int addID)
+        {
+            FreeAdvertise model = _adverManager.getAdvertiseById(addID);
+            if (model != null)
+                return View(model);
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
         private bool ResizeImageAndUpload(System.IO.FileStream newFile, string folderPathAndFilename, double maxHeight, double maxWidth)
         {
             try

@@ -758,6 +758,7 @@
     <Content Include="Views\Estate\SearchOwnerPartialView.cshtml" />
     <Content Include="Views\Estate\SubmitEstateSuccessfull.cshtml" />
     <Content Include="Views\Advertise\InsertAdvertiseSuccessful.cshtml" />
+    <Content Include="Views\Advertise\AddvertiseDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
