@@ -110,7 +110,7 @@ namespace Amirhome.Controllers
                 ID = o.ID,
                 Area = o.Area,
                 FirstPrice = (o.TotalPrice == null || o.TotalPrice == 0) ? o.PrepaymentPrice : o.TotalPrice,
-                SecondPrice = (o.PricePerMeter == null || o.PricePerMeter == 0) ? "اجاره " + o.MortgagePrice.ToString() : "متری " + o.PricePerMeter.ToString(),
+                SecondPrice = (o.PricePerMeter == null || o.PricePerMeter == 0) ? "اجاره " + (o.MortgagePrice > 0 ? o.MortgagePrice.ToString() : "ندارد") : "متری " + o.PricePerMeter.ToString(),
                 Date = o.Date.ToString().Split(' ')[0],
                 //Prepayment = o.PrepaymentPrice,
                 //Loan = o.Loan,
@@ -438,6 +438,20 @@ namespace Amirhome.Controllers
             else
                 return Json("Error", JsonRequestBehavior.AllowGet);
         }
+        public JsonResult EstateDelete(int id)
+        {
+            try
+            {
+                List<string> urls_to_delete = _estateManager.deleteEstate(id);
+                foreach (var url in urls_to_delete)
+                    System.IO.File.Delete(Server.MapPath("~/Content/estate_images/" + url));
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json("Error", JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpPost]
         public ActionResult EditEstate(int id)
         {
@@ -454,6 +468,11 @@ namespace Amirhome.Controllers
             {
                 new { Text = "آپارتمان", Value = "1" },
                 new { Text = "ویلا", Value = "2" },
+                new { Text = "کلنگی", Value = "3" },
+                new { Text = "مستغلات", Value = "4" },
+                new { Text = "خانه", Value = "5" },
+                new { Text = "دفتر کار", Value = "6" },
+                new { Text = "مغازه", Value = "7" },
                 new { Text = "سوئیت", Value = "8" },
                 new { Text = "سایر", Value = "9" },
 
@@ -482,6 +501,7 @@ namespace Amirhome.Controllers
                 new { Text = "مسکونی", Value = "مسکونی" },
                 new { Text = "کلنگی و مشارکتی", Value = "کلنگی و مشارکتی" },
                 new { Text = "تجاری و اداری", Value = "تجاری و اداری" },
+                new { Text = "مغازه", Value = "مغازه" },
                 new { Text = "سایر", Value = "سایر" },
 
 
@@ -706,6 +726,7 @@ namespace Amirhome.Controllers
                 {
                     EstateID = e.ID,
                     EstateSerial = e.Serial,
+                    EstateArea = e.Area.ToString(),
                     OwnerAddress = e.Owner.Address,
                     OwnerMobile = e.Owner.Mobile,
                     OwnerName = e.Owner.Name,

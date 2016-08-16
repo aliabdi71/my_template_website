@@ -16,6 +16,7 @@ else
             <th>تلفن مالک</th>
             <th>موبایل مالک</th>
             <th>آدرس مالک</th>
+            <th>متراژ</th>
             <th>کد ملک</th>
             <th></th>
         </tr>
@@ -29,6 +30,7 @@ else
                 <td>@Html.turnToPersianNumber(@Model[i].OwnerPhone)</td>
                 <td>@Html.turnToPersianNumber(@Model[i].OwnerMobile)</td>
                 <td>@Html.turnToPersianNumber(@Model[i].OwnerAddress)</td>
+                <td>@Html.turnToPersianNumber(@Model[i].EstateArea)</td>
                 <td>@Html.turnToPersianNumber(@Model[i].EstateSerial.ToString())</td>
                 <td>@Html.ActionLink("مشاهده ملک", "EstateDetails", "Estate", new { @EstateID = Model[i].EstateID }, new { @class="btn btn-primary", @target="_blank" })</td>
             </tr>

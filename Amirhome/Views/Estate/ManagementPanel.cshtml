@@ -112,11 +112,11 @@
                 success: function (data) {
                     if (data === "Success") {
                         if (flag === "false") {
-                            $(elem).html('تأیید').removeClass('btn-danger').addClass('btn-primary').removeAttr('disabled');
+                            $(elem).html('تأیید').removeClass('btn-warning').addClass('btn-primary').removeAttr('disabled');
                             $(elem).attr('data-flag', "true");
                         }
                         else {
-                            $(elem).html('رد').addClass('btn-danger').removeClass('btn-primary').removeAttr('disabled');
+                            $(elem).html('رد').addClass('btn-warning').removeClass('btn-primary').removeAttr('disabled');
                             $(elem).attr('data-flag', "false");
                         }
                     }
@@ -150,11 +150,11 @@
                 success: function (data) {
                     if (data === "Success") {
                         if (flag === "false") {
-                            $(elem).html('بایگانی').removeClass('btn-danger').addClass('btn-primary').removeAttr('disabled');
+                            $(elem).html('بایگانی').removeClass('btn-warning').addClass('btn-primary').removeAttr('disabled');
                             $(elem).attr('data-flag', "true");
                         }
                         else {
-                            $(elem).html('احیا').addClass('btn-danger').removeClass('btn-primary').removeAttr('disabled');
+                            $(elem).html('احیا').addClass('btn-warning').removeClass('btn-primary').removeAttr('disabled');
                             $(elem).attr('data-flag', "false");
                         }
                     }
@@ -171,6 +171,34 @@
                         $(elem).html('بایگانی').removeAttr('disabled');
                     else
                         $(elem).html('احیا').removeAttr('disabled');
+                    alert("خطا در انجام عملیات");
+                },
+            });
+        }
+
+        function delete_estate(id, elem) {
+            var sure = confirm("آیا از حذف این ملک اطمینان دارید؟");
+            if (!sure) {
+                return false;
+            }
+            $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+            var flag = $(elem).attr('data-flag');
+            var postData = { "id": id };
+            $.ajax({
+                type: 'GET',
+                url: "/Estate/EstateDelete",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    if (data === "Success") {
+                        $(".search-table-body tr[data-estateid=" + id + "]").fadeOut('slow');
+                        alert('ملک مورد نظر با موفقیت حذف گردید');
+                    }
+                    else {
+                        alert("خطا در انجام عملیات");
+                    }
+                },
+                error: function (data) {
                     alert("خطا در انجام عملیات");
                 },
             });

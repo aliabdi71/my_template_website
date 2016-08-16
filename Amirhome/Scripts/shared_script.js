@@ -21,7 +21,7 @@ function turn2EnglishNumber(value) {
 
 function turn2PersianNumber(value) {
     if (!value) {
-        return;
+        return '0';
     }
     value = value.toString();
     var englishNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
@@ -44,6 +44,10 @@ function inputNumberWithCommas(x) {
 }
 
 function numberWithCommas(x) {
+    if (x === null)
+        return 'ندارد';
+    if (x.toString().indexOf('ندارد') > -1)
+        return x;
     var res = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return turn2PersianNumber(res) + ' تومان';
 }
@@ -57,6 +61,8 @@ function convertToJalaliDate(Gdate) {
 function fix_numbers() {
     $(".price").each(function () {
         var val = $(this).html().replace('تومان', '');
+        if (val.indexOf('ندارد') > -1)
+            return;
         $(this).html(numberWithCommas(val));
         $(this).removeClass("price");
     });
@@ -121,7 +127,7 @@ function sendDataToServer(email, pass, remember) {
                 $("#message").html(data);
             }
         },
-        error: function(){
+        error: function () {
             $("#login_btn").html('ورود').removeAttr('disabled');
             //$("#loading_button").css('display', 'none');
             $("#message").html('خطا در برقراری ارتباط با سرور');

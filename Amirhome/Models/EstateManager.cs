@@ -315,6 +315,54 @@ namespace Amirhome.Models
             }
 
         }
+        public List<string> deleteEstate(int id)
+        {
+            List<string> urls = new List<string>();
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    Image[] imgs = (from I in context.Images
+                                         where I.StateID == id
+                                         select I).ToArray();
+                    StreetView[] streets = (from I in context.StreetViews
+                                    where I.StateID == id
+                                    select I).ToArray();
+                    Plan[] plans = (from I in context.Plans
+                                    where I.StateID == id
+                                    select I).ToArray();
+                    foreach (var img in imgs)
+                    {
+                        urls.Add(img.url);
+                        context.Images.Remove(img);
+                        context.Entry(img).State = EntityState.Deleted;
+                    }
+                    foreach (var street in streets)
+                    {
+                        urls.Add(street.url);
+                        context.StreetViews.Remove(street);
+                        context.Entry(street).State = EntityState.Deleted;
+                    }
+                    foreach (var plan in plans)
+                    {
+                        urls.Add(plan.url);
+                        context.Plans.Remove(plan);
+                        context.Entry(plan).State = EntityState.Deleted;
+                    }
+                    State estate = (from E in context.States
+                                    where E.ID == id
+                                    select E).First();
+                    context.States.Remove(estate);
+                    context.Entry(estate).State = EntityState.Deleted;
+                    context.SaveChanges();
+                }
+                return urls;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public bool updateEstate(State model, int[] img_ids, List<Image> images_to_create, List<Plan> plans_to_create, List<StreetView> streets_to_create, out List<string> urls_for_delete)
         {
             urls_for_delete = new List<string>();
@@ -509,6 +557,7 @@ namespace Amirhome.Models
     {
         public int EstateID { get; set; }
         public int EstateSerial { get; set; }
+        public string EstateArea { get; set; }
         public string OwnerName { get; set; }
         public string OwnerAddress { get; set; }
         public string OwnerPhone { get; set; }

@@ -44,7 +44,7 @@
     <tbody class="search-table-body">
         @for (int i = 0; i < Model.Count; i++ )
         {
-            <tr data-approved="@Model[i].Approved">
+            <tr data-approved="@Model[i].Approved" data-estateid="@Model[i].ID">
                 <td>@Html.turnToPersianNumber((i+1).ToString())</td>
                 <td>@Html.gregorianToJalali(Model[i].Date.ToString().Split(' ')[0])</td>
                 <td>@Model[i].District1.name</td>
@@ -60,7 +60,7 @@
                     }
                     else
                     {
-                        <td><button class="btn btn-danger" data-flag="false" onclick="approve_estate(@Model[i].ID, this)">رد</button></td>
+                        <td><button class="btn btn-warning" data-flag="false" onclick="approve_estate(@Model[i].ID, this)">رد</button></td>
                     }
                 }
                 @{
@@ -68,15 +68,16 @@
                     {
                         if (!Model[i].Archived.Value)
                         {
-                            <td><button class="btn btn-primary" data-flag="true" onclick="archive_estate(@Model[i].ID, this)">بایگانی</button></td>
+                            <td><button class="btn btn-primary" data-flag="true" onclick="archive_estate(@Model[i].ID , this)">بایگانی</button></td>
                         }
                         else
                         {
-                            <td><button class="btn btn-danger" data-flag="false" onclick="archive_estate(@Model[i].ID, this)">احیا</button></td>
+                            <td><button class="btn btn-warning" data-flag="false" onclick="archive_estate(@Model[i].ID , this)">احیا</button></td>
                         }
                     }
                 }
-                <td><button class="btn btn-success" onclick="edit_estate(@Model[i].ID); return true;">ویرایش</button></td>
+                <td><button class="btn btn-success" onclick="edit_estate(@Model[i].ID);">ویرایش</button></td>
+                <td><button class="btn btn-danger" onclick="delete_estate(@Model[i].ID , this);">حذف</button></td>
             </tr>
         }
     </tbody>
