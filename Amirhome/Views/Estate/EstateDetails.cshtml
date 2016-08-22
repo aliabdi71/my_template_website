@@ -254,7 +254,12 @@
                         <h3 style="margin-right:10px; font-size:19px;">توضیحات</h3>
                         <p style="margin-right:20px;">@Model.Description</p>
                         <hr />
-                        <p style="margin-right:20px;">تنظیم کننده: @Model.Adjuster</p>
+                        @if (rid > 0)
+                        {
+                            <p style="margin-right:20px;">تنظیم کننده: @Model.Adjuster</p>
+                            <p style="margin-right:20px;">نوع سند: @Model.Docsituation</p>
+                            <p style="margin-right:20px;">منبع: @Model.Infosource</p>
+                        }
                     </div>
                 </div>
             </div>

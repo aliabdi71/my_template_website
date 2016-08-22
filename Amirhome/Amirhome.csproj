@@ -626,6 +626,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Plugins\JS Image Slider\bullet.png" />
+    <Content Include="Plugins\JS Image Slider\js-image-slider.css" />
+    <Content Include="Plugins\JS Image Slider\js-image-slider.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\CoreModel.edmx">
@@ -759,6 +762,7 @@
     <Content Include="Views\Estate\SubmitEstateSuccessfull.cshtml" />
     <Content Include="Views\Advertise\InsertAdvertiseSuccessful.cshtml" />
     <Content Include="Views\Advertise\AddvertiseDetail.cshtml" />
+    <Content Include="Views\Advertise\ManageAddvertisePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

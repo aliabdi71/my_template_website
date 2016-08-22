@@ -9,6 +9,7 @@ namespace Amirhome.Models
 {
     public class AdverShowModelView
     {
+        public int ID { get; set; }
         public string Title { get; set; }
         public string District { get; set; }
         public string Condition { get; set; }
@@ -70,6 +71,42 @@ namespace Amirhome.Models
             catch
             {
                 return null;
+            }
+        }
+        public bool approveAddvertise(int id, bool flag)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    FreeAdvertise addver = (from A in context.FreeAdvertises
+                                            where A.ID == id
+                                            select A).First();
+                    addver.approved = flag;
+                    context.FreeAdvertises.Attach(addver);
+                    context.Entry(addver).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public string deleteAddvertise(int id)
+        {
+            string res;
+            using (var context = new AmirhomeEntities())
+            {
+                FreeAdvertise addver = (from A in context.FreeAdvertises
+                                        where A.ID == id
+                                        select A).First();
+                res = addver.image;
+                context.FreeAdvertises.Remove(addver);
+                context.Entry(addver).State = EntityState.Deleted;
+                context.SaveChanges();
+                return res;
             }
         }
     }

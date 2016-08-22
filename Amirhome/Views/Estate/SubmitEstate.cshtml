@@ -455,6 +455,14 @@
                                             @Html.TextBoxFor(m => m.Parking, new { @class = "form-control required" })
                                         </div>
                                     </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4 left">
+                                            <lable>تنظیم کننده</lable>
+                                        </div>
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.Adjuster, new { @class = "form-control" })
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row form-group">
@@ -471,6 +479,22 @@
                                         </div>
                                         <div class="col-md-8">
                                             @Html.TextBoxFor(m => m.Tells, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4 left">
+                                            <lable>نوع سند</lable>
+                                        </div>
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.Docsituation, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4 left">
+                                            <lable>منبع</lable>
+                                        </div>
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.Infosource, new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>

@@ -206,6 +206,33 @@
 
         $(document).ready(function () {
             $('ul.sidebar-nav li:nth-child(2) a').trigger('click');
+
+            $("body").on({
+                keydown: function (e) {
+                    if ((notInRange(e.keyCode, 48, 57) && notInRange(e.keyCode, 96, 105) && e.keyCode !== 8 && e.keyCode !== 9 && e.keyCode !== 46) || e.shiftKey) {
+                        e.preventDefault();
+                    }
+                    return true;
+                },
+                focus: function () {
+                    $(this).select();
+                },
+                keyup: function () {
+                    var $self = $(this);
+                    var new_val = $self.val().replace(/,/g, '');
+                    $self.val(inputNumberWithCommasEnglish(new_val));
+                },
+                blur: function () {
+                    var $self = $(this);
+                    if ($self.attr('id') === 'PricePerMeter' || $self.attr('id') === 'Area') {
+                        var ppm = $("#PricePerMeter").val().replace(/,/g, '');
+                        var area = $("#Area").val().replace(/,/g, '');
+                        var total = parseInt(ppm) * parseInt(area);
+                        if (total)
+                            $("#TotalPrice").val(inputNumberWithCommasEnglish(total));
+                    }
+                }
+            }, ".number-type");
         });
     </script>
 }

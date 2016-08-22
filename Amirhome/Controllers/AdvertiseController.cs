@@ -73,13 +73,40 @@ namespace Amirhome.Controllers
             return View();
         }
 
-        public ActionResult AddvertiseDetail(int addID)
+        public ActionResult AddvertiseDetail()
         {
+            int addID = int.Parse(Request.QueryString["AddvertiseID"].ToString());
             FreeAdvertise model = _adverManager.getAdvertiseById(addID);
             if (model != null)
                 return View(model);
             else
                 return RedirectToAction("Index", "Home");
+        }
+
+        public JsonResult AddvertiseApprovement(int addID, bool flag)
+        {
+            bool res = _adverManager.approveAddvertise(addID, flag);
+            if (res)
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            else
+                return Json("Error", JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult AddvertiseDelete(int addID)
+        {
+            try
+            {
+                string imgs_to_delete = _adverManager.deleteAddvertise(addID);
+                string[] imgs = imgs_to_delete.Split(';');
+                foreach(var img in imgs)
+                    System.IO.File.Delete(Server.MapPath("~/Content/advertise_images/" + img));
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json("Error", JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         private bool ResizeImageAndUpload(System.IO.FileStream newFile, string folderPathAndFilename, double maxHeight, double maxWidth)
@@ -129,5 +156,6 @@ namespace Amirhome.Controllers
                 return false;
             }
         }
+
     }
 }

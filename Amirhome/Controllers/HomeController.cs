@@ -83,6 +83,7 @@ namespace Amirhome.Controllers
                     FirstPrice = adver.condition == "فروش" ? adver.price_total.ToString() : adver.price_prepayment.ToString(),
                     SecondPrice = adver.condition == "فروش" ? adver.price_per_meter.ToString() : adver.price_mortage.ToString(),
                     ImgUrl = string.IsNullOrEmpty(adver.image) ? "no-thumb.png" : adver.image.Split(';')[0],
+                    ID = adver.ID,
                 });
             }
             ViewData["adverModel"] = model;

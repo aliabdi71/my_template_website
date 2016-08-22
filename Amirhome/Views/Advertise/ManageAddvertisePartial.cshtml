@@ -1,0 +1,34 @@
+﻿@model List<Amirhome.Models.FreeAdvertise>
+@using Amirhome.CustomHelpers
+@{
+    string role_id = ViewData["user_role_id"].ToString();
+    int page = (Model.Count / 10) + 1;
+    string command = ViewData["command"].ToString();
+}
+
+
+
+<h1>@ViewData["title"].ToString()</h1>
+<hr />
+
+<table class="estate-table-view" border="1">
+    <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>عنوان</th>
+            <th>تاریخ ثبت</th>
+            <th>محله</th>
+            <th>تعداد خواب</th>
+            <th>متراژ (متر مربع)</th>
+            <th>قیمت کل / رهن</th>
+            <th>قیمت هر متر / اجاره</th>
+            <th>توضیحات</th>
+        </tr>
+    </thead>
+    <tbody class="search-table-body">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            
+        }
+    </tbody>
+</table>

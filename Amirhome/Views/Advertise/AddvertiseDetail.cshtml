@@ -1,8 +1,92 @@
-﻿
+﻿@model Amirhome.Models.FreeAdvertise
+@using Amirhome.CustomHelpers;
 @{
     ViewBag.Title = "جزئیات آگهی";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string[] imgs = Model.image.Split(';');
+    string final_date = "",
+            difference = ((int)(DateTime.Now - Model.create_date.Value).TotalDays).ToString();
+    switch (difference)
+    {
+        case "0": final_date = "لحظاتی قبل"; break;
+        case "1": final_date = "یک روز قبل"; break;
+        case "2": final_date = "دو روز قبل"; break;
+        case "3": final_date = "سه روز قبل"; break;
+        case "4": final_date = "چهار روز قبل"; break;
+        default: break;
+    }
 }
+<link rel="stylesheet" href="~/Plugins/JS Image Slider/js-image-slider.css" />
+<div class="container body-content" style="min-height:560px;">
+    <div class="row" style="padding:30px;">
+        <div class="col-md-7">
+            <div class="row big-title">
+                <h4 style="font-size: 17px;">
+                    <i class="glyphicon glyphicon-time"></i>&nbsp;
+                    @if (string.IsNullOrEmpty(final_date))
+                    {
+                        <span>@Html.gregorianToJalali(Model.create_date.Value.ToString().Split(' ')[0])</span>
+                    }
+                    else
+                    {
+                        <span>@final_date</span>
+                    }                
+                </h4>
+                <h1>@Html.turnToPersianNumber(Model.title)</h1>
+                <h4>@Model.city - @Model.district</h4>
+            </div>
+            <hr />
+            <div class="row" style="font-size:17px;">
+                <span><i class=" glyphicon glyphicon-info-sign"></i>&nbsp; مشخصات</span>
+                <br />
+                <br />  
+                    <div class="col-md-6">
+                        <span>تلفن: </span> <strong>@Html.turnToPersianNumber(Model.phone)</strong><br />
+                        <span>متراژ: </span> <strong>@Html.turnToPersianNumber(Model.area.ToString()) متر مربع</strong><br />
+                        @if(Model.condition == "فروش")
+                        {
+                            <span>قیمت کل: </span> <strong>@Html.SplitInParts(Model.price_total.Value.ToString(), 3)</strong><br />
+                        }
+                        else
+                        {
+                            <span>قیمت رهن: </span> <strong>@Html.SplitInParts(Model.price_prepayment.Value.ToString(), 3)</strong><br />
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <span>ایمیل: </span> <strong>@Model.email</strong><br />
+                        <span>نوع واگذاری: </span> <strong>@Model.condition</strong><br />
+                        @if (Model.condition == "فروش")
+                        {
+                            <span>قیمت متری: </span> <strong>@Html.SplitInParts(Model.price_per_meter.Value.ToString(), 3)</strong><br />
+                        }
+                        else
+                        {
+                            <span>قیمت اجاره: </span> <strong>@Html.SplitInParts(Model.price_mortage.Value.ToString(), 3)</strong><br />
+                        }
+                    </div>
+            </div>
+            <hr />
+            <div class="row second-title">
+                <span style="font-size: 17px;"><i class="glyphicon glyphicon-pushpin"></i>&nbsp; توضیحات</span>
+                <div class="col-md-12">
+                    <h4>@Html.turnToPersianNumber(Model.title2)</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div id="sliderFrame">
+                <div id="slider">
+                    @foreach (var item in imgs)
+                    {
+                        <img src="~/Content/advertise_images/@item" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h2>جزئیات آگهی</h2>
-
+@section scripts{
+    <script type="text/javascript" src="~/Plugins/JS Image Slider/js-image-slider.js"></script>
+}

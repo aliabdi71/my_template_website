@@ -370,17 +370,20 @@ namespace Amirhome.Models
             {
                 using (var context = new AmirhomeEntities())
                 {
+                    Image[] imgs = { };
                     if (img_ids != null)
-                    {
-                        Image[] imgs = (from I in context.Images
+                        imgs = (from I in context.Images
                                         where I.StateID == model.ID && !img_ids.Contains(I.ID)
                                         select I).ToArray();
-                        foreach (var item in imgs)
-                        {
-                            urls_for_delete.Add(item.url);
-                            context.Images.Remove(item);
-                            context.Entry(item).State = EntityState.Deleted;
-                        }
+                    else
+                        imgs = (from I in context.Images
+                                where I.StateID == model.ID
+                                select I).ToArray();
+                    foreach (var item in imgs)
+                    {
+                        urls_for_delete.Add(item.url);
+                        context.Images.Remove(item);
+                        context.Entry(item).State = EntityState.Deleted;
                     }
                     foreach (var img in images_to_create)
                     {
@@ -396,6 +399,11 @@ namespace Amirhome.Models
                     {
                         context.StreetViews.Add(img);
                         context.Entry(img).State = EntityState.Added;
+                    }
+                    if (model.Owner != null)
+                    {
+                        context.Owners.Attach(model.Owner);
+                        context.Entry(model.Owner).State = EntityState.Modified;
                     }
                     model.Date = DateTime.Now;
                     context.States.Attach(model);

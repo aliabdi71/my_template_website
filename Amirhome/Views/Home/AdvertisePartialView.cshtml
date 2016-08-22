@@ -56,7 +56,7 @@
         @for (int j = i; j < i + 4 && j < Model.Count; j++)
         {
             <div class="col-md-4">
-                <a class="adver-link" href="#">
+                <a class="adver-link" href="/Advertise/AddvertiseDetail?AddvertiseID=@Model[j].ID">
                     <div class="adver-content">
                         <div class="adver-image">
                             <img src='@string.Format("/Content/advertise_images/{0}", Model[j].ImgUrl)' />

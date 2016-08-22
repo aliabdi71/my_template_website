@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Amirhome.Models;
 using System.Drawing;
 using System.Net.Mail;
+using System.Diagnostics;
 
 namespace Amirhome.Controllers
 {
@@ -170,13 +171,14 @@ namespace Amirhome.Controllers
                 #region initializeImages
                 List<Tuple<byte[], string>> posted_files_img = new List<Tuple<byte[], string>>();
                 int index = 0;
+                Random rand = new Random();
                 foreach (HttpPostedFileBase item in main_image)
                 {
                     if (item == null)
                         break;
                     Models.Image img = new Models.Image();
                     img.Primary = (index == 0) ? true : false;
-                    string file_name = "estate_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                    string file_name = "estate_" + model.Serial.ToString() + "_" + generetareIndexForImage(rand).ToString() + ".jpg";
                     img.url = file_name;
 
                     int nFileLen = item.ContentLength;
@@ -194,7 +196,7 @@ namespace Amirhome.Controllers
                     if (item == null)
                         break;
                     Models.Plan plan = new Models.Plan();
-                    string file_name = "estate_plan_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                    string file_name = "estate_plan_" + model.Serial.ToString() + "_" + generetareIndexForImage(rand).ToString() + ".jpg";
                     plan.url = file_name;
 
                     int nFileLen = item.ContentLength;
@@ -212,7 +214,7 @@ namespace Amirhome.Controllers
                     if (item == null)
                         break;
                     Models.StreetView street = new Models.StreetView();
-                    string file_name = "estate_street_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                    string file_name = "estate_street_" + model.Serial.ToString() + "_" + generetareIndexForImage(rand).ToString() + ".jpg";
                     street.url = file_name;
 
                     int nFileLen = item.ContentLength;
@@ -606,9 +608,8 @@ namespace Amirhome.Controllers
             #endregion
             return PartialView("_EditEstatePartialView", _estate);
         }
-        private int generetareIndexForImage()
+        private int generetareIndexForImage(Random rand)
         {
-            Random rand = new Random();
             int res = rand.Next(1000, 10000);
             return res;
         }
@@ -626,6 +627,7 @@ namespace Amirhome.Controllers
             //Add objects of new uploaded images to estate model
             List<Tuple<byte[], string>> posted_files_img = new List<Tuple<byte[], string>>();
             int index = _estateManager.getImageCountOfEstate(model.ID);
+            Random rand = new Random();
             foreach (HttpPostedFileBase item in added_image)
             {
                 if (item != null)
@@ -633,7 +635,7 @@ namespace Amirhome.Controllers
                     //Create Image object and add it to model
                     Models.Image img = new Models.Image();
                     img.Primary = (index == 0) ? true : false;
-                    string file_name = "estate_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                    string file_name = "estate_" + model.Serial.ToString() + "_" + generetareIndexForImage(rand).ToString() + ".jpg";
                     img.url = file_name;
                     img.StateID = model.ID;
 
@@ -653,7 +655,7 @@ namespace Amirhome.Controllers
                 if (item != null)
                 {
                     Models.Plan img = new Models.Plan();
-                    string file_name = "estate_plan_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                    string file_name = "estate_plan_" + model.Serial.ToString() + "_" + generetareIndexForImage(rand).ToString() + ".jpg";
                     img.url = file_name;
                     img.StateID = model.ID;
 
@@ -672,7 +674,7 @@ namespace Amirhome.Controllers
                 if (item != null)
                 {
                     Models.StreetView img = new Models.StreetView();
-                    string file_name = "estate_street_" + model.Serial.ToString() + "_" + generetareIndexForImage().ToString() + ".jpg";
+                    string file_name = "estate_street_" + model.Serial.ToString() + "_" + generetareIndexForImage(rand).ToString() + ".jpg";
                     img.url = file_name;
                     img.StateID = model.ID;
 
@@ -690,26 +692,36 @@ namespace Amirhome.Controllers
             bool success = _estateManager.updateEstate(model, img_ids, images_to_create, plans_to_create, streets_to_create, out urls_to_delete);
             if (success)
             {
-                //Delete the actual image file from server
-                foreach (var url in urls_to_delete)
-                    System.IO.File.Delete(Server.MapPath("~/Content/estate_images/" + url));
-
-                //Save new uploaded files to server
-                string filePath = "~/Content/estate_images/",
-                       tempFilePath = "~/Content/temp_img_folder/";
-                foreach (var item in posted_files_img)
+                try
                 {
-                    System.IO.FileStream newFile
-                                = new System.IO.FileStream(Server.MapPath(tempFilePath + "_temp.jpg"),
-                                                           System.IO.FileMode.Create);
-                    newFile.Write(item.Item1, 0, item.Item1.Length);
-                    bool save_img_success = ResizeImageAndUpload(newFile, filePath + (item.Item2), 460, 700);//Save image your normal image path
-                    //delete the temp file.
-                    newFile.Close();
-                    System.IO.File.Delete(Server.MapPath(tempFilePath + "_temp.jpg"));
-                }
+                    //Delete the actual image file from server
+                    foreach (var url in urls_to_delete)
+                        System.IO.File.Delete(Server.MapPath("~/Content/estate_images/" + url));
 
-                return RedirectToAction("ManagementPanel", "Estate", new { message = "تغییرات با موفقیت ثبت گردید" });
+                    //Save new uploaded files to server
+                    string filePath = "~/Content/estate_images/",
+                           tempFilePath = "~/Content/temp_img_folder/";
+                    foreach (var item in posted_files_img)
+                    {
+                        System.IO.FileStream newFile
+                                    = new System.IO.FileStream(Server.MapPath(tempFilePath + "_temp.jpg"),
+                                                               System.IO.FileMode.Create);
+                        newFile.Write(item.Item1, 0, item.Item1.Length);
+                        bool save_img_success = ResizeImageAndUpload(newFile, filePath + (item.Item2), 460, 700);//Save image your normal image path
+                        //delete the temp file.
+                        newFile.Close();
+                        System.IO.File.Delete(Server.MapPath(tempFilePath + "_temp.jpg"));
+                    }
+
+                    return RedirectToAction("ManagementPanel", "Estate", new { message = "تغییرات با موفقیت ثبت گردید" });
+                }
+                catch (Exception ex)
+                {
+                    var st = new StackTrace(ex, true);
+                    var frame = st.GetFrame(0);
+                    int line = frame.GetFileLineNumber();
+                    return RedirectToAction("ManagementPanel", "Estate", new { message = line.ToString() + ": " + ex.Message });
+                }
             }
             else
                 return RedirectToAction("ManagementPanel", "Estate", new { message = "خطا در ثبت تغییرات" });
