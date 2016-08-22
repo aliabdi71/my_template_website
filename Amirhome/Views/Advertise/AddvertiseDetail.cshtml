@@ -44,7 +44,7 @@
                     <div class="col-md-6">
                         <span>تلفن: </span> <strong>@Html.turnToPersianNumber(Model.phone)</strong><br />
                         <span>متراژ: </span> <strong>@Html.turnToPersianNumber(Model.area.ToString()) متر مربع</strong><br />
-                        @if(Model.condition == "فروش")
+                        @if(Model.condition.Equals("فروش"))
                         {
                             <span>قیمت کل: </span> <strong>@Html.SplitInParts(Model.price_total.Value.ToString(), 3)</strong><br />
                         }
@@ -56,7 +56,7 @@
                     <div class="col-md-6">
                         <span>ایمیل: </span> <strong>@Model.email</strong><br />
                         <span>نوع واگذاری: </span> <strong>@Model.condition</strong><br />
-                        @if (Model.condition == "فروش")
+                        @if (Model.condition.Equals("فروش"))
                         {
                             <span>قیمت متری: </span> <strong>@Html.SplitInParts(Model.price_per_meter.Value.ToString(), 3)</strong><br />
                         }

@@ -38,6 +38,23 @@ namespace Amirhome.Models
                 return null;
             }
         }
+        public List<FreeAdvertise> getALLAdvertises()
+        {
+            List<FreeAdvertise> all_advers;
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    all_advers = (from AD in context.FreeAdvertises
+                                  select AD).ToList();
+                }
+                return all_advers;
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public bool insertAdvertise(FreeAdvertise model)
         {
             try
@@ -63,7 +80,7 @@ namespace Amirhome.Models
                 using (var context = new AmirhomeEntities())
                 {
                     model = (from AD in context.FreeAdvertises
-                             where AD.ID == id && AD.approved == true
+                             where AD.ID == id
                              select AD).FirstOrDefault();
                 }
                 return model;

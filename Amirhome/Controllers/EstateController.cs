@@ -15,6 +15,7 @@ namespace Amirhome.Controllers
         UserManager _userManager = new UserManager();
         EstateManager _estateManager = new EstateManager();
         AgentManager _agentManager = new AgentManager();
+        AdvertiseManager _advertiseManager = new AdvertiseManager();
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -349,7 +350,7 @@ namespace Amirhome.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult ManagementCommand(string command, int page = 1, string serial = "")
+        public ActionResult ManagementCommand(string command, int page = 1, string serial = "", bool addver_not_approved = false)
         {
             if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
                 return Json("Stop Trying Please!");
@@ -411,7 +412,9 @@ namespace Amirhome.Controllers
                     }
                 case "seE_AdverT":
                     {
-                        break;
+                        List<FreeAdvertise> model = _advertiseManager.getALLAdvertises();
+                        ViewData["title"] = "آگهی ها";
+                        return PartialView("~/views/Advertise/ManageAddvertisePartial.cshtml", model);
                     }
                 default:
                     {

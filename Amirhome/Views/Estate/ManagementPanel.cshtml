@@ -57,6 +57,7 @@
 
 @section scripts{
     <script type="text/javascript">
+        //Render selected menu for user
         function render_content(content_type, page) {
             var postData = { "command": content_type, "page": page };
             if ($("#serial-input").length && $("#serial-input").val().length) {
@@ -80,6 +81,7 @@
             });
         }
 
+        //Estate Management functions
         function edit_estate(id) {
             $("#content").html('<img src="/Content/shared_images/loading.gif" style="margin:0 auto; display:block;" id="loading"/>');
             $("#loading").css('display', 'block');
@@ -133,7 +135,7 @@
                         $(elem).html('تأیید').removeAttr('disabled');
                     else
                         $(elem).html('رد').removeAttr('disabled');
-                    alert("خطا در انجام عملیات");
+                    alert("خطا در ارتباط با مرکز");
                 },
             });
         }
@@ -171,7 +173,7 @@
                         $(elem).html('بایگانی').removeAttr('disabled');
                     else
                         $(elem).html('احیا').removeAttr('disabled');
-                    alert("خطا در انجام عملیات");
+                    alert("خطا در ارتباط با مرکز");
                 },
             });
         }
@@ -199,7 +201,46 @@
                     }
                 },
                 error: function (data) {
-                    alert("خطا در انجام عملیات");
+                    alert("خطا در ارتباط با مرکز");
+                },
+            });
+        }
+
+        //Addvertise Management functions
+        function approve_addver(id, elem) {
+            var flag = $(elem).attr('data-flag');
+            $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+            var postData = { "addID": id, "flag": flag };
+            $.ajax({
+                type: 'GET',
+                url: "/Advertise/AddvertiseApprovement",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    if (data === "Success") {
+                        if (flag === "false") {
+                            $(elem).html('<i class="glyphicon glyphicon-ok"></i>').css('color', 'green').removeAttr('disabled').attr('title', 'تأیید آگهی');
+                            $(elem).attr('data-flag', "true");
+                        }
+                        else {
+                            $(elem).html('<i class="glyphicon glyphicon-remove"></i>').css('color', 'red').removeAttr('disabled').attr('title', 'رد آگهی');
+                            $(elem).attr('data-flag', "false");
+                        }
+                    }
+                    else {
+                        if (flag === "true")
+                            $(elem).html('<i class="glyphicon glyphicon-ok"></i>').removeAttr('disabled');
+                        else
+                            $(elem).html('<i class="glyphicon glyphicon-remove"></i>').removeAttr('disabled');
+                        alert("خطا در انجام عملیات");
+                    }
+                },
+                error: function (data) {
+                    if (flag === "true")
+                        $(elem).html('<i class="glyphicon glyphicon-ok"></i>').removeAttr('disabled');
+                    else
+                        $(elem).html('<i class="glyphicon glyphicon-remove"></i>').removeAttr('disabled');
+                    alert("خطا در ارتباط با مرکز");
                 },
             });
         }

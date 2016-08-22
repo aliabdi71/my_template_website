@@ -11,6 +11,37 @@ namespace Amirhome.Controllers
     public class AdvertiseController : Controller
     {
         AdvertiseManager _adverManager = new AdvertiseManager();
+        UserManager _userManager = new UserManager();
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+            if (Session["UserID"] != null)
+            {
+                if (Session["user_name"] == null)
+                {
+                    try
+                    {
+                        int uid = int.Parse(Session["UserID"].ToString());
+                        UserAccouunt user = _userManager.getUserByID(uid);
+                        string imageBase64 = Convert.ToBase64String(user.ProfileImage);
+                        string imageSrc = string.Format("data:image/jpg;base64,{0}", imageBase64);
+                        Session["user_name"] = user.Name;
+                        Session["user_image_src"] = imageSrc;
+                        Session["user_role_id"] = user.UserAccouuntsRole.ID;
+                        Session["user_role_access"] = user.UserAccouuntsRole.Username;
+                    }
+                    catch
+                    {
+                        Session["user_name"] = null;
+                        Session["user_image_src"] = null;
+                    }
+                }
+                ViewData["user_name"] = Session["user_name"];
+                ViewData["user_image_src"] = Session["user_image_src"];
+                ViewData["user_role_id"] = Session["user_role_id"];
+            }
+        }
 
         public ActionResult InsertAdvertise()
         {
@@ -77,6 +108,11 @@ namespace Amirhome.Controllers
         {
             int addID = int.Parse(Request.QueryString["AddvertiseID"].ToString());
             FreeAdvertise model = _adverManager.getAdvertiseById(addID);
+            if (!model.approved.Value)
+            {
+                if (Session["user_role_access"] == null || !Session["user_role_id"].ToString().Equals("1"))
+                    return RedirectToAction("Index", "Home");
+            }
             if (model != null)
                 return View(model);
             else

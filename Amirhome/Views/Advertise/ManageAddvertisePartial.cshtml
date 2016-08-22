@@ -17,18 +17,55 @@
             <th>ردیف</th>
             <th>عنوان</th>
             <th>تاریخ ثبت</th>
+            <th>نوع واگذاری</th>
             <th>محله</th>
-            <th>تعداد خواب</th>
+            <th>تعداد عکس</th>
             <th>متراژ (متر مربع)</th>
             <th>قیمت کل / رهن</th>
             <th>قیمت هر متر / اجاره</th>
-            <th>توضیحات</th>
         </tr>
     </thead>
     <tbody class="search-table-body">
         @for (int i = 0; i < Model.Count; i++)
         {
-            
+            <tr>
+                <td>@Html.turnToPersianNumber(i.ToString())</td>
+                <td>@Model[i].title</td>
+                <td>@Html.gregorianToJalali(Model[i].create_date.ToString().Split(' ')[0])</td>
+                <td>@Model[i].condition</td>
+                <td>@Model[i].district</td>
+                <td>@Html.turnToPersianNumber(Model[i].image.Split(';').Count().ToString())</td>
+                <td>@Html.turnToPersianNumber(Model[i].area.ToString())</td>
+                @if (Model[i].condition.Equals("فروش"))
+                {
+                    <td>@Html.SplitInParts(Model[i].price_total.ToString(), 3)</td>
+                    <td>@Html.SplitInParts(Model[i].price_per_meter.ToString(), 3)</td>
+                }
+                else
+                {
+                    <td>@Html.SplitInParts(Model[i].price_prepayment.ToString(), 3)</td>
+                    <td>@Html.SplitInParts(Model[i].price_mortage.ToString(), 3)</td>
+                }
+                <td>
+                    <a style="color: #551856;" href="/Advertise/AddvertiseDetail?AddvertiseID=@Model[i].ID" title="مشاهده آگهی" target="_blank"><i class="glyphicon glyphicon-eye-open"></i></a>
+                </td>
+                <td>
+                    <a style="color: #46a545;" href="javascript:void(0)" onclick="extend_addver(@Model[i].ID , this)" title="تمدید آگهی"><i class="glyphicon glyphicon-time"></i></a>
+                </td>
+                <td>
+                    @if (Model[i].approved.Value)
+                    {
+                        <a style="color: red;" href="javascript:void(0)" data-flag="false" onclick="approve_addver(@Model[i].ID , this)" title="رد آگهی"><i class="glyphicon glyphicon-remove"></i></a>
+                    }
+                    else
+                    {
+                        <a style="color: green;" href="javascript:void(0)" data-flag="true" onclick="approve_addver(@Model[i].ID , this)" title="تأیید آگهی"><i class="glyphicon glyphicon-ok"></i></a>
+                    }
+                </td>
+                <td>
+                    <a style="color: black;" href="javascript:void(0)" onclick="delete_addver(@Model[i].ID , this)" title="حذف آگهی"><i class="glyphicon glyphicon-trash"></i></a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
