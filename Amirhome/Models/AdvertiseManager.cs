@@ -126,5 +126,23 @@ namespace Amirhome.Models
                 return res;
             }
         }
+        public int[] getAddvertiseSubmitedAfter(DateTime date)
+        {
+            int[] ids = { };
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    ids = (from A in context.FreeAdvertises
+                           where A.create_date.Value > date
+                           select A.ID).ToArray();
+                }
+                return ids;
+            }
+            catch
+            {
+                return ids;
+            }
+        }
     }
 }

@@ -371,6 +371,7 @@ namespace Amirhome.Controllers
                         model.totalFeedbacks = _estateManager.getAllFedbacks();
                         model.totalUsers = _userManager.getAllUser();
                         model.totalAgents = _agentManager.getAllAgent();
+                        model.newAddverIds = _advertiseManager.getAddvertiseSubmitedAfter(last_online_date);
                         ViewData["title"] = "داشبورد مدیریت";
                         return PartialView("_DashboardPartialView", model);
                     }

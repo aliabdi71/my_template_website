@@ -28,13 +28,13 @@
     <tbody class="search-table-body">
         @for (int i = 0; i < Model.Count; i++)
         {
-            <tr>
+            <tr data-addverid="@Model[i].ID">
                 <td>@Html.turnToPersianNumber(i.ToString())</td>
                 <td>@Model[i].title</td>
                 <td>@Html.gregorianToJalali(Model[i].create_date.ToString().Split(' ')[0])</td>
                 <td>@Model[i].condition</td>
                 <td>@Model[i].district</td>
-                <td>@Html.turnToPersianNumber(Model[i].image.Split(';').Count().ToString())</td>
+                <td>@Html.turnToPersianNumber(string.IsNullOrEmpty(Model[i].image) ? "0" :  Model[i].image.Split(';').Count().ToString())</td>
                 <td>@Html.turnToPersianNumber(Model[i].area.ToString())</td>
                 @if (Model[i].condition.Equals("فروش"))
                 {

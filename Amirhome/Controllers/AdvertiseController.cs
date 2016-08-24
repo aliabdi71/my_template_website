@@ -133,9 +133,12 @@ namespace Amirhome.Controllers
             try
             {
                 string imgs_to_delete = _adverManager.deleteAddvertise(addID);
-                string[] imgs = imgs_to_delete.Split(';');
-                foreach(var img in imgs)
-                    System.IO.File.Delete(Server.MapPath("~/Content/advertise_images/" + img));
+                if (!string.IsNullOrEmpty(imgs_to_delete))
+                {
+                    string[] imgs = imgs_to_delete.Split(';');
+                    foreach (var img in imgs)
+                        System.IO.File.Delete(Server.MapPath("~/Content/advertise_images/" + img));
+                }
                 return Json("Success", JsonRequestBehavior.AllowGet);
             }
             catch
@@ -145,6 +148,17 @@ namespace Amirhome.Controllers
 
         }
 
+        [HttpPost]
+        public JsonResult AddvertiseGetContact(int id)
+        {
+            FreeAdvertise addver = _adverManager.getAdvertiseById(id);
+            object res = new
+            {
+                Phone = addver.phone,
+                Email = string.IsNullOrEmpty(addver.email) ? "ندارد" : addver.email,
+            };
+            return Json(res);
+        }
         private bool ResizeImageAndUpload(System.IO.FileStream newFile, string folderPathAndFilename, double maxHeight, double maxWidth)
         {
             try

@@ -557,6 +557,7 @@ namespace Amirhome.Models
     {
         public int[] newUserIDs { get; set; }
         public int[] newEstateIDs { get; set; }
+        public int[] newAddverIds { get; set; }
         public List<Feedback> totalFeedbacks { get; set; }
         public List<User> totalAgents { get; set; }
         public List<UserAccouunt> totalUsers { get; set; }

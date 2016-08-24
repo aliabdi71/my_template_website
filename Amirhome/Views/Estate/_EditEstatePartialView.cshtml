@@ -41,20 +41,20 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">نام مالک</label>
                     <div class="col-md-9">
-                        @Html.TextBoxFor(m => m.Owner.Name, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Owner.Name, new { @class = "form-control", @onfocus = "$(this).select();" })
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-3 control-label">ایمیل مالک</label>
                     <div class="col-md-9">
-                        @Html.TextBoxFor(m => m.Owner.Email, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Owner.Email, new { @class = "form-control", @onfocus = "$(this).select();" })
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-3 control-label">موبایل مالک</label>
                     <div class="col-md-9">
-                        @Html.TextBoxFor(m => m.Owner.Mobile, new { @style = "margin-bottom: 5px;", @class = "form-control" })
-                        @Html.TextBoxFor(m => m.Owner.Mobile2, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Owner.Mobile, new { @style = "margin-bottom: 5px;", @class = "form-control", @onfocus = "$(this).select();" })
+                        @Html.TextBoxFor(m => m.Owner.Mobile2, new { @class = "form-control", @onfocus = "$(this).select();" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -170,8 +170,8 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">تلفن مالک</label>
                     <div class="col-md-9">
-                        @Html.TextBoxFor(m => m.Owner.Telephone, new { @style = "margin-bottom: 5px;", @class = "form-control" })
-                        @Html.TextBoxFor(m => m.Owner.Tell2, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Owner.Telephone, new { @style = "margin-bottom: 5px;", @class = "form-control", @onfocus = "$(this).select();" })
+                        @Html.TextBoxFor(m => m.Owner.Tell2, new { @class = "form-control", @onfocus = "$(this).select();" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -348,7 +348,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <input type="file" name="added_street_image" />
-                            <a href="javascript:void(0)" onclick="$(this).before($('<input>').attr({ 'type': 'file', 'name': 'added_street_image' }));">عکس بیشتر</a>
+                            @*<a href="javascript:void(0)" onclick="$(this).before($('<input>').attr({ 'type': 'file', 'name': 'added_street_image' }));">عکس بیشتر</a>*@
                         </div>
                     </div>
                 </div>
@@ -357,7 +357,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <input type="file" name="added_plan_image" />
-                            <a href="javascript:void(0)" onclick="$(this).before($('<input>').attr({ 'type': 'file', 'name': 'added_plan_image' }));">عکس بیشتر</a>
+                            @*<a href="javascript:void(0)" onclick="$(this).before($('<input>').attr({ 'type': 'file', 'name': 'added_plan_image' }));">عکس بیشتر</a>*@
                         </div>
                     </div>
                 </div>
@@ -366,7 +366,7 @@
        
             <div class="form-group">
                 <div class="col-md-offset-10 col-md-2">
-                    <button type="submit" value="ذخیره" class="btn btn-primary" id="form-submit-btn" style="min-width:100px;">ذخیره</button>
+                    <button type="submit" value="ذخیره" class="btn btn-primary" id="form-submit-btn" onclick="fix_input_formats(); return true;" style="min-width:100px;">ذخیره</button>
                     <p id="server-message"></p>
                 </div>
             </div>

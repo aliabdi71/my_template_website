@@ -101,7 +101,6 @@
                 },
             });
         }
-
         function approve_estate(id, elem) {
             $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
             var flag = $(elem).attr('data-flag');
@@ -139,7 +138,6 @@
                 },
             });
         }
-
         function archive_estate(id, elem) {
             $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
             var flag = $(elem).attr('data-flag');
@@ -177,14 +175,12 @@
                 },
             });
         }
-
         function delete_estate(id, elem) {
             var sure = confirm("آیا از حذف این ملک اطمینان دارید؟");
             if (!sure) {
                 return false;
             }
             $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
-            var flag = $(elem).attr('data-flag');
             var postData = { "id": id };
             $.ajax({
                 type: 'GET',
@@ -244,6 +240,65 @@
                 },
             });
         }
+        function delete_addver(id, elem) {
+            var sure = confirm("آیا از حذف این آگهی اطمینان دارید؟");
+            if (!sure) {
+                return false;
+            }
+            $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+            var postData = { "addID": id };
+            $.ajax({
+                type: 'GET',
+                url: "/Advertise/AddvertiseDelete",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    if (data === "Success") {
+                        $("tr[data-addverid=" + id + "]").fadeOut('slow');
+                        alert('آگهی مورد نظر با موفقیت حذف گردید');
+                    }
+                    else {
+                        alert("خطا در انجام عملیات");
+                    }
+                },
+                error: function (data) {
+                    alert("خطا در ارتباط با مرکز");
+                },
+            });
+        }
+        function extend_addver(id, elem) {
+            /*var sure = confirm("آیا از تمدید این آگهی اطمینان دارید؟");
+            if (!sure) {
+                return false;
+            }
+            $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+            var postData = { "addID": id };
+            $.ajax({
+                type: 'GET',
+                url: "/Advertise/AddvertiseDelete",
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    if (data === "Success") {
+                        $("tr[data-addverid=" + id + "]").fadeOut('slow');
+                        alert('آگهی مورد نظر با موفقیت حذف گردید');
+                    }
+                    else {
+                        alert("خطا در انجام عملیات");
+                    }
+                },
+                error: function (data) {
+                    alert("خطا در ارتباط با مرکز");
+                },
+            });*/
+        }
+
+        function fix_input_formats() {
+            $(".number-type").each(function () {
+                var val = $(this).val().replace(/,/g, '');
+                $(this).val(val);
+            })
+        }
 
         $(document).ready(function () {
             $('ul.sidebar-nav li:nth-child(2) a').trigger('click');
@@ -255,13 +310,13 @@
                     }
                     return true;
                 },
-                focus: function () {
-                    $(this).select();
-                },
                 keyup: function () {
                     var $self = $(this);
                     var new_val = $self.val().replace(/,/g, '');
                     $self.val(inputNumberWithCommasEnglish(new_val));
+                },
+                focus: function () {
+                    $(this).select();
                 },
                 blur: function () {
                     var $self = $(this);

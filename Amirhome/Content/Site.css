@@ -1,5 +1,5 @@
 ﻿@font-face {
-  font-family: "B Yekan";
+  font-family: "BYekan";
   src: url("fonts/BYekan.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
@@ -251,7 +251,7 @@ footer .row.blue{
 body {
     margin-top: 88px;
     padding-bottom: 20px;
-    font-family:'B Yekan';
+    font-family:BYekan, Candara;
     background-color:#C7DBF4;
     height:100%;
 }
@@ -268,7 +268,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6, a, span, label, input{
-    font-family:'B Yekan';
+    font-family:BYekan, Candara;
 }
 
 /* Set padding to keep content from hitting the edges */
