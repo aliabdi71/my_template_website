@@ -10,23 +10,23 @@ namespace Amirhome.Models
 {
     public class AgentManager
     {
-        public Amirhome.Models.User getAgentById(int id)
+        public UserAccouunt getAgentById(int id)
         {
-            Amirhome.Models.User agent = null;
+            UserAccouunt agent = null;
             using (var context = new AmirhomeEntities())
             {
-                agent = (from U in context.Users
-                         where U.UserID == id
+                agent = (from U in context.UserAccouunts
+                         where U.ID == id
                          select U).FirstOrDefault();
             }
             return agent;
         }
-        public List<Amirhome.Models.User> getAllAgent()
+        public List<UserAccouunt> getAllAgent()
         {
-            List<Amirhome.Models.User> res = null;
+            List<UserAccouunt> res = null;
             using (var context = new AmirhomeEntities())
             {
-                res = (from A in context.Users
+                res = (from A in context.UserAccouunts
                        select A).ToList();
             }
             return res;

@@ -81,7 +81,9 @@ namespace Amirhome.Controllers
                     ViewData["latitude"] = "35.688045";
                     ViewData["longitude"] = "51.392884";
                 }
-                ViewData["agent"] = _agentManager.getAgentById(estate_model.AgentID.Value);
+                var agent = _agentManager.getAgentById(estate_model.AgentID.Value);
+                ViewData["agent"] = agent;
+                ViewData["agent_pic"] = (agent.ProfileImage == null) ? "~/Content/shared_images/logo3.png" : string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(agent.ProfileImage));
                 return View(estate_model);
             }
             catch

@@ -144,7 +144,9 @@ table.other-features{
 }
 .agent_img{
     position:absolute;
-    left:30px
+    left:30px;
+    width:50px;
+    height:50px;
 }
 .row.items{
     background-color:#FCFFE5;

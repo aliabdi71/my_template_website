@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "مشاهده جزئیات ملک";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var agent = ViewData["agent"] as Amirhome.Models.User;
+    var agent = ViewData["agent"] as Amirhome.Models.UserAccouunt;
     int rid;
     if (ViewData["user_role_id"] == null)
     {
@@ -307,10 +307,11 @@
             <div class="content left fade-animate">
                 <div class="text-center caption">اطلاعات تماس</div>
                 <div class="inner_content">
-                    <img class="agent_img" src="~/Content/shared_images/logo3.png" />
+                    <img class="agent_img" src='@ViewData["agent_pic"].ToString()'/>
                     <span>کد ملک: </span><label>@Html.turnToPersianNumber(Model.Serial.ToString())</label><br />
                     <span>تاریخ ثبت ملک: </span><label>@Html.gregorianToJalali(Model.Date.ToString().Split(' ')[0])</label><br />
-                    <span>نام مشاور: </span><label>@agent.DisplayName</label><br />
+                    <span>نام مشاور: </span><label>@agent.Name</label><br />
+                    <span>تلفن مشاور: </span><label>@agent.Phone</label><br />
                     @if ((rid == 1) || (rid == 2) || (rid == 6) || (rid == 3 && Model.Condition == "فروش") || (rid == 4 && Model.Condition != "فروش"))
                     {
                         <span>نام مالک: </span><label>@Model.Owner.Name</label><br />
