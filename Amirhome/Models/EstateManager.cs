@@ -559,7 +559,7 @@ namespace Amirhome.Models
         public int[] newEstateIDs { get; set; }
         public int[] newAddverIds { get; set; }
         public List<Feedback> totalFeedbacks { get; set; }
-        public List<User> totalAgents { get; set; }
+        public List<UserAccouunt> totalAgents { get; set; }
         public List<UserAccouunt> totalUsers { get; set; }
     }
     public class OwnerSearchViewModel

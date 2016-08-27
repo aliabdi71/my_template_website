@@ -228,31 +228,59 @@
                             <input type="text" id="PricePerMeterTo" class="long_input price-type" placeholder="حداکثر قیمت هر متر(تومان)" />
                         </div>
                     </div>
-                    <div class="row advanced-section">
-                        <div class="col-md-3">
-                            <select id="EstateFloor">
-                                <option value="0" selected="selected">طبقه</option>
-                                <option value="زیرزمین">زیرزمین</option>
-                                <option value="پیلوت">پیلوت</option>
-                                <option value="همکف">همکف</option>
-                                <option value="طبقه اول">طبقه اول</option>
-                                <option value="طبقه دوم">طبقه دوم</option>
-                                <option value="طبقه سوم">طبقه سوم</option>
-                                <option value="طبقه چهارم">طبقه چهارم</option>
-                                <option value="طبقه پنجم">طبقه پنجم</option>
-                                <option value="طبقه ششم">طبقه ششم</option>
-                                <option value="طبقه هفتم تا دهم">طبقه هفتم تا دهم</option>
-                                <option value="طبقه دهم به بالا">طبقه دهم به بالا</option>
-                            </select>
+                    <div class="advanced-section">
+                        <div class="row" style="margin-bottom: 25px;">
+                            <div class="col-md-4">
+                                <select id="EstateFloor">
+                                    <option value="0" selected="selected">طبقه</option>
+                                    <option value="زیرزمین">زیرزمین</option>
+                                    <option value="پیلوت">پیلوت</option>
+                                    <option value="همکف">همکف</option>
+                                    <option value="طبقه اول">طبقه اول</option>
+                                    <option value="طبقه دوم">طبقه دوم</option>
+                                    <option value="طبقه سوم">طبقه سوم</option>
+                                    <option value="طبقه چهارم">طبقه چهارم</option>
+                                    <option value="طبقه پنجم">طبقه پنجم</option>
+                                    <option value="طبقه ششم">طبقه ششم</option>
+                                    <option value="طبقه هفتم تا دهم">طبقه هفتم تا دهم</option>
+                                    <option value="طبقه دهم به بالا">طبقه دهم به بالا</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="EstateFloors">
+                                    <option value="0" selected="selected">تعداد طبقات</option>
+                                    <option value="یک طبقه">یک طبقه</option>
+                                    <option value="دو طبقه">دو طبقه</option>
+                                    <option value="سه طبقه">سه طبقه</option>
+                                    <option value="چهار طبقه">چهار طبقه</option>
+                                    <option value="پنج طبقه">پنج طبقه</option>
+                                    <option value="شش طبقه">شش طبقه</option>
+                                    <option value="هفت تا ده طبقه">هفت تا ده طبقه</option>
+                                    <option value="ده تا بیست طبقه">ده تا بیست طبقه</option>
+                                    <option value="بیش از بیست طبقه">بیش از بیست طبقه</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="EstateUnits">
+                                    <option value="0" selected="selected">تعداد واحد در طبقه</option>
+                                    <option value="تک واحدی">تک واحدی</option>
+                                    <option value="دو واحدی">دو واحدی</option>
+                                    <option value="سه واحدی">سه واحدی</option>
+                                    <option value="چهار واحدی">چهار واحدی</option>
+                                    <option value="بیش از چهار واحد در هر طبقه">بیش از چهار واحد در هر طبقه</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <input type="text" id="EstateBedrooms" class="long_input" placeholder="تعداد اتاق خواب" />
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" id="EstateParkings" class="long_input" placeholder="تعداد پارکینگ" />
-                        </div>
-                        <div class="col-md-3">
-                            <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="HasParking"><span>&nbsp;&nbsp;انباری</span></label>
+                        <div class="row" style="margin-bottom: 25px;">
+                            <div class="col-md-4">
+                                <input type="text" id="EstateBedrooms" class="long_input" placeholder="تعداد اتاق خواب" />
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="EstateParkings" class="long_input" placeholder="تعداد پارکینگ" />
+                            </div>
+                            <div class="col-md-4">
+                                <label style="display:inline; font-weight: normal; font-size:14px; margin-right:5px;"><input type="checkbox" id="HasParking"><span>&nbsp;&nbsp;انباری</span></label>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -331,7 +359,7 @@
             if (search_params == null)
                 search_params = {};
             var field_names = ['EstateType', 'EstateCity', 'EstateDistrict', 'EstateCondition',
-                               'EstateAge', 'EstateSerial', 'EstateFloor', 'EstateBedrooms', 'EstateParkings',
+                               'EstateAge', 'EstateSerial', 'EstateFloor', 'EstateFloors', 'EstateUnits', 'EstateBedrooms', 'EstateParkings',
                                'Area', 'TotalPrice', 'PricePerMeter', 'PrepaymentPrice', 'MortagePrice', 'HasParking',
                                'EstateSerial'];
             for (var j = 0 ; j < field_names.length ; j++){
@@ -582,18 +610,18 @@
                 var $i = $(this).find('.glyphicon');
                 if ($i.hasClass('glyphicon-chevron-down')) {
                     $i.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-                    $('.advanced-section').show('slow');
+                    $('.advanced-section').slideDown(300);
                 }
                 else {
                     $i.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
-                    $('.advanced-section').hide('slow');
+                    $('.advanced-section').slideUp(300);
                 }
             });
 
             $("#search_btn").click(function () {
                 initialSearchParams();
                 var field_names = ['EstateType', 'EstateCity', 'EstateDistrict', 'EstateCondition',
-                                   'EstateAge', 'EstateSerial', 'EstateFloor', 'EstateBedrooms', 'EstateParkings',
+                                   'EstateAge', 'EstateSerial', 'EstateFloor', 'EstateFloors', 'EstateUnits', 'EstateBedrooms', 'EstateParkings',
                                    'EstateSerial'];
                 for (var i = 0 ; i < field_names.length ; i++) {
                     var $elem = $('#' + field_names[i]);

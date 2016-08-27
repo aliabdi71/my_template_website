@@ -83,7 +83,7 @@ namespace Amirhome.Controllers
                 }
                 var agent = _agentManager.getAgentById(estate_model.AgentID.Value);
                 ViewData["agent"] = agent;
-                ViewData["agent_pic"] = (agent.ProfileImage == null) ? "~/Content/shared_images/logo3.png" : string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(agent.ProfileImage));
+                ViewData["agent_pic"] = (agent.ProfileImage == null || agent.ProfileImage.Length < 5) ? "/Content/shared_images/logo3.png" : string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(agent.ProfileImage));
                 return View(estate_model);
             }
             catch
@@ -371,7 +371,7 @@ namespace Amirhome.Controllers
                         model.newUserIDs = _userManager.getUsersRegisteredAfter(last_online_date);
                         model.newEstateIDs = _estateManager.getEstateSubmitedAfter(last_online_date);
                         model.totalFeedbacks = _estateManager.getAllFedbacks();
-                        model.totalUsers = _userManager.getAllUser();
+                        model.totalUsers = _userManager.getAllUser().Where(U => U.RoleID == 5).ToList();
                         model.totalAgents = _agentManager.getAllAgent();
                         model.newAddverIds = _advertiseManager.getAddvertiseSubmitedAfter(last_online_date);
                         ViewData["title"] = "داشبورد مدیریت";
@@ -469,7 +469,7 @@ namespace Amirhome.Controllers
             ViewData["Features"] = _estateManager.getAllFeatures();
             ViewBag.Province = new SelectList(_estateManager.getAllProvince(), "id", "name", _estate.Province);
             ViewBag.City = new SelectList(_estateManager.getCityByProvince((int)_estate.Province), "id", "name", _estate.City);
-            ViewBag.AgentID = new SelectList(_agentManager.getAllAgent(), "UserID", "DisplayName", _estate.AgentID);
+            ViewBag.AgentID = new SelectList(_agentManager.getAllAgent(), "ID", "Name", _estate.AgentID);
             #region InitializeSelectLists
             ViewBag.District = new SelectList(_estateManager.getAllDistricts(), "ID", "name", _estate.District);
             List<object> StateTypeList = new List<object>()

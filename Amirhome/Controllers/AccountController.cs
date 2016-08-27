@@ -218,11 +218,11 @@ namespace Amirhome.Controllers
         {
             if (Session["user_role_id"] == null)
                 return Json(null, JsonRequestBehavior.AllowGet);
-            User agent = _agentManager.getAgentById(id);
+            UserAccouunt agent = _agentManager.getAgentById(id);
             var res_object = new 
             {
-                DisplayName = agent.DisplayName,
-                UserID = agent.UserID,
+                DisplayName = agent.Name,
+                UserID = agent.ID,
                 Email = agent.Email,
             };
             return Json(res_object, JsonRequestBehavior.AllowGet);

@@ -27,6 +27,7 @@ namespace Amirhome.Models
             using (var context = new AmirhomeEntities())
             {
                 res = (from A in context.UserAccouunts
+                       where A.RoleID != 5
                        select A).ToList();
             }
             return res;
