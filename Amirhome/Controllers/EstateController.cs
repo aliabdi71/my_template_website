@@ -83,7 +83,7 @@ namespace Amirhome.Controllers
                 }
                 var agent = _agentManager.getAgentById(estate_model.AgentID.Value);
                 ViewData["agent"] = agent;
-                ViewData["agent_pic"] = (agent.ProfileImage == null || agent.ProfileImage.Length < 5) ? "/Content/shared_images/logo3.png" : string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(agent.ProfileImage));
+                ViewData["agent_pic"] = (agent == null || agent.ProfileImage == null || agent.ProfileImage.Length < 5) ? "/Content/shared_images/logo3.png" : string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(agent.ProfileImage));
                 return View(estate_model);
             }
             catch

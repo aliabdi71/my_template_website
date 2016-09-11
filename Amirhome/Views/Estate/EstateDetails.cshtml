@@ -19,29 +19,18 @@
 @model Amirhome.Models.State
 
 <link rel="stylesheet" href="~/Content/EstateDetailsStyle.css" />
-<link rel="stylesheet" href="~/Plugins/NinjaSlider/ninja-slider.css" />
+@*<link rel="stylesheet" href="~/Plugins/NinjaSlider/ninja-slider.css" />*@
+<link rel="stylesheet" href="~/Plugins/JS Image Slider/js-image-slider.css" />
 
-<div style="background-color:rgba(0, 0, 0, 0.5); display:none; top:0; left:0; right:0; height:600px; width:100%;" id="img_slider">
+<div style="background-color:rgba(0, 0, 0, 0.8); display:none; top:0; left:0; right:0; height:650px; width:100%; position:fixed; z-index:10" id="img_slider">
     <span onclick="hide_slider()" class="close">X</span>
-    <div id="jssor_1" style="position: relative; margin: 0 auto; top: 65px; left: 0px; width: 600px; height: 300px; overflow: hidden; visibility: hidden;">
-        <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
-            <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
-            <div style="position:absolute;display:block;background:url('/Content/shared_images/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
-        </div>
-        <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 600px; height: 300px; overflow: hidden;">
+    <div id="sliderFrame">
+        <div id="slider">
             @foreach (var item in Model.Images)
             {
-                <div data-p="112.50" style="display: none;">
-                    <img data-u="image" src="~/Content/estate_images/@item.url" style="width: 100%;"/>
-                </div>
+                <img src="~/Content/estate_images/@item.url" />
             }
         </div>
-        <div data-u="navigator" class="jssorb01" style="bottom:16px;right:16px;">
-            <div data-u="prototype" style="width:12px;height:12px;"></div>
-        </div>
-        <!-- Arrow Navigator -->
-        <span data-u="arrowleft" class="jssora02l" style="top:0px;left:8px;width:55px;height:55px;" data-autocenter="2"></span>
-        <span data-u="arrowright" class="jssora02r" style="top:0px;right:8px;width:55px;height:55px;" data-autocenter="2"></span>
     </div>
 </div>
 
@@ -365,7 +354,8 @@
         </script>
     }
 
-    <script type="text/javascript" src="~/Scripts/jssor.slider.mini.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/jssor.slider.mini.js"></script>*@
+    <script type="text/javascript" src="~/Plugins/JS Image Slider/js-image-slider.js"></script>
 
     <script type="text/javascript">
 
