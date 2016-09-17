@@ -165,6 +165,7 @@ namespace Amirhome.Controllers
                 if (model.Bathrooms == null)
                     model.Bathrooms = "1";
                 model.AgentID = 1;
+                model.Privacy = "3";
 
                 model.GoogleMaps.Add(new GoogleMap() { latitude = map_latitude, longitude = map_longitude });
 

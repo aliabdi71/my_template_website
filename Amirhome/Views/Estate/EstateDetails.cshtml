@@ -69,7 +69,7 @@
                             <td class="title-cell">
                                 آدرس
                             </td>
-                            @if ((rid == 1) || (rid == 2) || (rid == 6) || (rid == 3 && Model.Condition == "فروش") || (rid == 4 && Model.Condition != "فروش"))
+                            @if ((Model.Privacy.Equals("1")) || (rid == 1) || (rid == 2) || (rid == 6) || (rid == 3 && Model.Condition == "فروش") || (rid == 4 && Model.Condition != "فروش"))
                             {
                                 <td colspan="3" style="font-weight:bold">
                                     @Model.Address - @Html.turnToPersianNumber(Model.DetailedAddress)
