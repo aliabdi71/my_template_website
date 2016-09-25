@@ -29,6 +29,7 @@ namespace Amirhome.Models
                 {
                     all_advers = (from AD in context.FreeAdvertises
                                   where AD.expire_date >= DateTime.Now & AD.approved == true
+                                  orderby AD.expire_date descending
                                   select AD).ToList();
                 }
                 return all_advers;

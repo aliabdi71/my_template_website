@@ -59,7 +59,7 @@ namespace Amirhome.Controllers
         public ActionResult Index()
         {
             ViewData["Province"] = _estateManager.getAllProvince();
-            var advers = _advertiseManager.getAdvertises();
+            var advers = _advertiseManager.getAdvertises().Take(9);
             List<AdverShowModelView> model = new List<AdverShowModelView>();
             foreach (var adver in advers)
             {

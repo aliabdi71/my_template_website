@@ -148,6 +148,11 @@ namespace Amirhome.Controllers
 
         }
 
+        public ActionResult SearchAdvertise()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult AddvertiseGetContact(int id)
         {

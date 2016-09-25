@@ -112,7 +112,7 @@
                         <lable>آدرس *</lable>
                     </div>
                     <div class="col-md-8 ">
-                        @Html.TextBoxFor(m => m.district, new { @class = "form-control required", @placeholder = "متر مربع" })
+                        @Html.TextBoxFor(m => m.district, new { @class = "form-control required"})
                     </div>
                 </div>
                 <div class="row form-group">
@@ -199,11 +199,17 @@
                     $("#price_prepayment").attr('disabled', 'disabled');
                     $("#price_mortage").attr('disabled', 'disabled');
                 }
-                else {
-                    $("#price_prepayment").removeAttr('disabled');
-                    $("#price_mortage").removeAttr('disabled');
+                else if ($(this).val() === 'رهن') {
                     $("#price_total").attr('disabled', 'disabled');
                     $("#price_per_meter").attr('disabled', 'disabled');
+                    $("#price_prepayment").removeAttr('disabled');
+                    $("#price_mortage").attr('disabled', 'disabled');
+                }
+                else {
+                    $("#price_total").attr('disabled', 'disabled');
+                    $("#price_per_meter").attr('disabled', 'disabled');
+                    $("#price_prepayment").removeAttr('disabled');
+                    $("#price_mortage").removeAttr('disabled');
                 }
             });
         });

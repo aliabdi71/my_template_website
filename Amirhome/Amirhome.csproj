@@ -591,8 +591,13 @@
       <DependentUpon>CoreModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebService1.asmx.cs">
+      <DependentUpon>WebService1.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\AdverSearchStyle.css" />
     <Content Include="Content\advertise_images\no-thumb.png" />
     <Content Include="Content\banner_images\bg1.jpg" />
     <Content Include="Content\banner_images\bg2.jpg" />
@@ -634,6 +639,7 @@
     <Content Include="Plugins\rangeslider.js-2.2.1\rangeslider.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="WebService1.asmx" />
     <EntityDeploy Include="Models\CoreModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CoreModel.Designer.cs</LastGenOutput>
@@ -766,6 +772,7 @@
     <Content Include="Views\Advertise\InsertAdvertiseSuccessful.cshtml" />
     <Content Include="Views\Advertise\AddvertiseDetail.cshtml" />
     <Content Include="Views\Advertise\ManageAddvertisePartial.cshtml" />
+    <Content Include="Views\Advertise\SearchAdvertise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -780,6 +787,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
