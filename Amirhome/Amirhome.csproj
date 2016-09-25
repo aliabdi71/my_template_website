@@ -629,6 +629,9 @@
     <Content Include="Plugins\JS Image Slider\bullet.png" />
     <Content Include="Plugins\JS Image Slider\js-image-slider.css" />
     <Content Include="Plugins\JS Image Slider\js-image-slider.js" />
+    <Content Include="Plugins\rangeslider.js-2.2.1\rangeslider.css" />
+    <Content Include="Plugins\rangeslider.js-2.2.1\rangeslider.js" />
+    <Content Include="Plugins\rangeslider.js-2.2.1\rangeslider.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\CoreModel.edmx">
