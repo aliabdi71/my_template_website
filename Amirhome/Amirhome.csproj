@@ -598,6 +598,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\AdverSearchStyle.css" />
+    <Content Include="Content\AdverSheetStyle.css" />
     <Content Include="Content\advertise_images\no-thumb.png" />
     <Content Include="Content\banner_images\bg1.jpg" />
     <Content Include="Content\banner_images\bg2.jpg" />

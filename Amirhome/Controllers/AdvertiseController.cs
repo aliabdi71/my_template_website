@@ -104,6 +104,43 @@ namespace Amirhome.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult DoAdverSearch(AdverSearchParams _params, int page = 0)
+        {
+            if (_params == null)
+                _params = (Session["adverParams"] == null) ? new AdverSearchParams() : (Session["adverParams"] as AdverSearchParams);
+            else
+                Session["adverParams"] = _params;
+            List<FreeAdvertise> advers = _adverManager.AdverSearch(_params);
+            var Data = advers.Select(A => new
+            {
+                Title = A.title,
+                Condition = A.condition,
+                FirstPrice = (A.condition.Equals("فروش")) ? A.price_total : A.price_prepayment,
+                SecondPrice = (A.condition.Equals("فروش")) ? A.price_per_meter : A.price_mortage,
+                Address = A.district,
+                Area = A.area,
+                ID = A.ID,
+                ImageUrl = (string.IsNullOrEmpty(A.image)) ? ("no-thumb.png") : (A.image.Split(';')[0]),
+                Date = getAdverDate(A.create_date.Value)
+            }).ToList();
+            return Json(Data);
+        }
+        public string getAdverDate(DateTime date)
+        {
+            string final_date = "",
+                      difference = ((int)(DateTime.Now - date).TotalDays).ToString();
+            switch (difference)
+            {
+                case "0": final_date = "لحظاتی قبل"; break;
+                case "1": final_date = "یک روز قبل"; break;
+                case "2": final_date = "دو روز قبل"; break;
+                case "3": final_date = "سه روز قبل"; break;
+                case "4": final_date = "چهار روز قبل"; break;
+                default: final_date = date.ToString().Split(' ')[0]; break;
+            }
+            return final_date;
+        }
         public ActionResult AddvertiseDetail()
         {
             int addID = int.Parse(Request.QueryString["AddvertiseID"].ToString());

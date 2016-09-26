@@ -5,6 +5,7 @@
 }
 
 <link rel="stylesheet" href="~/Content/AdverSearchStyle.css" />
+<link rel="stylesheet" href="~/Content/AdverSheetStyle.css" />
 
 <div class="container body-content ad-search" style=" margin-top: 50px; min-height:550px;">
     <br />
@@ -16,31 +17,31 @@
                 </div>
                 <div class="elements">
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداقل متراژ</label>
-                    <input type="range" id="min-area" min="0" max="1000" step="10" value="10" data-orientation="vertical" />&nbsp;
+                    <input type="range" id="minArea" name="minArea" min="0" max="1000" step="10" value="10" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۱۰ متر</label>
                     <br />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداکثر متراژ</label>
-                    <input type="range" id="max-area" min="0" max="3000" step="10" value="3000" data-orientation="vertical" />&nbsp;
+                    <input type="range" id="maxArea" name="maxArea" min="0" max="3000" step="10" value="3000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۳۰۰۰ متر</label>
                     <hr />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداقل قیمت کل</label>
-                    <input type="range" id="min-area" data-price="true" min="30000000" max="1000000000" step="1000000" value="30000000" data-orientation="vertical" />&nbsp;
+                    <input type="range" id="minTotalPrice" name="minTotalPrice" data-price="true" min="30000000" max="1000000000" step="1000000" value="30000000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۳۰,۰۰۰,۰۰۰ تومان</label>
                     <br />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداکثر قیمت کل</label>
-                    <input type="range" id="max-area" data-price="true" min="30000000" max="10000000000" step="1000000" value="10000000000" data-orientation="vertical" />&nbsp;
+                    <input type="range" id="maxTotalPrice" name="maxTotalPrice" data-price="true" min="30000000" max="10000000000" step="1000000" value="10000000000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۱۰,۰۰۰,۰۰۰,۰۰۰ تومان</label>
                     <hr />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداقل قیمت متری</label>
-                    <input type="range" id="min-area" data-price="true" min="1000000" max="50000000" step="500000" value="1000000" data-orientation="vertical" />&nbsp;
+                    <input type="range" id="minPricePerMeter" name="minPricePerMeter" data-price="true" min="1000000" max="50000000" step="500000" value="1000000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۱,۰۰۰,۰۰۰ تومان</label>
                     <br />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداکثر قیمت متری</label>
-                    <input type="range" id="max-area" data-price="true" min="1000000" max="50000000" step="50000" value="50000000" data-orientation="vertical" />&nbsp;
+                    <input type="range" id="maxPricePerMeter" name="maxPricePerMeter" data-price="true" min="1000000" max="50000000" step="50000" value="50000000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۵,۰۰۰,۰۰۰ تومان</label>
                     <hr />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;">نوع واگذاری</label>
-                    <select class="form-control" style="display:inline; margin-right:10px;">
+                    <select id="adverCondition" name="adverCondition" class="form-control" style="display:inline; margin-right:10px;">
                         <option value="فروش" selected="selected">فروش</option>
                         <option value="رهن">رهن</option>
                         <option value="اجاره">اجاره</option>
@@ -49,11 +50,15 @@
                     <br />
                     @*<label style="font-weight:normal; font-size:16px; min-width: 100px;">آدرس</label>
                     <input class="form-control" type="text" style="display:inline"/>*@
-                    <input id="adver-search" class="btn btn-primary" style="min-width:70px; float:left; margin:10px;" value="جستجو" />
+                    <input id="adver-search" onclick="doSearch();" class="btn btn-primary" style="min-width:70px; float:left; margin:10px;" value="جستجو" />
                 </div>
             </div>
         </div>
-        <div class="col-md-7"></div>
+        <div class="col-md-7 search-result">
+            <div class="row text-center loading-img" style="display:none;">
+                <img src="~/Content/shared_images/loading.gif"/>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -69,7 +74,87 @@
                 else {
                     $(this).next().html(turn2PersianNumber(val) + ' متر');
                 }
+            });
+            $("#adverCondition").change(function () {
+
             })
+            doSearch();
         });
+
+        function createAdverResultSection(data) {
+            for (var i = 0 ; i < data.length ; i = i + 2) {
+                var $row_div = $('<div>').addClass('row');
+                var $col_1_div = $('<div>').addClass('col-md-6');
+
+                var $anchor_1 = $('<a>').addClass('adver-link').attr('href', '/Advertise/AddvertiseDetail?AddvertiseID=' + data[i].ID);
+                var $adver_content_1 = $('<div>').addClass('adver-content');
+                var $adver_image_1 = $('<div>').addClass('adver-image');
+                var $img_1 = $('<img>').attr('src', '/Content/advertise_images/' + data[i].ImageUrl);
+                $adver_image_1.append($img_1);
+                $adver_content_1.append($adver_image_1);
+
+                var $adver_desc_1 = $('<div>').addClass('adver-description text-center');
+                var customHtml_1 = '<h1>' + data[i].Title + '</h1><h2>' + data[i].Condition + ' - ' + data[i].Address + '</h2>';
+                customHtml_1 += '<br /><br /><h1>' + numberWithCommas(data[i].FirstPrice) + '</h1><h2>' + numberWithCommas(data[i].SecondPrice) + '</h2>';
+                customHtml_1 += '<h2>' + turn2PersianNumber(data[i].Date) + '</h2>';
+                $adver_desc_1.html(customHtml_1);
+                $adver_content_1.append($adver_desc_1);
+                $anchor_1.append($adver_content_1);
+                $col_1_div.append($anchor_1);
+                $row_div.append($col_1_div);
+
+                if (i + 1 < data.length) {
+                    var $col_2_div = $('<div>').addClass('col-md-6');
+
+                    var $anchor_2 = $('<a>').addClass('adver-link').attr('href', '/Advertise/AddvertiseDetail?AddvertiseID=' + data[i+1].ID);
+                    var $adver_content_2 = $('<div>').addClass('adver-content');
+                    var $adver_image_2 = $('<div>').addClass('adver-image');
+                    var $img_2 = $('<img>').attr('src', '/Content/advertise_images/' + data[i+1].ImageUrl);
+                    $adver_image_2.append($img_2);
+                    $adver_content_2.append($adver_image_2);
+
+                    var $adver_desc_2 = $('<div>').addClass('adver-description text-center');
+                    var customHtml_2 = '<h1>' + data[i].Title + '</h1><h2>' + data[i+1].Condition + ' - ' + data[i+1].Address + '</h2>';
+                    customHtml_2 += '<br /><br /><h1>' + numberWithCommas(data[i+1].FirstPrice) + '</h1><h2>' + numberWithCommas(data[i+1].SecondPrice) + '</h2>';
+                    customHtml_2 += '<h2>' + turn2PersianNumber(data[i+1].Date) + '</h2>';
+                    $adver_desc_2.html(customHtml_2);
+                    $adver_content_2.append($adver_desc_2);
+                    $anchor_2.append($adver_content_2);
+                    $col_2_div.append($anchor_2);
+                    $row_div.append($col_2_div);
+                }
+                $('.loading-img').before($row_div);
+                $('.loading-img').before('<br />');
+            }
+            $(".loading-img").css('display', 'none');
+        }
+
+        function doSearch() {
+            $(".search-result").html('<div class="row text-center loading-img" style="display:none;"><img src="/Content/shared_images/loading.gif"/></div>');
+            $(".loading-img").css('display', 'block');
+            var adver_search_params = {};
+            adver_search_params["minArea"] = $("#minArea").val();
+            adver_search_params["maxArea"] = $("#maxArea").val();
+            adver_search_params["adverCondition"] = $("#adverCondition").val();
+            if ($("#adverCondition").val() === 'فروش') {
+                adver_search_params["minTotalPrice"] = $("#minTotalPrice").val();
+                adver_search_params["maxTotalPrice"] = $("#maxTotalPrice").val();
+                adver_search_params["minPricePerMeter"] = $("#minPricePerMeter").val();
+                adver_search_params["maxPricePerMeter"] = $("#maxPricePerMeter").val();
+            }
+            $.ajax({
+                url: '/Advertise/DoAdverSearch',
+                method: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ "_params": adver_search_params }), //, "page": page, "order": order }),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    createAdverResultSection(data);
+                },
+                error: function () {
+
+                },
+            });
+        }
     </script>
 }

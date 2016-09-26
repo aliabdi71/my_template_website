@@ -7,6 +7,31 @@ using System.Data.Entity;
 
 namespace Amirhome.Models
 {
+    public class AdverSearchParams
+    {
+        [DefaultValue(0)]
+        public int minArea { get; set; }
+        [DefaultValue(3000)]
+        public int maxArea { get; set; }
+        [DefaultValue(0)]
+        public float minTotalPrice { get; set; }
+        [DefaultValue(10000000000)]
+        public float maxTotalPrice { get; set; }
+        [DefaultValue(0)]
+        public float minPricePerMeter { get; set; }
+        [DefaultValue(30000000)]
+        public float maxPricePerMeter { get; set; }
+        [DefaultValue(0)]
+        public float minPricePrepayment { get; set; }
+        [DefaultValue(10000000000)]
+        public float maxPricePrepayment { get; set; }
+        [DefaultValue(0)]
+        public float minPriceMortage { get; set; }
+        [DefaultValue(30000000)]
+        public float maxPriceMortage { get; set; }
+        [DefaultValue("فروش")]
+        public string adverCondition { get; set; }
+    }
     public class AdverShowModelView
     {
         public int ID { get; set; }
@@ -144,6 +169,38 @@ namespace Amirhome.Models
             {
                 return ids;
             }
+        }
+        public List<FreeAdvertise> AdverSearch(AdverSearchParams searchParams, int take = 0)
+        {
+            List<FreeAdvertise> _advers = null;
+            IQueryable<FreeAdvertise> query;
+            using (var context = new AmirhomeEntities())
+            {
+                query = from A in context.FreeAdvertises 
+                        where A.approved == true && A.expire_date > DateTime.Now && A.area >= searchParams.minArea && A.area <= searchParams.maxArea && A.condition.Equals(searchParams.adverCondition)
+                        orderby A.expire_date descending select A;
+                if (searchParams.adverCondition.Equals("فروش"))
+                {
+                    query = query.Where(A => A.price_total >= searchParams.minTotalPrice
+                                        && A.price_total <= searchParams.maxTotalPrice
+                                        && A.price_per_meter >= searchParams.minPricePerMeter
+                                        && A.price_per_meter <= searchParams.maxPricePerMeter);
+                }
+                else if (searchParams.adverCondition.Equals("رهن"))
+                {
+                    query = query.Where(A => A.price_prepayment >= searchParams.minPricePrepayment
+                                        && A.price_prepayment <= searchParams.maxPricePrepayment);
+                }
+                else
+                {
+                    query = query.Where(A => A.price_prepayment >= searchParams.minPricePrepayment
+                                        && A.price_prepayment <= searchParams.maxPricePrepayment
+                                        && A.price_mortage >= searchParams.minPriceMortage
+                                        && A.price_mortage <= searchParams.maxPriceMortage);
+                }
+                _advers = take == 0 ? (query.ToList()) : (query.Take(take).ToList());
+            }
+            return _advers;
         }
     }
 }
