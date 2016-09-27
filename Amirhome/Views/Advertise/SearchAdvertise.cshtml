@@ -24,19 +24,19 @@
                     <input type="range" id="maxArea" name="maxArea" min="0" max="3000" step="10" value="3000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۳۰۰۰ متر</label>
                     <hr />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداقل قیمت کل</label>
+                    <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="FirstPriceLabel">حداقل قیمت کل</label>
                     <input type="range" id="minTotalPrice" name="minTotalPrice" data-price="true" min="30000000" max="1000000000" step="1000000" value="30000000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۳۰,۰۰۰,۰۰۰ تومان</label>
                     <br />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداکثر قیمت کل</label>
+                    <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="FirstPriceLabel_2">حداکثر قیمت کل</label>
                     <input type="range" id="maxTotalPrice" name="maxTotalPrice" data-price="true" min="30000000" max="10000000000" step="1000000" value="10000000000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۱۰,۰۰۰,۰۰۰,۰۰۰ تومان</label>
                     <hr />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداقل قیمت متری</label>
+                    <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="SecondPriceLabel">حداقل قیمت هر متر</label>
                     <input type="range" id="minPricePerMeter" name="minPricePerMeter" data-price="true" min="1000000" max="50000000" step="500000" value="1000000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۱,۰۰۰,۰۰۰ تومان</label>
                     <br />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداکثر قیمت متری</label>
+                    <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="SecondPriceLabel_2">حداکثر قیمت هر متر</label>
                     <input type="range" id="maxPricePerMeter" name="maxPricePerMeter" data-price="true" min="1000000" max="50000000" step="50000" value="50000000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۵,۰۰۰,۰۰۰ تومان</label>
                     <hr />
@@ -76,7 +76,26 @@
                 }
             });
             $("#adverCondition").change(function () {
-
+                if ($(this).val() === 'فروش') {
+                    $('#FirstPriceLabel').Html('حداقل قیمت کل');
+                    $('#FirstPriceLabel_2').Html('حداکثر قیمت کل');
+                    $('#SecondPriceLabel').Html('حداقل قیمت هر متر');
+                    $('#SecondPriceLabel_2').Html('حداکثر قیمت هر متر');
+                    $('#minPricePrepayment').attr({ 'id': 'minTotalPrice', 'name': 'minTotalPrice' });
+                    $('#maxPricePrepayment').attr({ 'id': 'maxTotalPrice', 'name': 'maxTotalPrice' });
+                    $('#minPriceMortage').attr({ 'id': 'minPricePerMeter', 'name': 'minPricePerMeter' });
+                    $('#maxPriceMortage').attr({ 'id': 'maxPricePerMeter', 'name': 'maxPricePerMeter' });
+                }
+                else {
+                    $('#FirstPriceLabel').Html('حداقل قیمت رهن');
+                    $('#FirstPriceLabel_2').Html('حداکثر قیمت رهن');
+                    $('#SecondPriceLabel').Html('حداقل قیمت هر اجاره');
+                    $('#SecondPriceLabel_2').Html('حداکثر قیمت هر اجاره');
+                    $('#minTotalPrice').attr({ 'id': 'minPricePrepayment', 'name': 'minPricePrepayment' });
+                    $('#maxTotalPrice').attr({ 'id': 'maxPricePrepayment', 'name': 'maxPricePrepayment' });
+                    $('#minPricePerMeter').attr({ 'id': 'minPriceMortage', 'name': 'minPriceMortage' });
+                    $('#maxPricePerMeter').attr({ 'id': 'maxPriceMortage', 'name': 'maxPriceMortage' });
+                }
             })
             doSearch();
         });
@@ -141,6 +160,14 @@
                 adver_search_params["maxTotalPrice"] = $("#maxTotalPrice").val();
                 adver_search_params["minPricePerMeter"] = $("#minPricePerMeter").val();
                 adver_search_params["maxPricePerMeter"] = $("#maxPricePerMeter").val();
+            } else if ($("#adverCondition").val() === 'رهن') {
+                adver_search_params["minPricePrepayment"] = $("#minPricePrepayment").val();
+                adver_search_params["maxPricePrepayment"] = $("#maxPricePrepayment").val();
+            } else {
+                adver_search_params["minPricePrepayment"] = $("#minPricePrepayment").val();
+                adver_search_params["maxPricePrepayment"] = $("#maxPricePrepayment").val();
+                adver_search_params["minPriceMortage"] = $("#minPriceMortage").val();
+                adver_search_params["maxPriceMortage"] = $("#maxPriceMortage").val();
             }
             $.ajax({
                 url: '/Advertise/DoAdverSearch',
