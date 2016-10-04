@@ -6,10 +6,10 @@
 
 <h1 class="text-center" style="color:#00578f; font-weight:bold; margin-bottom:30px;">آگهی های شما</h1>
 
-@for (int i = 0; i < Model.Count; i = i + 4)
+@for (int i = 0; i < Model.Count; i = i + 3)
 {
     <div class="row" style="margin: 20px 20px 0;">
-        @for (int j = i; j < i + 4 && j < Model.Count; j++)
+        @for (int j = i; j < i + 3 && j < Model.Count; j++)
         {
             <div class="col-md-4">
                 <a class="adver-link" href="/Advertise/AddvertiseDetail?AddvertiseID=@Model[j].ID">
@@ -33,6 +33,7 @@
     </div>
 }
 <div class="row text-center" style="margin-top:20px;">
-    @Html.ActionLink("ثبت آگهی", "InsertAdvertise", "Advertise", new { }, new { @class = "btn btn-primary", @style = "min-width:100px;" })
+    @Html.ActionLink("+ ثبت آگهی", "InsertAdvertise", "Advertise", new { }, new { @class = "btn btn-lg btn-success", @style = "min-width:100px;" })
+    @Html.ActionLink("جستجوی آگهی", "SearchAdvertise", "Advertise", new { }, new { @class = "btn btn-lg btn-primary", @style = "min-width:100px; position: inline;" })
 </div>
 

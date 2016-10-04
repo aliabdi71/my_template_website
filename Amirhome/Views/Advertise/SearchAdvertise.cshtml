@@ -25,20 +25,20 @@
                     <label style="font-weight:normal">۳۰۰۰ متر</label>
                     <hr />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="FirstPriceLabel">حداقل قیمت کل</label>
-                    <input type="range" id="minTotalPrice" name="minTotalPrice" data-price="true" min="30000000" max="1000000000" step="1000000" value="30000000" data-orientation="vertical" />&nbsp;
-                    <label style="font-weight:normal">۳۰,۰۰۰,۰۰۰ تومان</label>
+                    <input type="range" id="minTotalPrice" name="minTotalPrice" data-price="true" min="10000000" max="1000000000" step="1000000" value="10000000" data-orientation="vertical" />&nbsp;
+                    <label style="font-weight:normal">۱۰,۰۰۰,۰۰۰ تومان</label>
                     <br />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="FirstPriceLabel_2">حداکثر قیمت کل</label>
                     <input type="range" id="maxTotalPrice" name="maxTotalPrice" data-price="true" min="30000000" max="10000000000" step="1000000" value="10000000000" data-orientation="vertical" />&nbsp;
                     <label style="font-weight:normal">۱۰,۰۰۰,۰۰۰,۰۰۰ تومان</label>
                     <hr />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="SecondPriceLabel">حداقل قیمت هر متر</label>
-                    <input type="range" id="minPricePerMeter" name="minPricePerMeter" data-price="true" min="1000000" max="50000000" step="500000" value="1000000" data-orientation="vertical" />&nbsp;
-                    <label style="font-weight:normal">۱,۰۰۰,۰۰۰ تومان</label>
+                    <input type="range" id="minPricePerMeter" name="minPricePerMeter" data-price="true" min="500000" max="50000000" step="500000" value="500000" data-orientation="vertical" />&nbsp;
+                    <label style="font-weight:normal">۵۰۰,۰۰۰ تومان</label>
                     <br />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="SecondPriceLabel_2">حداکثر قیمت هر متر</label>
                     <input type="range" id="maxPricePerMeter" name="maxPricePerMeter" data-price="true" min="1000000" max="50000000" step="50000" value="50000000" data-orientation="vertical" />&nbsp;
-                    <label style="font-weight:normal">۵,۰۰۰,۰۰۰ تومان</label>
+                    <label style="font-weight:normal">۵۰,۰۰۰,۰۰۰ تومان</label>
                     <hr />
                     <label style="font-weight:normal; font-size:16px; min-width: 100px;">نوع واگذاری</label>
                     <select id="adverCondition" name="adverCondition" class="form-control" style="display:inline; margin-right:10px;">
@@ -77,26 +77,39 @@
             });
             $("#adverCondition").change(function () {
                 if ($(this).val() === 'فروش') {
-                    $('#FirstPriceLabel').Html('حداقل قیمت کل');
-                    $('#FirstPriceLabel_2').Html('حداکثر قیمت کل');
-                    $('#SecondPriceLabel').Html('حداقل قیمت هر متر');
-                    $('#SecondPriceLabel_2').Html('حداکثر قیمت هر متر');
+                    $('#FirstPriceLabel').html('حداقل قیمت کل');
+                    $('#FirstPriceLabel_2').html('حداکثر قیمت کل');
+                    $('#SecondPriceLabel').html('حداقل قیمت هر متر');
+                    $('#SecondPriceLabel_2').html('حداکثر قیمت هر متر');
                     $('#minPricePrepayment').attr({ 'id': 'minTotalPrice', 'name': 'minTotalPrice' });
                     $('#maxPricePrepayment').attr({ 'id': 'maxTotalPrice', 'name': 'maxTotalPrice' });
                     $('#minPriceMortage').attr({ 'id': 'minPricePerMeter', 'name': 'minPricePerMeter' });
                     $('#maxPriceMortage').attr({ 'id': 'maxPricePerMeter', 'name': 'maxPricePerMeter' });
                 }
                 else {
-                    $('#FirstPriceLabel').Html('حداقل قیمت رهن');
-                    $('#FirstPriceLabel_2').Html('حداکثر قیمت رهن');
-                    $('#SecondPriceLabel').Html('حداقل قیمت هر اجاره');
-                    $('#SecondPriceLabel_2').Html('حداکثر قیمت هر اجاره');
+                    $('#FirstPriceLabel').html('حداقل قیمت رهن');
+                    $('#FirstPriceLabel_2').html('حداکثر قیمت رهن');
+                    $('#SecondPriceLabel').html('حداقل قیمت اجاره');
+                    $('#SecondPriceLabel_2').html('حداکثر قیمت اجاره');
                     $('#minTotalPrice').attr({ 'id': 'minPricePrepayment', 'name': 'minPricePrepayment' });
                     $('#maxTotalPrice').attr({ 'id': 'maxPricePrepayment', 'name': 'maxPricePrepayment' });
                     $('#minPricePerMeter').attr({ 'id': 'minPriceMortage', 'name': 'minPriceMortage' });
                     $('#maxPricePerMeter').attr({ 'id': 'maxPriceMortage', 'name': 'maxPriceMortage' });
                 }
-            })
+            });
+            $(window).scroll(function (e) {
+                if ($(window).scrollTop() > $(document).height() - 1100) {
+                    $('.search-elements').css({
+                        position: 'absolute',
+                        top: $(document).height() - 1120,
+                    });
+                } else {
+                    $('.search-elements').css({
+                        position: 'fixed',
+                        top: 100,
+                    });
+                }
+            });
             doSearch();
         });
 
@@ -114,7 +127,7 @@
 
                 var $adver_desc_1 = $('<div>').addClass('adver-description text-center');
                 var customHtml_1 = '<h1>' + data[i].Title + '</h1><h2>' + data[i].Condition + ' - ' + data[i].Address + '</h2>';
-                customHtml_1 += '<br /><br /><h1>' + numberWithCommas(data[i].FirstPrice) + '</h1><h2>' + numberWithCommas(data[i].SecondPrice) + '</h2>';
+                customHtml_1 += '<hr style="margin-top: 10px; margin-bottom: 10px;"/><h1>کل/رهن: ' + numberWithCommas(data[i].FirstPrice) + '</h1><h2>متری/اجاره: ' + numberWithCommas(data[i].SecondPrice) + '</h2></h2>متراژ: ' + turn2PersianNumber(data[i].Area) + ' متر</h2>';
                 customHtml_1 += '<h2>' + turn2PersianNumber(data[i].Date) + '</h2>';
                 $adver_desc_1.html(customHtml_1);
                 $adver_content_1.append($adver_desc_1);
@@ -134,7 +147,7 @@
 
                     var $adver_desc_2 = $('<div>').addClass('adver-description text-center');
                     var customHtml_2 = '<h1>' + data[i].Title + '</h1><h2>' + data[i+1].Condition + ' - ' + data[i+1].Address + '</h2>';
-                    customHtml_2 += '<br /><br /><h1>' + numberWithCommas(data[i+1].FirstPrice) + '</h1><h2>' + numberWithCommas(data[i+1].SecondPrice) + '</h2>';
+                    customHtml_2 += '<hr style="margin-top: 10px; margin-bottom: 10px;"/><h1>کل/رهن: ' + numberWithCommas(data[i+1].FirstPrice) + '</h1><h2>متری/اجاره: ' + numberWithCommas(data[i+1].SecondPrice) + '</h2></h2>متراژ: ' + turn2PersianNumber(data[i+1].Area) + ' متر</h2>';
                     customHtml_2 += '<h2>' + turn2PersianNumber(data[i+1].Date) + '</h2>';
                     $adver_desc_2.html(customHtml_2);
                     $adver_content_2.append($adver_desc_2);

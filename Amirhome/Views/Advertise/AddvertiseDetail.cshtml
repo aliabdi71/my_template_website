@@ -4,7 +4,7 @@
     ViewBag.Title = "جزئیات آگهی";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    string[] imgs = Model.image.Split(';');
+    string[] imgs = string.IsNullOrEmpty(Model.image) ? new string[] { "no-thumb.png" } : Model.image.Split(';');
     string final_date = "",
             difference = ((int)(DateTime.Now - Model.create_date.Value).TotalDays).ToString();
     switch (difference)
