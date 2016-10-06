@@ -306,7 +306,7 @@
                     {
                         <hr />
                         <span>نام مالک: </span><label>@Model.Owner.Name</label><br />
-                        <span>تلفن: </span><label>@Html.turnToPersianNumber(Model.Owner.Mobile) - @Html.turnToPersianNumber(Model.Owner.Telephone)</label><br />
+                        <span>تلفن: </span><label>@Html.turnToPersianNumber(Model.Owner.Mobile) - @Html.turnToPersianNumber(string.IsNullOrEmpty(Model.Owner.Mobile2) ? "" : Model.Owner.Mobile2)</label><br />
                         <span>ایمیل: </span><label>@Model.Owner.Email</label><br />
                     }
                 </div>

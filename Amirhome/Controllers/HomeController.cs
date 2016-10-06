@@ -59,26 +59,16 @@ namespace Amirhome.Controllers
         public ActionResult Index()
         {
             ViewData["Province"] = _estateManager.getAllProvince();
-            var advers = _advertiseManager.getAdvertises().Take(9);
+            var advers = _advertiseManager.getAdvertises(1);
             List<AdverShowModelView> model = new List<AdverShowModelView>();
             foreach (var adver in advers)
             {
-                string final_date = "",
-                       difference = ((int)(DateTime.Now - adver.create_date.Value).TotalDays).ToString();
-                switch (difference)
-                {
-                    case "0": final_date = "لحظاتی قبل"; break;
-                    case "1": final_date = "یک روز قبل"; break;
-                    case "2": final_date = "دو روز قبل"; break;
-                    case "3": final_date = "سه روز قبل"; break;
-                    case "4": final_date = "چهار روز قبل"; break;
-                    default: final_date = gregorianToJalali(adver.create_date.Value.ToString().Split(' ')[0]); break;
-                }
+                
                 model.Add(new AdverShowModelView()
                 {
                     Title = adver.title,
                     Condition = adver.condition,
-                    Date = final_date,
+                    Date = createAdvertiseDate(adver.create_date),
                     District = adver.district,
                     FirstPrice = adver.condition == "فروش" ? adver.price_total.ToString() : adver.price_prepayment.ToString(),
                     SecondPrice = adver.condition == "فروش" ? adver.price_per_meter.ToString() : adver.price_mortage.ToString(),
@@ -88,6 +78,21 @@ namespace Amirhome.Controllers
             }
             ViewData["adverModel"] = model;
             return View();
+        }
+        private string createAdvertiseDate(DateTime? date)
+        {
+            string final_date = "",
+                       difference = ((int)(DateTime.Now - date.Value).TotalDays).ToString();
+            switch (difference)
+            {
+                case "0": final_date = "لحظاتی قبل"; break;
+                case "1": final_date = "یک روز قبل"; break;
+                case "2": final_date = "دو روز قبل"; break;
+                case "3": final_date = "سه روز قبل"; break;
+                case "4": final_date = "چهار روز قبل"; break;
+                default: final_date = gregorianToJalali(date.Value.ToString().Split(' ')[0]); break;
+            }
+            return final_date;
         }
 
         [HttpGet]
@@ -109,6 +114,24 @@ namespace Amirhome.Controllers
                 ImageCount = o.Images.Count
             }).ToList();
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetAdversByPage(int p)
+        {
+            var advers = _advertiseManager.getAdvertises(p).Skip((p - 1) * 9);
+            var data = advers.Select(A => new
+            {
+                ID = A.ID,
+                Title = A.title,
+                District = A.district,
+                Condition = A.condition,
+                FirstPrice = (A.condition == "فروش") ? A.price_total.ToString() : A.price_prepayment.ToString(),
+                SecondPrice = (A.condition == "فروش") ? A.price_per_meter.ToString() : (A.condition == "رهن" ? "ندارد" : A.price_mortage.ToString()),
+                Date = createAdvertiseDate(A.create_date),
+                ImgUrl = string.IsNullOrEmpty(A.image) ? "no-thumb.png" : A.image.Split(';')[0],
+            }).ToList();
+            return Json(data);
         }
 
         public ActionResult SignOut()

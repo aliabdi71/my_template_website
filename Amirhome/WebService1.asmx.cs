@@ -6,6 +6,9 @@ using System.Web.Services;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Web.Script.Serialization;
+using System.Web.Script.Services;
+using Amirhome.Models;
 
 namespace Amirhome
 {
@@ -24,6 +27,26 @@ namespace Amirhome
         public string HelloWorld()
         {
             return "Hello World";
+        }
+
+        [WebMethod(Description="Returns occasion estates!")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetOccasions()
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            EstateManager _estateManager = new EstateManager();
+            var occasions = _estateManager.getOccasions();
+            var data = occasions.Select(E => new
+            {
+                ID = E.ID,
+                Condition = E.Condition,
+                Area = E.Area.ToString(),
+                FirstPrice = E.Condition == "فروش" ? E.TotalPrice : E.PrepaymentPrice,
+                SecondPrice = E.Condition == "فروش" ? E.PricePerMeter : E.MortgagePrice,
+                Date = E.Date.Value.ToString(),
+                ImageUrl = (E.Images.Count() == 0 ? "no-thumb.png" : E.Images.FirstOrDefault().url),
+            });
+            return js.Serialize(data);
         }
 
         [WebMethod]

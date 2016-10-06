@@ -108,7 +108,80 @@ $(document).ready(function () {
     });
 
     $(".banner-panel table td > select").select2();
+
 });
+
+function adverNextClick(elem) {
+    var page = parseInt($(elem).data('index'));
+    $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+    var postData = { "p": page };
+    $.ajax({
+        type: 'POST',
+        url: "/Home/GetAdversByPage",
+        dataType: 'json',
+        data: postData,
+        success: function (data) {
+            $(elem).data('index', page + 1);
+            $("#adverPrevPage").data('index', page - 1);
+            $("#adverPrevPage").html('<img src="/Content/shared_images/arrow-left.png" />').removeAttr('disabled');
+            createAdvertiseSectionForHomePage(data);
+            $(elem).html('<img src="/Content/shared_images/arrow-right.png" />').removeAttr('disabled');
+        },
+        error: function () {
+            alert('خطا در برقراری ارتباط با سرور');
+        },
+    });
+}
+
+function adverPrevClick(elem) {
+    var page = parseInt($(elem).data('index'));
+    $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+    var postData = { "p": page };
+    $.ajax({
+        type: 'POST',
+        url: "/Home/GetAdversByPage",
+        dataType: 'json',
+        data: postData,
+        success: function (data) {
+            $(elem).data('index', page - 1);
+            $("#adverNextPage").data('index', page + 1);
+            $("#adverNextPage").removeAttr('disabled');
+            createAdvertiseSectionForHomePage(data);
+            if (page - 1 === 0) {
+                $(elem).html('<img src="/Content/shared_images/arrow-left-dis.png" />').attr('disabled', 'disabled');
+            }
+            else {
+                $(elem).html('<img src="/Content/shared_images/arrow-left.png" />').removeAttr('disabled');
+            }
+        },
+        error: function () {
+            alert('خطا در برقراری ارتباط با سرور');
+        },
+    });
+}
+
+function createAdvertiseSectionForHomePage(data) {
+    var inner_html = "";
+    for (var i = 0 ; i < data.length ; i = i + 3) {
+        inner_html += '<div class="row" style="margin: 20px 20px 0;">';
+        for (var j = i ; j < i + 3 && j < data.length ; j++) {
+            inner_html += '<div class="col-md-4">';
+            inner_html += '<a class="adver-link" href="/Advertise/AddvertiseDetail?AddvertiseID=' + data[j].ID + '">';
+            inner_html += ' <div class="adver-content">';
+            inner_html += ' <div class="adver-image"><img src="/Content/advertise_images/' + data[j].ImgUrl + '" />';
+            inner_html += ' </div> <div class="adver-description text-center">';
+            inner_html += ' <h1>' + data[j].Title + '</h1>';
+            inner_html += ' <h2>' + data[j].Condition + ' - ' + data[j].District + '</h2>';
+            inner_html += ' <br /><br />';
+            inner_html += ' <h1>کل/رهن: ' + numberWithCommas(data[j].FirstPrice) + '</h1>';
+            inner_html += ' <h2>متری/اجاره: ' + numberWithCommas(data[j].SecondPrice) + '</h2>';
+            inner_html += ' <h2>' + turn2PersianNumber(data[j].Date) + '</h2>';
+            inner_html += '</div></div></a></div>';
+        }
+        inner_html += '</div>';
+    }
+    $("#adverPartialSection").fadeOut('normal').html(inner_html).fadeIn('normal');
+}
 
 function sendDataToServer(email, pass, remember) {
     var postData = { "email": email, "password": pass, "remember": remember };

@@ -4,34 +4,39 @@
 
 <link rel="stylesheet" href="~/Content/AdverSheetStyle.css" />
 
-<h1 class="text-center" style="color:#00578f; font-weight:bold; margin-bottom:30px;">آگهی های شما</h1>
-
-@for (int i = 0; i < Model.Count; i = i + 3)
-{
-    <div class="row" style="margin: 20px 20px 0;">
-        @for (int j = i; j < i + 3 && j < Model.Count; j++)
-        {
-            <div class="col-md-4">
-                <a class="adver-link" href="/Advertise/AddvertiseDetail?AddvertiseID=@Model[j].ID">
-                    <div class="adver-content">
-                        <div class="adver-image">
-                            <img src='@string.Format("/Content/advertise_images/{0}", Model[j].ImgUrl)' />
+<h1 class="text-center" style="color:#00578f; font-weight:bold; margin-bottom:30px;">
+    <a href="javascript:void(0)" id="adverNextPage" onclick="adverNextClick(this);" data-index="2" disabled="disabled"><img src="~/Content/shared_images/arrow-right.png" /></a>&nbsp;&nbsp;
+    آگهی های شما
+    &nbsp;&nbsp;<a href="javascript:void(0)" id="adverPrevPage" onclick="adverPrevClick(this);" data-index="0"><img src="~/Content/shared_images/arrow-left-dis.png" /></a>
+</h1>
+<div id="adverPartialSection">
+    @for (int i = 0; i < Model.Count; i = i + 3)
+    {
+        <div class="row" style="margin: 20px 20px 0;">
+            @for (int j = i; j < i + 3 && j < Model.Count; j++)
+            {
+                <div class="col-md-4">
+                    <a class="adver-link" href="/Advertise/AddvertiseDetail?AddvertiseID=@Model[j].ID">
+                        <div class="adver-content">
+                            <div class="adver-image">
+                                <img src='@string.Format("/Content/advertise_images/{0}", Model[j].ImgUrl)' />
+                            </div>
+                            <div class="adver-description text-center">
+                                <h1>@Model[j].Title</h1>
+                                <h2>@Model[j].Condition - @Model[j].District</h2>
+                                <br />
+                                <br />
+                                <h1>کل/رهن: @Html.SplitInParts(Model[j].FirstPrice, 3)</h1>
+                                <h2>متری/اجاره: @Html.SplitInParts(Model[j].SecondPrice, 3)</h2>
+                                <h2>@Html.turnToPersianNumber(Model[j].Date)</h2>
+                            </div>
                         </div>
-                        <div class="adver-description text-center">
-                            <h1>@Model[j].Title</h1>
-                            <h2>@Model[j].Condition - @Model[j].District</h2>
-                            <br />
-                            <br />
-                            <h1>کل/رهن: @Html.SplitInParts(Model[j].FirstPrice, 3)</h1>
-                            <h2>متری/اجاره: @Html.SplitInParts(Model[j].SecondPrice, 3)</h2>
-                            <h2>@Html.turnToPersianNumber(Model[j].Date)</h2>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        }
-    </div>
-}
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
 <div class="row text-center" style="margin-top:20px;">
     @Html.ActionLink("+ ثبت آگهی", "InsertAdvertise", "Advertise", new { }, new { @class = "btn btn-lg btn-success", @style = "min-width:100px;" })
     @Html.ActionLink("جستجوی آگهی", "SearchAdvertise", "Advertise", new { }, new { @class = "btn btn-lg btn-primary", @style = "min-width:100px; position: inline;" })

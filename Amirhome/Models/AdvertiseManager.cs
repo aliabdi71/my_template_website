@@ -45,17 +45,23 @@ namespace Amirhome.Models
     }
     public class AdvertiseManager
     {
-        public List<FreeAdvertise> getAdvertises()
+        public List<FreeAdvertise> getAdvertises(int p = 0)
         {
             List<FreeAdvertise> all_advers;
             try
             {
                 using (var context = new AmirhomeEntities())
                 {
-                    all_advers = (from AD in context.FreeAdvertises
-                                  where AD.expire_date >= DateTime.Now & AD.approved == true
-                                  orderby AD.expire_date descending
-                                  select AD).ToList();
+                    if(p == 0)
+                        all_advers = (from AD in context.FreeAdvertises
+                                      where AD.expire_date >= DateTime.Now & AD.approved == true
+                                      orderby AD.expire_date descending
+                                      select AD).ToList();
+                    else
+                        all_advers = (from AD in context.FreeAdvertises
+                                      where AD.expire_date >= DateTime.Now & AD.approved == true
+                                      orderby AD.expire_date descending
+                                      select AD).Take(p * 9).ToList();
                 }
                 return all_advers;
             }
