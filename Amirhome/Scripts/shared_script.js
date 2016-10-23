@@ -112,8 +112,11 @@ $(document).ready(function () {
 });
 
 function adverNextClick(elem) {
+    if ($(elem).attr('disabled')) {
+        return false;
+    }
     var page = parseInt($(elem).data('index'));
-    $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+    $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled').css('cursor', 'not-allowed');
     var postData = { "p": page };
     $.ajax({
         type: 'POST',
@@ -123,9 +126,14 @@ function adverNextClick(elem) {
         success: function (data) {
             $(elem).data('index', page + 1);
             $("#adverPrevPage").data('index', page - 1);
-            $("#adverPrevPage").html('<img src="/Content/shared_images/arrow-left.png" />').removeAttr('disabled');
+            $("#adverPrevPage").html('<img src="/Content/shared_images/arrow-left.png" />').removeAttr('disabled').css('cursor', 'pointer');
             createAdvertiseSectionForHomePage(data);
-            $(elem).html('<img src="/Content/shared_images/arrow-right.png" />').removeAttr('disabled');
+            if (data.length < 9) {
+                $(elem).html('<img src="/Content/shared_images/arrow-right-dis.png" />');
+            }
+            else {
+                $(elem).html('<img src="/Content/shared_images/arrow-right.png" />').removeAttr('disabled').css('cursor', 'pointer');
+            }
         },
         error: function () {
             alert('خطا در برقراری ارتباط با سرور');
@@ -134,8 +142,11 @@ function adverNextClick(elem) {
 }
 
 function adverPrevClick(elem) {
+    if ($(elem).attr('disabled')) {
+        return false;
+    }
     var page = parseInt($(elem).data('index'));
-    $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
+    $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled').css('cursor', 'not-allowed');
     var postData = { "p": page };
     $.ajax({
         type: 'POST',
@@ -145,13 +156,13 @@ function adverPrevClick(elem) {
         success: function (data) {
             $(elem).data('index', page - 1);
             $("#adverNextPage").data('index', page + 1);
-            $("#adverNextPage").removeAttr('disabled');
+            $("#adverNextPage").html('<img src="/Content/shared_images/arrow-right.png" />').removeAttr('disabled').css('cursor', 'pointer');
             createAdvertiseSectionForHomePage(data);
             if (page - 1 === 0) {
-                $(elem).html('<img src="/Content/shared_images/arrow-left-dis.png" />').attr('disabled', 'disabled');
+                $(elem).html('<img src="/Content/shared_images/arrow-left-dis.png" />');
             }
             else {
-                $(elem).html('<img src="/Content/shared_images/arrow-left.png" />').removeAttr('disabled');
+                $(elem).html('<img src="/Content/shared_images/arrow-left.png" />').removeAttr('disabled').css('cursor', 'pointer');
             }
         },
         error: function () {
@@ -180,7 +191,9 @@ function createAdvertiseSectionForHomePage(data) {
         }
         inner_html += '</div>';
     }
-    $("#adverPartialSection").fadeOut('normal').html(inner_html).fadeIn('normal');
+    $("#adverPartialSection").fadeOut('normal', function () {
+        $(this).html(inner_html).fadeIn('normal');
+    });
 }
 
 function sendDataToServer(email, pass, remember) {
@@ -207,3 +220,13 @@ function sendDataToServer(email, pass, remember) {
         },
     });
 }
+
+(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-85441006-1', 'auto');
+ga('send', 'pageview');

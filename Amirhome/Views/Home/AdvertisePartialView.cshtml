@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="~/Content/AdverSheetStyle.css" />
 
 <h1 class="text-center" style="color:#00578f; font-weight:bold; margin-bottom:30px;">
-    <a href="javascript:void(0)" id="adverNextPage" onclick="adverNextClick(this);" data-index="2" disabled="disabled"><img src="~/Content/shared_images/arrow-right.png" /></a>&nbsp;&nbsp;
+    <a href="javascript:void(0)" title="صفحه بعد" id="adverNextPage" onclick="adverNextClick(this);" data-index="2"><img src="~/Content/shared_images/arrow-right.png" /></a>&nbsp;&nbsp;
     آگهی های شما
-    &nbsp;&nbsp;<a href="javascript:void(0)" id="adverPrevPage" onclick="adverPrevClick(this);" data-index="0"><img src="~/Content/shared_images/arrow-left-dis.png" /></a>
+    &nbsp;&nbsp;<a href="javascript:void(0)" title="صفحه قبل" id="adverPrevPage" onclick="adverPrevClick(this);" style="cursor:not-allowed" data-index="0" disabled="disabled"><img src="~/Content/shared_images/arrow-left-dis.png" /></a>
 </h1>
 <div id="adverPartialSection">
     @for (int i = 0; i < Model.Count; i = i + 3)
@@ -40,5 +40,5 @@
 <div class="row text-center" style="margin-top:20px;">
     @Html.ActionLink("+ ثبت آگهی", "InsertAdvertise", "Advertise", new { }, new { @class = "btn btn-lg btn-success", @style = "min-width:100px;" })
     @Html.ActionLink("جستجوی آگهی", "SearchAdvertise", "Advertise", new { }, new { @class = "btn btn-lg btn-primary", @style = "min-width:100px; position: inline;" })
-</div>
+    <br /><br /></div>
 

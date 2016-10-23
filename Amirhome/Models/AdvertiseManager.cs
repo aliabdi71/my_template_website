@@ -132,6 +132,8 @@ namespace Amirhome.Models
                                             where A.ID == id
                                             select A).First();
                     addver.approved = flag;
+                    if (flag)
+                        addver.create_date = DateTime.Now;
                     context.FreeAdvertises.Attach(addver);
                     context.Entry(addver).State = EntityState.Modified;
                     context.SaveChanges();

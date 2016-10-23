@@ -105,7 +105,15 @@
     </div>
 </div>
 
-<section id="occasion" class="slider fade-animate">
+<section id="addvertise" class="addvertise-section">
+    @Html.Partial("AdvertisePartialView", ViewData["adverModel"])
+</section>
+
+<section id="about" class="about-section">
+    <div class="about-banner"></div>
+</section>
+
+@*<section id="occasion" class="slider fade-animate">
     <h1 class="text-center" style="color:#00578f; font-weight:bold; margin-bottom:30px;">ویژه های مسکن</h1>
     <div class="occasion row" style="margin:20px 20px 0 20px;">
         <div class="text-center">
@@ -116,15 +124,8 @@
     <div class="row text-center" style="margin-bottom:20px;">
         <a href='@Url.Action("ShowOccasions", "Estate")' class="btn btn-primary text-center" style="font-size:larger">مشاهده موارد بیشتر</a>
     </div>
-</section>
+</section>*@
 
-<section id="about" class="about-section">
-    <div class="about-banner"></div>
-</section>
-
-<section id="addvertise" class="addvertise-section fade-animate">
-    @Html.Partial("AdvertisePartialView", ViewData["adverModel"])
-</section>
 
 @section scripts{
     <script type="text/javascript" src="~/Scripts/jquery.backstretch.min.js"></script>
@@ -286,7 +287,7 @@
         });
 
             //Occasion Section
-        getOccasionsFromServer();
+        //getOccasionsFromServer();
 
     });
 

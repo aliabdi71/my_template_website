@@ -615,7 +615,9 @@
     <Content Include="Content\ManagementPanelStyle.css" />
     <Content Include="Content\SearchPageStyle.css" />
     <Content Include="Content\shared_images\Android.png" />
+    <Content Include="Content\shared_images\arrow-left-dis.png" />
     <Content Include="Content\shared_images\arrow-left.png" />
+    <Content Include="Content\shared_images\arrow-right-dis.png" />
     <Content Include="Content\shared_images\arrow-right.png" />
     <Content Include="Content\shared_images\background.jpg" />
     <Content Include="Content\shared_images\Contacts.png" />

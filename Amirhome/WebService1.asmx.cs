@@ -49,6 +49,16 @@ namespace Amirhome
             return js.Serialize(data);
         }
 
+        [WebMethod(Description = "Get Estate by its ID!")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetEstateById(int ID)
+        {
+            EstateManager _estateManager = new EstateManager();
+            var estate = _estateManager.getStateByID(ID);
+
+            return "";
+        }
+
         [WebMethod]
         public DataSet GetOccasionEstate()
         {
@@ -93,7 +103,7 @@ namespace Amirhome
                 return null;
             }
         }
-        [WebMethod]
+       /* [WebMethod]
         public DataSet GetEstateById(int ID)
         {
             try
@@ -137,7 +147,7 @@ namespace Amirhome
             {
                 return null;
             }
-        }
+        }*/
 
         [WebMethod]
         public DataSet GetImage(int ID)
