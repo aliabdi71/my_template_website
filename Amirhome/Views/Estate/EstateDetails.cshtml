@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "مشاهده جزئیات ملک";
+    ViewBag.Title = "جزئیات ملک  " + Model.Condition + " و " + Model.StateType1.types + " در " + Model.Address;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var agent = ViewData["agent"] as Amirhome.Models.UserAccouunt;
     int rid;
