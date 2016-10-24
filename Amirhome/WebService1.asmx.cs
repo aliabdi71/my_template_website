@@ -49,13 +49,126 @@ namespace Amirhome
             return js.Serialize(data);
         }
 
+        [WebMethod(Description = "Search among estates!")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string SearchEstate(string condition, string usage, string type = "", 
+                                   int district_id = 0, int estate_serial = 0, int max_age = 0,
+                                   int min_area = 0, int max_area = 0, long min_total_p = 0,
+                                   long max_total_p = 0, long min_permeter_p = 0, long max_permeter_p = 0,
+                                   long min_prepayment_p = 0, long max_prepayment = 0, long min_mortgage_p = 0,
+                                   long max_mortgage_p = 0, int page = 0, string order = "date")
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            SearchParams _params = new SearchParams();
+
+            #region Create SearchParams Object
+            if (!string.IsNullOrEmpty(usage))
+            {
+                _params.EstateCondition = true;
+                _params.EstateConditionValue = condition;
+            }
+            if (!string.IsNullOrEmpty(condition))
+            {
+                _params.EstateUsage = true;
+                _params.EstateUsageValue = condition;
+            }
+            if (!string.IsNullOrEmpty(type))
+            {
+                _params.EstateType = true;
+                _params.EstateTypeValue = condition;
+            }
+            if (!string.IsNullOrEmpty(type))
+            {
+                _params.EstateType = true;
+                _params.EstateTypeValue = condition;
+            }
+            if (district_id != 0)
+            {
+                _params.EstateDistrict = true;
+                _params.EstateDistrictValue = district_id;
+            }
+            if (estate_serial != 0)
+            {
+                _params.EstateSerial = true;
+                _params.EstateSerialValue = estate_serial;
+            }
+            if (max_age != 0)
+            {
+                _params.EstateAge = true;
+                _params.EstateAgeValue = max_age;
+            }
+            if (min_area != 0 || max_area != 0)
+            {
+                _params.Area = true;
+                if (min_area != 0)
+                    _params.AreaFrom = min_area;
+                if (max_area != 0)
+                    _params.AreaTo = max_area;
+            }
+            if (min_total_p != 0 || max_total_p != 0)
+            {
+                _params.TotalPrice = true;
+                if (min_total_p != 0)
+                    _params.TotalPriceFrom = min_total_p;
+                if (max_total_p != 0)
+                    _params.TotalPriceTo = max_total_p;
+            }
+            if (min_permeter_p != 0 || max_permeter_p != 0)
+            {
+                _params.PricePerMeter = true;
+                if (min_permeter_p != 0)
+                    _params.PricePerMeterFrom = min_permeter_p;
+                if (max_permeter_p != 0)
+                    _params.PricePerMeterTo = max_permeter_p;
+            }
+            if (min_prepayment_p != 0 || max_prepayment != 0)
+            {
+                _params.PrepaymentPrice = true;
+                if (min_prepayment_p != 0)
+                    _params.PrepaymentPriceFrom = min_prepayment_p;
+                if (max_prepayment != 0)
+                    _params.PrepaymentPriceTo = max_prepayment;
+            }
+            if (min_mortgage_p != 0 || max_mortgage_p != 0)
+            {
+                _params.MortagePrice = true;
+                if (min_mortgage_p != 0)
+                    _params.MortagePriceFrom = min_mortgage_p;
+                if (max_mortgage_p != 0)
+                    _params.MortagePriceTo = max_mortgage_p;
+            }
+            #endregion
+
+            EstateManager _estateManager = new EstateManager();
+            List<State> states = _estateManager.doSearch(_params, page * 10, order);
+            var data = states.Select(o => new
+            {
+                ID = o.ID,
+                Area = o.Area,
+                FirstPrice = (o.TotalPrice == null || o.TotalPrice == 0) ? o.PrepaymentPrice : o.TotalPrice,
+                SecondPrice = (o.PricePerMeter == null || o.PricePerMeter == 0) ? "اجاره " + (o.MortgagePrice > 0 ? o.MortgagePrice.ToString() : "ندارد") : "متری " + o.PricePerMeter.ToString(),
+                Date = o.Date.ToString().Split(' ')[0],
+                Condition = o.Condition,
+                Dist = o.District1.name,
+                Serial = o.Serial,
+                ImageUrl = (o.Images.Count == 0 ? "no-thumb.png" : o.Images.FirstOrDefault().url),
+                ImageCount = o.Images.Count
+            });
+            return js.Serialize(data);
+        }
+
         [WebMethod(Description = "Get Estate by its ID!")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string GetEstateById(int ID)
         {
             EstateManager _estateManager = new EstateManager();
             var estate = _estateManager.getStateByID(ID);
+            var date = new Object 
+            {
+                ID = estate.ID,
+                Area = estate.Area,
 
+            };
             return "";
         }
 
