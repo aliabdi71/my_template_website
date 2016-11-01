@@ -1,6 +1,51 @@
 ﻿
 @{
-    ViewBag.Title = "جستجوی ملک";
+    string title = "";
+    if (Request.QueryString["cond"] != null)
+    {
+        switch (Request.QueryString["cond"].ToString())
+        {
+            case "1": title += " خرید و فروش"; break;
+            case "2": title += " رهن"; break;
+            case "3": title += " اجاره"; break;
+            default: title += " خرید و فروش و رهن و اجاره"; break;
+        }   
+    }
+    if (Request.QueryString["type"] != null)
+    {
+        switch (Request.QueryString["type"].ToString())
+        {
+            case "1": title += " آپارتمان و ملک و خانه"; break;
+            case "2": title += " ویلا"; break;
+            case "6": title += " دفتر کار و اداری"; break;
+            case "7": title += " مغازه"; break;
+            default: title += " ملک و خانه"; break;
+        }   
+    }
+    else
+    {
+        title += " ملک و خانه و آپارتمان";
+    }
+    title += " در تهران";
+    if (Request.QueryString["district"] != null)
+    {
+        switch (Request.QueryString["district"].ToString())
+        {
+            case "17": title += " امیرآباد"; break;
+            case "2": title += " یوسف آباد"; break;
+            case "69": title += " ستارخان"; break;
+            case "77": title += " شهرآرا"; break;
+            case "110": title += " مرزداران"; break;
+            case "28": title += " پاتریس"; break;
+            case "105": title += " گیشا"; break;
+            default: title += " همه محلات تهران"; break;
+        }
+    }
+    else
+    {
+        title += " گیشا و سایر محلات تهران";
+    }
+    ViewBag.Title = "جستجوی" + title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
@@ -200,15 +245,15 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" id="EstateAge" class="long_input" placeholder="حداکثر سن بنا (سال)" />
+                            <input type="text" id="EstateAge" class="long_input price-type" placeholder="حداکثر سن بنا (سال)" />
                         </div>
                         <div class="col-md-4">
-                            <input type="text" id="EstateSerial" class="long_input" placeholder="کد ملک"/>
+                            <input type="text" id="EstateSerial" class="long_input price-type" placeholder="کد ملک" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <input type="text" id="AreaFrom" class="long_input" placeholder="حداقل متراژ (متر مربع)" />
+                            <input type="text" id="AreaFrom" class="long_input price-type" placeholder="حداقل متراژ (متر مربع)" />
                         </div>
                         <div class="col-md-4">
                             <input type="text" id="TotalPriceFrom" class="long_input price-type" placeholder="حداقل قیمت کل (تومان)" />
@@ -219,7 +264,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <input type="text" id="AreaTo" class="long_input" placeholder="حداکثر متراژ (متر مربع)" />
+                            <input type="text" id="AreaTo" class="long_input price-type" placeholder="حداکثر متراژ (متر مربع)" />
                         </div>
                         <div class="col-md-4">
                             <input type="text" id="TotalPriceTo" class="long_input price-type" placeholder="حداکثر قیمت کل (تومان)" />

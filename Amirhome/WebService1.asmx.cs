@@ -51,7 +51,7 @@ namespace Amirhome
 
         [WebMethod(Description = "Search among estates!")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public string SearchEstate(string condition, string usage, string type = "", 
+        public string SearchEstate(int _condition, int _usage, int _type = 0, 
                                    int district_id = 0, int estate_serial = 0, int max_age = 0,
                                    int min_area = 0, int max_area = 0, long min_total_p = 0,
                                    long max_total_p = 0, long min_permeter_p = 0, long max_permeter_p = 0,
@@ -60,27 +60,42 @@ namespace Amirhome
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
             SearchParams _params = new SearchParams();
+            string condition = string.Empty, 
+                   usage = string.Empty,
+                   type = string.Empty;
+            switch (_condition)
+            {
+                case 1: condition = "فروش"; break;
+                case 2: condition = "رهن"; break;
+                case 3: condition = "اجاره"; break;
+                default: condition = "فروش"; break;
+            }
+            switch (_usage)
+            {
+                case 1: usage = "مسکونی"; break;
+                case 2: usage = "کلنگی و مشارکتی"; break;
+                case 3: usage = "تجاری و اداری"; break;
+                default: usage = "مسکونی"; break;
+            }
+
+            if (_type != 0)
+                type = _type.ToString();
 
             #region Create SearchParams Object
-            if (!string.IsNullOrEmpty(usage))
+            if (!string.IsNullOrEmpty(condition))
             {
                 _params.EstateCondition = true;
                 _params.EstateConditionValue = condition;
             }
-            if (!string.IsNullOrEmpty(condition))
+            if (!string.IsNullOrEmpty(usage))
             {
                 _params.EstateUsage = true;
-                _params.EstateUsageValue = condition;
+                _params.EstateUsageValue = usage;
             }
             if (!string.IsNullOrEmpty(type))
             {
                 _params.EstateType = true;
-                _params.EstateTypeValue = condition;
-            }
-            if (!string.IsNullOrEmpty(type))
-            {
-                _params.EstateType = true;
-                _params.EstateTypeValue = condition;
+                _params.EstateTypeValue = type;
             }
             if (district_id != 0)
             {
@@ -104,6 +119,8 @@ namespace Amirhome
                     _params.AreaFrom = min_area;
                 if (max_area != 0)
                     _params.AreaTo = max_area;
+                else
+                    _params.AreaTo = 1000000;
             }
             if (min_total_p != 0 || max_total_p != 0)
             {
@@ -112,6 +129,8 @@ namespace Amirhome
                     _params.TotalPriceFrom = min_total_p;
                 if (max_total_p != 0)
                     _params.TotalPriceTo = max_total_p;
+                else
+                    _params.TotalPriceTo = 100000000000;
             }
             if (min_permeter_p != 0 || max_permeter_p != 0)
             {
@@ -120,6 +139,8 @@ namespace Amirhome
                     _params.PricePerMeterFrom = min_permeter_p;
                 if (max_permeter_p != 0)
                     _params.PricePerMeterTo = max_permeter_p;
+                else
+                    _params.PricePerMeterTo = 1000000000;
             }
             if (min_prepayment_p != 0 || max_prepayment != 0)
             {
@@ -128,6 +149,8 @@ namespace Amirhome
                     _params.PrepaymentPriceFrom = min_prepayment_p;
                 if (max_prepayment != 0)
                     _params.PrepaymentPriceTo = max_prepayment;
+                else
+                    _params.PrepaymentPriceTo = 1000000000;
             }
             if (min_mortgage_p != 0 || max_mortgage_p != 0)
             {
@@ -136,6 +159,8 @@ namespace Amirhome
                     _params.MortagePriceFrom = min_mortgage_p;
                 if (max_mortgage_p != 0)
                     _params.MortagePriceTo = max_mortgage_p;
+                else
+                    _params.MortagePriceTo = 1000000000;
             }
             #endregion
 
@@ -146,7 +171,7 @@ namespace Amirhome
                 ID = o.ID,
                 Area = o.Area,
                 FirstPrice = (o.TotalPrice == null || o.TotalPrice == 0) ? o.PrepaymentPrice : o.TotalPrice,
-                SecondPrice = (o.PricePerMeter == null || o.PricePerMeter == 0) ? "اجاره " + (o.MortgagePrice > 0 ? o.MortgagePrice.ToString() : "ندارد") : "متری " + o.PricePerMeter.ToString(),
+                SecondPrice = (o.PricePerMeter == null || o.PricePerMeter == 0) ? o.MortgagePrice  : o.PricePerMeter,
                 Date = o.Date.ToString().Split(' ')[0],
                 Condition = o.Condition,
                 Dist = o.District1.name,
@@ -163,16 +188,75 @@ namespace Amirhome
         {
             EstateManager _estateManager = new EstateManager();
             var estate = _estateManager.getStateByID(ID);
-            var date = new Object 
+            AgentManager _agentManager = new AgentManager();
+            var agent = _agentManager.getAgentById(estate.AgentID.Value);
+            var data = new
             {
                 ID = estate.ID,
                 Area = estate.Area,
-
+                FirstPrice = (estate.TotalPrice == null || estate.TotalPrice == 0) ? estate.PrepaymentPrice : estate.TotalPrice,
+                SecondPrice = (estate.PricePerMeter == null || estate.PricePerMeter == 0) ? estate.MortgagePrice : estate.PricePerMeter,
+                Date = estate.Date.ToString().Split(' ')[0],
+                Condition = estate.Condition,
+                Dist = estate.District1.name,
+                Serial = estate.Serial.ToString(),
+                Address1 = estate.Address,
+                Address2 = estate.DetailedAddress,
+                Usage = estate.Usage,
+                Bedrooms = estate.Bedrooms,
+                Type = estate.StateType1.types,
+                Age = estate.Age.ToString(),
+                Floor = estate.Floor,
+                AgentName = agent.Name,
+                AgentPhone = agent.Phone,
+                TotalFloors = estate.Floors,
+                Bathroom = estate.Bathrooms,
+                Units = estate.Units,
+                Cabinet = estate.Cabinet,
+                Parking = estate.Parking,
+                PhoneLines = estate.Tells,
+                Facing = estate.Facing,
+                Status = estate.CurrentStatus,
+                Position = estate.StatePosition,
+                Flooring = estate.Floors,
+                ExtraInfo = estate.Description + " " + estate.Occasion,
+                ImgCount = estate.Images.Count,
+                ImgUrls = estate.Images.Count > 0 ? (estate.Images.Select(i => i.url).ToArray()) : null,
+                StreetViewImg = estate.StreetViews.Count > 0 ? estate.StreetViews.First().url : null,
+                PlanImg = estate.Plans.Count > 0 ? estate.Plans.First().url : null,
+                GoogleMapLat = string.IsNullOrEmpty(estate.GoogleMaps.First().latitude) ? "35.688045" : estate.GoogleMaps.First().latitude,
+                GoogleMapLong = string.IsNullOrEmpty(estate.GoogleMaps.First().longitude) ? "51.392884" : estate.GoogleMaps.First().longitude,
+                Features = estate.Features.Select(f => f.Item).ToArray()
             };
-            return "";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(data);
         }
 
-        [WebMethod]
+        [WebMethod(Description = "Authenticate user")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string Login(string email, string password)
+        {
+            UserManager _userManaget = new UserManager();
+            int id = _userManaget.authenticateUser(email, password);
+            if (id < 0)
+            {
+                return "false";
+            }
+            else
+            {
+                UserAccouunt u = _userManaget.getUserByID(id);
+                var data = new
+                {
+                    Name = u.Name,
+                    Email = u.Email,
+                    RoleId = u.RoleID
+                };
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                return js.Serialize(data);
+            }
+        }
+
+       /* [WebMethod]
         public DataSet GetOccasionEstate()
         {
             try
@@ -216,7 +300,8 @@ namespace Amirhome
                 return null;
             }
         }
-       /* [WebMethod]
+       
+         [WebMethod]
         public DataSet GetEstateById(int ID)
         {
             try
@@ -260,7 +345,7 @@ namespace Amirhome
             {
                 return null;
             }
-        }*/
+        }
 
         [WebMethod]
         public DataSet GetImage(int ID)
@@ -321,5 +406,6 @@ namespace Amirhome
                 return null;
             }
         }
+         * */
     }
 }
