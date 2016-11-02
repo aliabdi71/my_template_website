@@ -119,6 +119,8 @@ namespace Amirhome.Controllers
                 }
                 if(model.RoleID == null)
                     model.RoleID = int.Parse(Session["user_role_id"].ToString());
+                else if (Session["user_role_id"] == null || Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+                    return Json("Don't you have a job??");
                 bool res = _userManager.updateUser(model);
                 if (res)
                     return RedirectToAction("Index", "Home");
@@ -137,8 +139,8 @@ namespace Amirhome.Controllers
 
         public JsonResult DeleteUser(int id)
         {
-            if (Session["user_role_id"].ToString() != "1")
-                return Json("Error", JsonRequestBehavior.AllowGet);
+            if (Session["user_role_id"] == null || Session["user_role_id"].ToString() != "1")
+                return Json("Access Denied", JsonRequestBehavior.AllowGet);
             bool res = _userManager.deleteUser(id);
             if (res)
                 return Json("Success", JsonRequestBehavior.AllowGet);
@@ -188,7 +190,7 @@ namespace Amirhome.Controllers
                 Role = user.UserAccouuntsRole.Name,
                 Name = user.Name,
                 LastOnline = (user.LastTimeOnline != null) ? user.LastTimeOnline.ToString().Split(' ')[0] : "2016/01/01",
-                imageUrl = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(user.ProfileImage)),
+                imageUrl = user.ProfileImage != null ? string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(user.ProfileImage)) : "",
                 Phone = user.Phone
             };
             return Json(res_object, JsonRequestBehavior.AllowGet);
@@ -196,7 +198,7 @@ namespace Amirhome.Controllers
 
         public JsonResult deleteGivenUser(int id)
         {
-            if (Session["user_role_id"] == null)
+            if (Session["user_role_id"] == null || Session["user_role_id"].ToString() != "1")
                 return Json("Error", JsonRequestBehavior.AllowGet);
             bool res = _userManager.deleteUser(id);
             if (res)
@@ -206,8 +208,8 @@ namespace Amirhome.Controllers
         }
         public JsonResult updateRoleForUser(int uid, int rid)
         {
-            if (Session["user_role_id"] == null)
-                return Json("Error", JsonRequestBehavior.AllowGet);
+            if (Session["user_role_id"] == null || Session["user_role_id"].ToString() != "1")
+                return Json("Access Denied", JsonRequestBehavior.AllowGet);
             bool res = _userManager.updateUserRole(uid, rid);
             if (res)
                 return Json("Success", JsonRequestBehavior.AllowGet);
@@ -217,7 +219,7 @@ namespace Amirhome.Controllers
         public JsonResult getAgentInfo(int id)
         {
             if (Session["user_role_id"] == null)
-                return Json(null, JsonRequestBehavior.AllowGet);
+                return Json("Access Denied", JsonRequestBehavior.AllowGet);
             UserAccouunt agent = _agentManager.getAgentById(id);
             var res_object = new 
             {
@@ -230,8 +232,8 @@ namespace Amirhome.Controllers
 
         public JsonResult deleteAgent(int id)
         {
-            if (Session["user_role_id"] == null)
-                return Json("Error", JsonRequestBehavior.AllowGet);
+            if (Session["user_role_id"] == null || Session["user_role_id"].ToString() != "1")
+                return Json("Access Denied", JsonRequestBehavior.AllowGet);
             bool res = _agentManager.deleteAgent(id);
             if (res)
                 return Json("Success", JsonRequestBehavior.AllowGet);

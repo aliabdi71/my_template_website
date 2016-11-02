@@ -449,6 +449,8 @@ namespace Amirhome.Controllers
         }
         public JsonResult EstateDelete(int id)
         {
+            if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+                return Json("Don't you have a job??");
             try
             {
                 List<string> urls_to_delete = _estateManager.deleteEstate(id);
