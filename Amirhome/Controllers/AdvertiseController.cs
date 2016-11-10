@@ -158,6 +158,8 @@ namespace Amirhome.Controllers
 
         public JsonResult AddvertiseApprovement(int addID, bool flag)
         {
+            if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+                return Json("Don't you have a job??");
             bool res = _adverManager.approveAddvertise(addID, flag);
             if (res)
                 return Json("Success", JsonRequestBehavior.AllowGet);

@@ -224,8 +224,8 @@ namespace Amirhome
                 ImgUrls = estate.Images.Count > 0 ? (estate.Images.Select(i => i.url).ToArray()) : null,
                 StreetViewImg = estate.StreetViews.Count > 0 ? estate.StreetViews.First().url : null,
                 PlanImg = estate.Plans.Count > 0 ? estate.Plans.First().url : null,
-                GoogleMapLat = string.IsNullOrEmpty(estate.GoogleMaps.First().latitude) ? "35.688045" : estate.GoogleMaps.First().latitude,
-                GoogleMapLong = string.IsNullOrEmpty(estate.GoogleMaps.First().longitude) ? "51.392884" : estate.GoogleMaps.First().longitude,
+                GoogleMapLat = estate.GoogleMaps.Count <= 0 ? "35.688045" : estate.GoogleMaps.First().latitude,
+                GoogleMapLong = estate.GoogleMaps.Count <= 0 ? "51.392884" : estate.GoogleMaps.First().longitude,
                 Features = estate.Features.Select(f => f.Item).ToArray()
             };
             JavaScriptSerializer js = new JavaScriptSerializer();
