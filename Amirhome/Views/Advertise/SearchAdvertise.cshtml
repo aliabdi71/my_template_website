@@ -10,53 +10,266 @@
 <div class="container body-content ad-search" style=" margin-top: 50px; min-height:550px;">
     <br />
     <div class="row">
-        <div class="col-md-5">
-            <div class="search-elements content" style="margin-bottom:20px; position:fixed; min-width: 37%;">
+        <div class="col-md-12">
+            <div class="search-elements content" style="margin:10px auto; max-width: 90%;">
                 <div class="caption text-center">
                     جستجو در آگهی ها
                 </div>
-                <div class="elements">
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداقل متراژ</label>
-                    <input type="range" id="minArea" name="minArea" min="0" max="1000" step="10" value="10" data-orientation="vertical" />&nbsp;
-                    <label style="font-weight:normal">۱۰ متر</label>
-                    <br />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداکثر متراژ</label>
-                    <input type="range" id="maxArea" name="maxArea" min="0" max="3000" step="10" value="3000" data-orientation="vertical" />&nbsp;
-                    <label style="font-weight:normal">۳۰۰۰ متر</label>
-                    <hr />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="FirstPriceLabel">حداقل قیمت کل</label>
-                    <input type="range" id="minTotalPrice" name="minTotalPrice" data-price="true" min="10000000" max="1000000000" step="1000000" value="10000000" data-orientation="vertical" />&nbsp;
-                    <label style="font-weight:normal">۱۰,۰۰۰,۰۰۰ تومان</label>
-                    <br />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="FirstPriceLabel_2">حداکثر قیمت کل</label>
-                    <input type="range" id="maxTotalPrice" name="maxTotalPrice" data-price="true" min="30000000" max="10000000000" step="1000000" value="10000000000" data-orientation="vertical" />&nbsp;
-                    <label style="font-weight:normal">۱۰,۰۰۰,۰۰۰,۰۰۰ تومان</label>
-                    <hr />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="SecondPriceLabel">حداقل قیمت هر متر</label>
-                    <input type="range" id="minPricePerMeter" name="minPricePerMeter" data-price="true" min="500000" max="50000000" step="500000" value="500000" data-orientation="vertical" />&nbsp;
-                    <label style="font-weight:normal">۵۰۰,۰۰۰ تومان</label>
-                    <br />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="SecondPriceLabel_2">حداکثر قیمت هر متر</label>
-                    <input type="range" id="maxPricePerMeter" name="maxPricePerMeter" data-price="true" min="1000000" max="50000000" step="50000" value="50000000" data-orientation="vertical" />&nbsp;
-                    <label style="font-weight:normal">۵۰,۰۰۰,۰۰۰ تومان</label>
-                    <hr />
-                    <label style="font-weight:normal; font-size:16px; min-width: 100px;">نوع واگذاری</label>
-                    <select id="adverCondition" name="adverCondition" class="form-control" style="display:inline; margin-right:10px;">
-                        <option value="فروش" selected="selected">فروش</option>
-                        <option value="رهن">رهن</option>
-                        <option value="اجاره">اجاره</option>
-                    </select>
-                    <br />
-                    <br />
-                    @*<label style="font-weight:normal; font-size:16px; min-width: 100px;">آدرس</label>
-                    <input class="form-control" type="text" style="display:inline"/>*@
-                    <input id="adver-search" onclick="doSearch();" class="btn btn-primary" style="min-width:70px; float:left; margin:10px;" value="جستجو" />
-                </div>
+                <div class="row elements">
+                    <div class="col-md-3">
+                        <label style="font-weight:normal; font-size:16px; min-width: 100px;">نوع واگذاری</label>
+                        <select id="adverCondition" name="adverCondition" class="form-control">
+                            <option value="فروش" selected="selected">فروش</option>
+                            <option value="رهن">رهن</option>
+                            <option value="اجاره">اجاره</option>
+                        </select>
+                        
+                        <label style="font-weight:normal; font-size:16px; min-width: 100px; margin-top:25px;">محله</label>
+                        <select id="adverDistrict" name="adverDistrict" class="form-control">
+                            <option value="">همه محله ها</option>
+                            <option value="17 شهریور">17شهریور</option>
+                            <option value="آذربایجان">آذربایجان</option>
+                            <option value="آذری">آذری</option>
+                            <option value="آزادی">آزادی</option>
+                            <option value="آجودانیه">آجودانیه</option>
+                            <option value="آرژانتین">آرژانتین</option>
+                            <option value="اختیاریه">اختیاریه</option>
+                            <option value="احتشامیه">احتشامیه</option>
+                            <option value="آهنگ">آهنگ</option>
+                            <option value="آیت الله سعیدی">آیت الله سعیدی</option>
+                            <option value="اراج و ازگل">اراج و ازگل</option>
+                            <option value="استاد معین">استاد معین</option>
+                            <option value="استخر">استخر</option>
+                            <option value="اشرفی اصفهانی">اشرفی اصفهانی</option>
+                            <option value="افسریه">افسریه</option>
+                            <option value="اقدسیه">اقدسیه</option>
+                            <option value="اکباتان">اکباتان</option>
+                            <option value="الهیه">الهیه</option>
+                            <option value="امام حسین">امام حسین</option>
+                            <option value="امام خمینی">امام خمینی</option>
+                            <option value="امامت">امامت</option>
+                            <option value="امیرآباد">امیرآباد</option>
+                            <option value="امیرآباد شمالی">امیرآباد شمالی</option>
+                            <option value="اندیشه">اندیشه</option>
+                            <option value="انقلاب">انقلاب</option>
+                            <option value="اوین">اوین</option>
+                            <option value="بازار">بازار</option>
+                            <option value="بریانک">بریانک</option>
+                            <option value="باقرخان">باقرخان</option>
+                            <option value="بلوار بسیج">بلوار بسیج</option>
+                            <option value="بلوار بسیج">بلوار فردوس</option>
+                            <option value="بلوار کشاورز">بلوار کشاورز</option>
+                            <option value="بنی هاشم">بنی هاشم</option>
+                            <option value="بهار">بهار</option>
+                            <option value="بهار شیراز">بهار شیراز</option>
+                            <option value="بهارستان">بهارستان</option>
+                            <option value="پاتریس">پاتریس</option>
+                            <option value="پارک وی">پارک وی</option>
+                            <option value="پاسداران">پاسداران</option>
+                            <option value="پامنار">پامنار</option>
+                            <option value="پردیس">پردیس</option>
+                            <option value="پل رومی">پل رومی</option>
+                            <option value="پونک">پونک</option>
+                            <option value="پیچ شمران">پیچ شمران</option>
+                            <option value="پیروزی">پیروزی</option>
+                            <option value="تهران نو">تهران نو</option>
+                            <option value="تهران ویلا">تهران ویلا</option>
+                            <option value="تهران پارس">تهرانپارس</option>
+                            <option value="تهرانسر">تهرانسر</option>
+                            <option value="تحریش">تجریش</option>
+                            <option value="توحید">توحید</option>
+                            <option value="جاده ساوه">جاده ساوه</option>
+                            <option value="جردن">جردن</option>
+                            <option value="جلال آل احمد">جلال ال احمد</option>
+                            <option value="جلفا">جلفا</option>
+                            <option value="جمالزاده">جمالزاده</option>
+                            <option value="جمهوری">جمهوری</option>
+                            <option value="جنت آباد جنوبی">جنت آباد جنوبی</option>
+                            <option value="جنت آباد شمالی">جنت آباد شمالی</option>
+                            <option value="جنت آباد مرکزی">جنت آباد مرکزی</option>
+                            <option value="جوادیه">جوادیه</option>
+                            <option value="جی">جی</option>
+                            <option value="جیحون">جیحون</option>
+                            <option value="چهارراه سیروس">چهارراه سیروس</option>
+                            <option value="چیتگر">چیتگر</option>
+                            <option value="حافظ">حافظ</option>
+                            <option value="جکیمیه">حکیمیه</option>
+                            <option value="حشمتیه">حشمتیه</option>
+                            <option value="خراسان">خراسان</option>
+                            <option value="خردمند">خردمند</option>
+                            <option value="خزانه">خزانه</option>
+                            <option value="خلیج فارس">خلیج فارس</option>
+                            <option value="خواجه عبدالله">خواجه عبدالله</option>
+                            <option value="خواجه نظام">خواجه نظام</option>
+                            <option value="خوش">خوش</option>
+                            <option value="دامپزشکی">دامپزشکی</option>
+                            <option value="دروس">دروس</option>
+                            <option value="دربند">دربند</option>
+                            <option value="درکه">درکه</option>
+                            <option value="دریان نو">دریان نو</option>
+                            <option value="دوراهی قپان">دوراهی قپان</option>
+                            <option value="دهکده المپیک">دهکده المپیک</option>
+                            <option value="ده ونک">ده ونک</option>
+                            <option value="دسالت">رسالت</option>
+                            <option value="رودکی">رودکی</option>
+                            <option value="ری">ری</option>
+                            <option value="زعفرانیه">زعفرانیه</option>
+                            <option value="سازمان آب">سازمان آب</option>
+                            <option value="سازمان برنامه">سازمان برنامه</option>
+                            <option value="سبلان">سبلان</option>
+                            <option value="ستارخان">ستارخان</option>
+                            <option value="سراج">سراج</option>
+                            <option value="سردار جنگل">سردار جنگل</option>
+                            <option value="سعادت آباد">سعادت آباد</option>
+                            <option value="سعدآباد">سعدآباد</option>
+                            <option value="سلسبیل">سلسبیل</option>
+                            <option value="سهروردی">سهروردی</option>
+                            <option value="سی متری">سی متری</option>
+                            <option value="سوهانک">سوهاهنک</option>
+                            <option value="شادآباد">شادآباد</option>
+                            <option value="شریعتی">شریعتی</option>
+                            <option value="شمس آباد">شمس آباد</option>
+                            <option value="شهدا">شهدا</option>
+                            <option value="شهرآرا">شهرآرا</option>
+                            <option value="شهران">شهران</option>
+                            <option value="شهرزیبا">شهرزیبا</option>
+                            <option value="شهر قدس">شهر قدس</option>
+                            <option value="شهرک ابوذر">شهرک ابوذر</option>
+                            <option value="شهرک آپادانا">شهرک آپادانا</option>
+                            <option value="شهرک ارغوام">شهرک ارغوان</option>
+                            <option value="شهرک آزادی">شهرک آزادی</option>
+                            <option value="شهرک استقلال">شهرک استقلال</option>
+                            <option value="شهرک آسمان">شهرک آسمان</option>
+                            <option value="شهرک امام خمینی">شهرک امام خمینی</option>
+                            <option value="شهرک امید">شهرک امید</option>
+                            <option value="شهرک امیرالمومنین">شهرک امیرالمومنین</option>
+                            <option value="شهرک انصار">شهرک انصار</option>
+                            <option value="شهرک بخارایی">شهرک بخارایی</option>
+                            <option value="شهرک بعثت">شهرک بعثت</option>
+                            <option value="شهرک پارس">شهرک پارس</option>
+                            <option value="شهرک پاسداران">شهرک پاسداران</option>
+                            <option value="شهرک پرواز">شهرک پرواز</option>
+                            <option value="شهرک تختی">شهرک تختی</option>
+                            <option value="شهرک چشمه">شهرک چشمه</option>
+                            <option value="شهرک دانشگاه">شهرک دانشگاه</option>
+                            <option value="شهرک دریا">شهرک دریا</option>
+                            <option value="شهرک رشوان">شهرک رضوان</option>
+                            <option value="شهرک رضویه">شهرک رضویه</option>
+                            <option value="شهرک ژاندارمری">شهرک ژاندارمری</option>
+                            <option value="شهرک شاهین">شهرک شاهین</option>
+                            <option value="شهرک شریعتی">شهرک شریعتی</option>
+                            <option value="شهرک شریفی">شهرک شریفی</option>
+                            <option value="شهرک شهید مفتح">شهرک شهید مفتح</option>
+                            <option value="شهرک شهربانی">شهرک شهربانی</option>
+                            <option value="شهرک شهرداری">شهرک شهرداری</option>
+                            <option value="شهرک طالقانی">شهرک طالقانی</option>
+                            <option value="شهرک عباسی">شهرک عباسی</option>
+                            <option value="شهرک عباسپور">شهرک عباسپور</option>
+                            <option value="شهرک غری">شهرک غرب</option>
+                            <option value="شهرک غزالی">شهرک غزالی</option>
+                            <option value="شهرک فاطمه الزهرا">شهرک فاطمه الزهرا</option>
+                            <option value="شهرک فردوس">شهرک فردوس</option>
+                            <option value="شهرک فرهنگیان">شهرک فرهنگیان</option>
+                            <option value="شهرک فرهنگیان غرب">شهرک فرهنگیان غرب</option>
+                            <option value="شهرک قدس">شهرک قدس</option>
+                            <option value="شهرک کاظمیه">شهرک کاظمیه</option>
+                            <option value="شهرک کیانشهر">شهرک کیانشهر</option>
+                            <option value="شهرک کمالی">شهرک کمالی</option>
+                            <option value="شهرک کوهسار">شهرک کوهسار</option>
+                            <option value="شهرک گلستان">شهرک گلستان</option>
+                            <option value="شهرک گلستان غربی">شهرک گلستان غربی</option>
+                            <option value="شهرک گلها">شهرک گلها</option>
+                            <option value="شهرک محلاتی">شهرک محلاتی</option>
+                            <option value="شهرک مسلمین">شهرک مسلمین</option>
+                            <option value="شهرک نفت">شهرک نفت</option>
+                            <option value="شهرک هجرت">شهرک هجرت</option>
+                            <option value="شهرک والفجر">شهرک والفجر</option>
+                            <option value="شهرک ویلاشهر">شهرک ویلاشهر</option>
+                            <option value="شهرک شهرک ولیعصر">شهرک ولیعصر</option>
+                            <option value="شوش">شوش</option>
+                            <option value="شیخ بهایی">شیخ بهایی</option>
+                            <option value="صادقیه">صادقیه</option>
+                            <option value="طرشت">طرشت</option>
+                            <option value="ظفر">ظفر</option>
+                            <option value="عباس آباد">عباس آباد</option>
+                            <option value="علی آباد">علی آباد</option>
+                            <option value="فاطمی">فاطمی</option>
+                            <option value="فرشته">فرشته</option>
+                            <option value="فرمانیه">فرمانیه</option>
+                            <option value="فلکه اول صادقیه">فلکه اول صادقیه</option>
+                            <option value="قزوین">قزوین</option>
+                            <option value="قلهک">قلهک</option>
+                            <option value="قیطریه">قیطریه</option>
+                            <option value="کاشانی">کاشانی</option>
+                            <option value="کامرانیه">کامرانیه</option>
+                            <option value="کریم خان">کریم خان</option>
+                            <option value="کیان شهر">کیان شهر</option>
+                            <option value="گاندی">گاندی</option>
+                            <option value="گیانی">گیانی</option>
+                            <option value="گیشا">گیشا</option>
+                            <option value="لویزان">لویزان</option>
+                            <option value="مجاهدین اسلام">مجاهدین اسلام</option>
+                            <option value="کجیدیه">مجیدیه</option>
+                            <option value="مختاری">مختاری</option>
+                            <option value="مرزداران">مرزداران</option>
+                            <option value="مشیریه">مشیریه</option>
+                            <option value="ملاصدرا">ملاصدرا</option>
+                            <option value="مطهری">مطهری</option>
+                            <option value="مهرآباد">مهراباد</option>
+                            <option value="مولوی">مولوی</option>
+                            <option value="میدان 100">میدان 100</option>
+                            <option value="میدان سپاه">میدان سپاه</option>
+                            <option value="میرداماد">میرداماد</option>
+                            <option value="مینی سیتی">مینی سیتی</option>
+                            <option value="نازی آباد">نازی آباد</option>
+                            <option value="نامجو">نامجو</option>
+                            <option value="نبرد">نبرد</option>
+                            <option value="نواب">نواب</option>
+                            <option value="نیاوران">نیاوران</option>
+                            <option value="نیرو هوایی">نیرو هوایی</option>
+                            <option value="وحدت اسلامی">وحدت اسلامی</option>
+                            <option value="ولنجک">ولنجک</option>
+                            <option value="ولیعصر">ولی عصر</option>
+                            <option value="ونک">ونک</option>
+                            <option value="هاشم آباد">هاشم آباد</option>
+                            <option value="هاشمی">هاشمی</option>
+                            <option value="هفت تیر">هفت تیر</option>
+                            <option value="هلال احمر">هلال احمر</option>
+                            <option value="همت">همت</option>
+                            <option value="یوسف آباد">یوسف آباد</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="FirstPriceLabel">حداقل قیمت کل</label>
+                        <input id="minTotalPrice" name="minTotalPrice" class="form-control" />
+                        <br />
+                        <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="FirstPriceLabel_2">حداکثر قیمت کل</label>
+                        <input id="maxTotalPrice" name="maxTotalPrice" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="SecondPriceLabel">حداقل قیمت هر متر</label>
+                        <input id="minPricePerMeter" name="minPricePerMeter" class="form-control" />
+                        <br />
+                        <label style="font-weight:normal; font-size:16px; min-width: 100px;" id="SecondPriceLabel_2">حداکثر قیمت هر متر</label>
+                        <input id="maxPricePerMeter" name="maxPricePerMeter" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداقل متراژ</label>
+                        <input id="minArea" name="minArea" class="form-control" />
+                        <br />
+                        <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداکثر متراژ</label>
+                        <input id="maxArea" name="maxArea" class="form-control" />
+                    </div>
+                        <input id="adver-search" onclick="doSearch();" class="btn btn-primary" style="min-width:70px; float:left; margin:10px;" value="جستجو" />
+                    </div>
             </div>
         </div>
-        <div class="col-md-7 search-result">
+    </div>
+    <div class="row">
+        <div class="col-md-12 search-result">
             <div class="row text-center loading-img" style="display:none;">
-                <img src="~/Content/shared_images/loading.gif"/>
+                <img src="~/Content/shared_images/loading.gif" />
+                <br />
             </div>
         </div>
     </div>
@@ -97,66 +310,40 @@
                     $('#maxPricePerMeter').attr({ 'id': 'maxPriceMortage', 'name': 'maxPriceMortage' });
                 }
             });
-            $(window).scroll(function (e) {
-                if ($(window).scrollTop() > $(document).height() - 1100) {
-                    $('.search-elements').css({
-                        position: 'absolute',
-                        top: $(document).height() - 1120,
-                    });
-                } else {
-                    $('.search-elements').css({
-                        position: 'fixed',
-                        top: 100,
-                    });
-                }
-            });
+
+            $("#adverCondition").select2();
+            $("#adverDistrict").select2();
+
             doSearch();
         });
 
         function createAdverResultSection(data) {
-            for (var i = 0 ; i < data.length ; i = i + 2) {
+            for (var i = 0 ; i < data.length ; i = i + 3) {
                 var $row_div = $('<div>').addClass('row');
-                var $col_1_div = $('<div>').addClass('col-md-6');
+                $row_div.append("<br />");
 
-                var $anchor_1 = $('<a>').addClass('adver-link').attr('href', '/Advertise/AddvertiseDetail?AddvertiseID=' + data[i].ID);
-                var $adver_content_1 = $('<div>').addClass('adver-content');
-                var $adver_image_1 = $('<div>').addClass('adver-image');
-                var $img_1 = $('<img>').attr('src', '/Content/advertise_images/' + data[i].ImageUrl);
-                $adver_image_1.append($img_1);
-                $adver_content_1.append($adver_image_1);
+                for (var j = i ; j < i + 3 && j < data.length ; j++) {
+                    var $col_1_div = $('<div>').addClass('col-md-4');
 
-                var $adver_desc_1 = $('<div>').addClass('adver-description text-center');
-                var customHtml_1 = '<h1>' + data[i].Title + '</h1><h2>' + data[i].Condition + ' - ' + data[i].Address + '</h2>';
-                customHtml_1 += '<hr style="margin-top: 10px; margin-bottom: 10px;"/><h1>کل/رهن: ' + numberWithCommas(data[i].FirstPrice) + '</h1><h2>متری/اجاره: ' + numberWithCommas(data[i].SecondPrice) + '</h2></h2>متراژ: ' + turn2PersianNumber(data[i].Area) + ' متر</h2>';
-                customHtml_1 += '<h2>' + turn2PersianNumber(data[i].Date) + '</h2>';
-                $adver_desc_1.html(customHtml_1);
-                $adver_content_1.append($adver_desc_1);
-                $anchor_1.append($adver_content_1);
-                $col_1_div.append($anchor_1);
-                $row_div.append($col_1_div);
+                    var $anchor_1 = $('<a>').addClass('adver-link').attr('href', '/Advertise/AddvertiseDetail?AddvertiseID=' + data[j].ID);
+                    var $adver_content_1 = $('<div>').addClass('adver-content');
+                    var $adver_image_1 = $('<div>').addClass('adver-image');
+                    var $img_1 = $('<img>').attr('src', '/Content/advertise_images/' + data[j].ImageUrl);
+                    $adver_image_1.append($img_1);
+                    $adver_content_1.append($adver_image_1);
 
-                if (i + 1 < data.length) {
-                    var $col_2_div = $('<div>').addClass('col-md-6');
-
-                    var $anchor_2 = $('<a>').addClass('adver-link').attr('href', '/Advertise/AddvertiseDetail?AddvertiseID=' + data[i+1].ID);
-                    var $adver_content_2 = $('<div>').addClass('adver-content');
-                    var $adver_image_2 = $('<div>').addClass('adver-image');
-                    var $img_2 = $('<img>').attr('src', '/Content/advertise_images/' + data[i+1].ImageUrl);
-                    $adver_image_2.append($img_2);
-                    $adver_content_2.append($adver_image_2);
-
-                    var $adver_desc_2 = $('<div>').addClass('adver-description text-center');
-                    var customHtml_2 = '<h1>' + data[i].Title + '</h1><h2>' + data[i+1].Condition + ' - ' + data[i+1].Address + '</h2>';
-                    customHtml_2 += '<hr style="margin-top: 10px; margin-bottom: 10px;"/><h1>کل/رهن: ' + numberWithCommas(data[i+1].FirstPrice) + '</h1><h2>متری/اجاره: ' + numberWithCommas(data[i+1].SecondPrice) + '</h2></h2>متراژ: ' + turn2PersianNumber(data[i+1].Area) + ' متر</h2>';
-                    customHtml_2 += '<h2>' + turn2PersianNumber(data[i+1].Date) + '</h2>';
-                    $adver_desc_2.html(customHtml_2);
-                    $adver_content_2.append($adver_desc_2);
-                    $anchor_2.append($adver_content_2);
-                    $col_2_div.append($anchor_2);
-                    $row_div.append($col_2_div);
+                    var $adver_desc_1 = $('<div>').addClass('adver-description text-center');
+                    var customHtml_1 = '<h1>' + data[j].Title + '</h1><h2>' + data[j].Condition + ' - ' + data[j].Address + '</h2>';
+                    customHtml_1 += '<hr style="margin-top: 10px; margin-bottom: 10px;"/><h1>کل/رهن: ' + numberWithCommas(data[j].FirstPrice) + '</h1><h2>متری/اجاره: ' + numberWithCommas(data[j].SecondPrice) + '</h2></h2>متراژ: ' + turn2PersianNumber(data[j].Area) + ' متر</h2>';
+                    customHtml_1 += '<h2>' + turn2PersianNumber(data[j].Date) + '</h2>';
+                    $adver_desc_1.html(customHtml_1);
+                    $adver_content_1.append($adver_desc_1);
+                    $anchor_1.append($adver_content_1);
+                    $col_1_div.append($anchor_1);
+                    $row_div.append($col_1_div);
                 }
-                $('.loading-img').before($row_div);
-                $('.loading-img').before('<br />');
+                $row_div.append('<br />');
+                $('.search-result').prepend($row_div).fadeIn('slow');;
             }
             $(".loading-img").css('display', 'none');
         }
@@ -165,22 +352,23 @@
             $(".search-result").html('<div class="row text-center loading-img" style="display:none;"><img src="/Content/shared_images/loading.gif"/></div>');
             $(".loading-img").css('display', 'block');
             var adver_search_params = {};
-            adver_search_params["minArea"] = $("#minArea").val();
-            adver_search_params["maxArea"] = $("#maxArea").val();
+            adver_search_params["minArea"] = $("#minArea").val() == '' ? "0" : $("#minArea").val();
+            adver_search_params["maxArea"] = $("#maxArea").val() == '' ? "6000" : $("#maxArea").val();
             adver_search_params["adverCondition"] = $("#adverCondition").val();
+            adver_search_params["adverDistrict"] = $("#adverDistrict").val();
             if ($("#adverCondition").val() === 'فروش') {
-                adver_search_params["minTotalPrice"] = $("#minTotalPrice").val();
-                adver_search_params["maxTotalPrice"] = $("#maxTotalPrice").val();
-                adver_search_params["minPricePerMeter"] = $("#minPricePerMeter").val();
-                adver_search_params["maxPricePerMeter"] = $("#maxPricePerMeter").val();
+                adver_search_params["minTotalPrice"] = $("#minTotalPrice").val() == '' ? "0" : $("#minTotalPrice").val();
+                adver_search_params["maxTotalPrice"] = $("#maxTotalPrice").val() == '' ? "100000000000" : $("#maxTotalPrice").val();
+                adver_search_params["minPricePerMeter"] = $("#minPricePerMeter").val() == '' ? "0" : $("#minPricePerMeter").val();
+                adver_search_params["maxPricePerMeter"] = $("#maxPricePerMeter").val() == '' ? "1000000000" : $("#maxPricePerMeter").val();
             } else if ($("#adverCondition").val() === 'رهن') {
-                adver_search_params["minPricePrepayment"] = $("#minPricePrepayment").val();
-                adver_search_params["maxPricePrepayment"] = $("#maxPricePrepayment").val();
+                adver_search_params["minPricePrepayment"] = $("#minPricePrepayment").val() == '' ? "0" : $("#minPricePrepayment").val();
+                adver_search_params["maxPricePrepayment"] = $("#maxPricePrepayment").val() == '' ? "10000000000" : $("#maxPricePrepayment").val();
             } else {
-                adver_search_params["minPricePrepayment"] = $("#minPricePrepayment").val();
-                adver_search_params["maxPricePrepayment"] = $("#maxPricePrepayment").val();
-                adver_search_params["minPriceMortage"] = $("#minPriceMortage").val();
-                adver_search_params["maxPriceMortage"] = $("#maxPriceMortage").val();
+                adver_search_params["minPricePrepayment"] = $("#minPricePrepayment").val() == '' ? "0" : $("#minPricePrepayment").val();
+                adver_search_params["maxPricePrepayment"] = $("#maxPricePrepayment").val() == '' ? "10000000000" : $("#maxPricePrepayment").val();
+                adver_search_params["minPriceMortage"] = $("#minPriceMortage").val() == '' ? "0" : $("#minPriceMortage").val();
+                adver_search_params["maxPriceMortage"] = $("#maxPriceMortage").val() == '' ? "100000000" : $("#maxPriceMortage").val();
             }
             $.ajax({
                 url: '/Advertise/DoAdverSearch',

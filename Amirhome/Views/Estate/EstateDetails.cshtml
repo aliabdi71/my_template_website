@@ -167,19 +167,36 @@
                             </td>
                         </tr>
                         <tr>
-                            @if (Model.StateType1.ID == )
-                            <td class="title-cell">
-                                تعداد اتاق خواب
-                            </td>
-                            <td class="number">
-                                @Model.Bedrooms
-                            </td>
-                            <td class="title-cell">
-                                طبقه
-                            </td>
-                            <td>
-                                @Model.Floor
-                            </td>
+                            @if (Model.StateType1.ID.Equals("1") || Model.StateType1.ID.Equals("6") || Model.StateType1.ID.Equals("8"))
+                            {
+                                <td class="title-cell">
+                                    تعداد اتاق خواب
+                                </td>
+                                <td class="number">
+                                    @Model.Bedrooms
+                                </td>
+                                <td class="title-cell">
+                                    طبقه
+                                </td>
+                                <td>
+                                    @Model.Floor
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="title-cell">
+                                    طول بر
+                                </td>
+                                <td class="number">
+                                    @Model.Length متر
+                                </td>
+                                <td class="title-cell">
+                                    نوع سند
+                                </td>
+                                <td class="number">
+                                    @Model.Crossing
+                                </td>
+                            }
                         </tr>
                     </table>
                     <br />
@@ -211,9 +228,18 @@
                         <h3 style="margin-right:10px; font-size:19px;">سایر مشخصات ملک</h3>
                         <table class="other-features" border="1">
                             <tr class="title">
-                                <td>تعداد طبقات</td>
-                                <td>تعداد واحد</td>
-                                <td>کابینت</td>
+                                @if (Model.StateType1.ID.Equals("1") || Model.StateType1.ID.Equals("6") || Model.StateType1.ID.Equals("8"))
+                                {
+                                    <td>تعداد طبقات</td>
+                                    <td>تعداد واحد</td>
+                                    <td>کابینت</td>
+                                }
+                                else
+                                {
+                                    <td>تعداد طبقات</td>
+                                    <td>تعداد واحد</td>
+                                    <td>نوع سند</td>
+                                }
                                 <td>پارکینگ</td>
                                 <td>خط تلفن</td>
                             </tr>

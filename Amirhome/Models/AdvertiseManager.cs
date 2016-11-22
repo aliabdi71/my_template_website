@@ -31,6 +31,7 @@ namespace Amirhome.Models
         public float maxPriceMortage { get; set; }
         [DefaultValue("فروش")]
         public string adverCondition { get; set; }
+        public string adverDistrict { get; set; }
     }
     public class AdverShowModelView
     {
@@ -187,6 +188,8 @@ namespace Amirhome.Models
                 query = from A in context.FreeAdvertises 
                         where A.approved == true && A.expire_date > DateTime.Now && A.area >= searchParams.minArea && A.area <= searchParams.maxArea && A.condition.Equals(searchParams.adverCondition)
                         orderby A.expire_date descending select A;
+                if (!string.IsNullOrEmpty(searchParams.adverDistrict))
+                    query = query.Where(A => A.district.Equals(searchParams.adverDistrict));
                 if (searchParams.adverCondition.Equals("فروش"))
                 {
                     query = query.Where(A => A.price_total >= searchParams.minTotalPrice
