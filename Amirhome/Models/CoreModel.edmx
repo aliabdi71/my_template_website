@@ -685,6 +685,7 @@
           <Property Name="approved" Type="bit" />
           <Property Name="email" Type="varchar" MaxLength="85" />
           <Property Name="create_date" Type="date" />
+          <Property Name="edit_key" Type="varchar" MaxLength="35" />
         </EntityType>
         <EntityType Name="GoogleMap">
           <Key>
@@ -1669,7 +1670,7 @@
           <Property Name="LastModifiedOnDate" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'AmirRealestate.dbo.sysdiagrams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="sysdiagrams">
           <Key>
             
@@ -1942,7 +1943,7 @@ warning 6002: The table/view 'AmirRealestate.dbo.sysdiagrams' does not have a pr
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="LastTimeOnline" Type="datetime" />
           <Property Name="RoleID" Type="int" />
-          <Property Name="ProfileImage" Type="binary" MaxLength="1" />
+          <Property Name="ProfileImage" Type="varbinary(max)" />
           <Property Name="Phone" Type="varchar" MaxLength="15" />
           <Property Name="Email" Type="varchar" MaxLength="81" />
           <Property Name="Approved" Type="bit" />
@@ -3591,18 +3592,6 @@ warning 6002: The table/view 'AmirRealestate.dbo.sysdiagrams' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_States_Agents">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="States" Type="Self.States" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="States">
-              <PropertyRef Name="AgentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_States_Districts">
           <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
           <End Role="States" Type="Self.States" Multiplicity="*" />
@@ -4774,10 +4763,6 @@ warning 6002: The table/view 'AmirRealestate.dbo.sysdiagrams' does not have a pr
             <End Role="SkinPackages" EntitySet="SkinPackages" />
             <End Role="Skins" EntitySet="Skins" />
           </AssociationSet>
-          <AssociationSet Name="FK_States_Agents" Association="Self.FK_States_Agents">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="States" EntitySet="States" />
-          </AssociationSet>
           <AssociationSet Name="FK_States_Districts" Association="Self.FK_States_Districts">
             <End Role="Districts" EntitySet="Districts" />
             <End Role="States" EntitySet="States" />
@@ -5011,6 +4996,7 @@ warning 6002: The table/view 'AmirRealestate.dbo.sysdiagrams' does not have a pr
           <Property Name="approved" Type="Boolean" />
           <Property Name="email" Type="String" MaxLength="85" FixedLength="false" Unicode="false" />
           <Property Name="create_date" Type="DateTime" Precision="0" />
+          <Property Name="edit_key" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="GoogleMap">
           <Key>
@@ -5169,7 +5155,7 @@ warning 6002: The table/view 'AmirRealestate.dbo.sysdiagrams' does not have a pr
           <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Passkey" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="RoleID" Type="Int32" />
-          <Property Name="ProfileImage" Type="Binary" MaxLength="1" FixedLength="true" />
+          <Property Name="ProfileImage" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="81" FixedLength="false" Unicode="false" />
           <Property Name="Approved" Type="Boolean" />
@@ -10235,6 +10221,7 @@ warning 6002: The table/view 'AmirRealestate.dbo.sysdiagrams' does not have a pr
           <EntitySetMapping Name="FreeAdvertises">
             <EntityTypeMapping TypeName="AmirhomeModel.FreeAdvertise">
               <MappingFragment StoreEntitySet="FreeAdvertise">
+                <ScalarProperty Name="edit_key" ColumnName="edit_key" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="title2" ColumnName="title2" />

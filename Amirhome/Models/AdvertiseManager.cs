@@ -161,6 +161,28 @@ namespace Amirhome.Models
                 return res;
             }
         }
+        public FreeAdvertise getAdvertiseByCode(string code)
+        {
+            FreeAdvertise model = null;
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    model = (from AD in context.FreeAdvertises
+                             where AD.edit_key.Equals(code)
+                             select AD).FirstOrDefault();
+                }
+                if (model.approved.Value)
+                {
+                    return null;
+                }
+                return model;
+            }
+            catch
+            {
+                throw new Exception("Wrong Code!");
+            }
+        }
         public int[] getAddvertiseSubmitedAfter(DateTime date)
         {
             int[] ids = { };
@@ -178,6 +200,10 @@ namespace Amirhome.Models
             {
                 return ids;
             }
+        }
+        public int editAdvertise(FreeAdvertise model)
+        {
+
         }
         public List<FreeAdvertise> AdverSearch(AdverSearchParams searchParams, int take = 0)
         {

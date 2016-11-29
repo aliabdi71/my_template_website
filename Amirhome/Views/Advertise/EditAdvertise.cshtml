@@ -1,0 +1,314 @@
+﻿@model Amirhome.Models.FreeAdvertise
+
+@{
+    string[] imgs = string.IsNullOrEmpty(Model.image) ? new string[] { "no-thumb.png" } : Model.image.Split(';');
+    
+    ViewBag.Title = "EditAdvertise";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Plugins/JS Image Slider/js-image-slider.css" />
+
+@using (Html.BeginForm("EditAdvertise", "Advertise", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
+    @Html.HiddenFor(model => model.image)
+    @Html.HiddenFor(model => model.approved)
+    @Html.HiddenFor(model => model.create_date)
+    @Html.HiddenFor(model => model.expire_date)
+
+    <div class="container body-content" style="min-height:560px;">
+        <div class="row" style="padding:30px;">
+            <div class="col-md-7">
+                <div class="row big-title">
+                    <span>عنوان: </span> <h1> @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })</h1>
+                    <span>شهر: </span> <h4>@Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })</h4>
+                    <span>محله: </span> 
+                    <select id="district" name="district" class="form-control form-select required">
+                        <option value="">محله</option>
+                        <option value="17 شهریور">17شهریور</option>
+                        <option value="آذربایجان">آذربایجان</option>
+                        <option value="آذری">آذری</option>
+                        <option value="آزادی">آزادی</option>
+                        <option value="آجودانیه">آجودانیه</option>
+                        <option value="آرژانتین">آرژانتین</option>
+                        <option value="اختیاریه">اختیاریه</option>
+                        <option value="احتشامیه">احتشامیه</option>
+                        <option value="آهنگ">آهنگ</option>
+                        <option value="آیت الله سعیدی">آیت الله سعیدی</option>
+                        <option value="اراج و ازگل">اراج و ازگل</option>
+                        <option value="استاد معین">استاد معین</option>
+                        <option value="استخر">استخر</option>
+                        <option value="اشرفی اصفهانی">اشرفی اصفهانی</option>
+                        <option value="افسریه">افسریه</option>
+                        <option value="اقدسیه">اقدسیه</option>
+                        <option value="اکباتان">اکباتان</option>
+                        <option value="الهیه">الهیه</option>
+                        <option value="امام حسین">امام حسین</option>
+                        <option value="امام خمینی">امام خمینی</option>
+                        <option value="امامت">امامت</option>
+                        <option value="امیرآباد">امیرآباد</option>
+                        <option value="امیرآباد شمالی">امیرآباد شمالی</option>
+                        <option value="اندیشه">اندیشه</option>
+                        <option value="انقلاب">انقلاب</option>
+                        <option value="اوین">اوین</option>
+                        <option value="بازار">بازار</option>
+                        <option value="بریانک">بریانک</option>
+                        <option value="باقرخان">باقرخان</option>
+                        <option value="بلوار بسیج">بلوار بسیج</option>
+                        <option value="بلوار بسیج">بلوار فردوس</option>
+                        <option value="بلوار کشاورز">بلوار کشاورز</option>
+                        <option value="بنی هاشم">بنی هاشم</option>
+                        <option value="بهار">بهار</option>
+                        <option value="بهار شیراز">بهار شیراز</option>
+                        <option value="بهارستان">بهارستان</option>
+                        <option value="پاتریس">پاتریس</option>
+                        <option value="پارک وی">پارک وی</option>
+                        <option value="پاسداران">پاسداران</option>
+                        <option value="پامنار">پامنار</option>
+                        <option value="پردیس">پردیس</option>
+                        <option value="پل رومی">پل رومی</option>
+                        <option value="پونک">پونک</option>
+                        <option value="پیچ شمران">پیچ شمران</option>
+                        <option value="پیروزی">پیروزی</option>
+                        <option value="تهران نو">تهران نو</option>
+                        <option value="تهران ویلا">تهران ویلا</option>
+                        <option value="تهران پارس">تهرانپارس</option>
+                        <option value="تهرانسر">تهرانسر</option>
+                        <option value="تحریش">تجریش</option>
+                        <option value="توحید">توحید</option>
+                        <option value="جاده ساوه">جاده ساوه</option>
+                        <option value="جردن">جردن</option>
+                        <option value="جلال آل احمد">جلال ال احمد</option>
+                        <option value="جلفا">جلفا</option>
+                        <option value="جمالزاده">جمالزاده</option>
+                        <option value="جمهوری">جمهوری</option>
+                        <option value="جنت آباد جنوبی">جنت آباد جنوبی</option>
+                        <option value="جنت آباد شمالی">جنت آباد شمالی</option>
+                        <option value="جنت آباد مرکزی">جنت آباد مرکزی</option>
+                        <option value="جوادیه">جوادیه</option>
+                        <option value="جی">جی</option>
+                        <option value="جیحون">جیحون</option>
+                        <option value="چهارراه سیروس">چهارراه سیروس</option>
+                        <option value="چیتگر">چیتگر</option>
+                        <option value="حافظ">حافظ</option>
+                        <option value="جکیمیه">حکیمیه</option>
+                        <option value="حشمتیه">حشمتیه</option>
+                        <option value="خراسان">خراسان</option>
+                        <option value="خردمند">خردمند</option>
+                        <option value="خزانه">خزانه</option>
+                        <option value="خلیج فارس">خلیج فارس</option>
+                        <option value="خواجه عبدالله">خواجه عبدالله</option>
+                        <option value="خواجه نظام">خواجه نظام</option>
+                        <option value="خوش">خوش</option>
+                        <option value="دامپزشکی">دامپزشکی</option>
+                        <option value="دروس">دروس</option>
+                        <option value="دربند">دربند</option>
+                        <option value="درکه">درکه</option>
+                        <option value="دریان نو">دریان نو</option>
+                        <option value="دوراهی قپان">دوراهی قپان</option>
+                        <option value="دهکده المپیک">دهکده المپیک</option>
+                        <option value="ده ونک">ده ونک</option>
+                        <option value="دسالت">رسالت</option>
+                        <option value="رودکی">رودکی</option>
+                        <option value="ری">ری</option>
+                        <option value="زعفرانیه">زعفرانیه</option>
+                        <option value="سازمان آب">سازمان آب</option>
+                        <option value="سازمان برنامه">سازمان برنامه</option>
+                        <option value="سبلان">سبلان</option>
+                        <option value="ستارخان">ستارخان</option>
+                        <option value="سراج">سراج</option>
+                        <option value="سردار جنگل">سردار جنگل</option>
+                        <option value="سعادت آباد">سعادت آباد</option>
+                        <option value="سعدآباد">سعدآباد</option>
+                        <option value="سلسبیل">سلسبیل</option>
+                        <option value="سهروردی">سهروردی</option>
+                        <option value="سی متری">سی متری</option>
+                        <option value="سوهانک">سوهاهنک</option>
+                        <option value="شادآباد">شادآباد</option>
+                        <option value="شریعتی">شریعتی</option>
+                        <option value="شمس آباد">شمس آباد</option>
+                        <option value="شهدا">شهدا</option>
+                        <option value="شهرآرا">شهرآرا</option>
+                        <option value="شهران">شهران</option>
+                        <option value="شهرزیبا">شهرزیبا</option>
+                        <option value="شهر قدس">شهر قدس</option>
+                        <option value="شهرک ابوذر">شهرک ابوذر</option>
+                        <option value="شهرک آپادانا">شهرک آپادانا</option>
+                        <option value="شهرک ارغوام">شهرک ارغوان</option>
+                        <option value="شهرک آزادی">شهرک آزادی</option>
+                        <option value="شهرک استقلال">شهرک استقلال</option>
+                        <option value="شهرک آسمان">شهرک آسمان</option>
+                        <option value="شهرک امام خمینی">شهرک امام خمینی</option>
+                        <option value="شهرک امید">شهرک امید</option>
+                        <option value="شهرک امیرالمومنین">شهرک امیرالمومنین</option>
+                        <option value="شهرک انصار">شهرک انصار</option>
+                        <option value="شهرک بخارایی">شهرک بخارایی</option>
+                        <option value="شهرک بعثت">شهرک بعثت</option>
+                        <option value="شهرک پارس">شهرک پارس</option>
+                        <option value="شهرک پاسداران">شهرک پاسداران</option>
+                        <option value="شهرک پرواز">شهرک پرواز</option>
+                        <option value="شهرک تختی">شهرک تختی</option>
+                        <option value="شهرک چشمه">شهرک چشمه</option>
+                        <option value="شهرک دانشگاه">شهرک دانشگاه</option>
+                        <option value="شهرک دریا">شهرک دریا</option>
+                        <option value="شهرک رشوان">شهرک رضوان</option>
+                        <option value="شهرک رضویه">شهرک رضویه</option>
+                        <option value="شهرک ژاندارمری">شهرک ژاندارمری</option>
+                        <option value="شهرک شاهین">شهرک شاهین</option>
+                        <option value="شهرک شریعتی">شهرک شریعتی</option>
+                        <option value="شهرک شریفی">شهرک شریفی</option>
+                        <option value="شهرک شهید مفتح">شهرک شهید مفتح</option>
+                        <option value="شهرک شهربانی">شهرک شهربانی</option>
+                        <option value="شهرک شهرداری">شهرک شهرداری</option>
+                        <option value="شهرک طالقانی">شهرک طالقانی</option>
+                        <option value="شهرک عباسی">شهرک عباسی</option>
+                        <option value="شهرک عباسپور">شهرک عباسپور</option>
+                        <option value="شهرک غری">شهرک غرب</option>
+                        <option value="شهرک غزالی">شهرک غزالی</option>
+                        <option value="شهرک فاطمه الزهرا">شهرک فاطمه الزهرا</option>
+                        <option value="شهرک فردوس">شهرک فردوس</option>
+                        <option value="شهرک فرهنگیان">شهرک فرهنگیان</option>
+                        <option value="شهرک فرهنگیان غرب">شهرک فرهنگیان غرب</option>
+                        <option value="شهرک قدس">شهرک قدس</option>
+                        <option value="شهرک کاظمیه">شهرک کاظمیه</option>
+                        <option value="شهرک کیانشهر">شهرک کیانشهر</option>
+                        <option value="شهرک کمالی">شهرک کمالی</option>
+                        <option value="شهرک کوهسار">شهرک کوهسار</option>
+                        <option value="شهرک گلستان">شهرک گلستان</option>
+                        <option value="شهرک گلستان غربی">شهرک گلستان غربی</option>
+                        <option value="شهرک گلها">شهرک گلها</option>
+                        <option value="شهرک محلاتی">شهرک محلاتی</option>
+                        <option value="شهرک مسلمین">شهرک مسلمین</option>
+                        <option value="شهرک نفت">شهرک نفت</option>
+                        <option value="شهرک هجرت">شهرک هجرت</option>
+                        <option value="شهرک والفجر">شهرک والفجر</option>
+                        <option value="شهرک ویلاشهر">شهرک ویلاشهر</option>
+                        <option value="شهرک شهرک ولیعصر">شهرک ولیعصر</option>
+                        <option value="شوش">شوش</option>
+                        <option value="شیخ بهایی">شیخ بهایی</option>
+                        <option value="صادقیه">صادقیه</option>
+                        <option value="طرشت">طرشت</option>
+                        <option value="ظفر">ظفر</option>
+                        <option value="عباس آباد">عباس آباد</option>
+                        <option value="علی آباد">علی آباد</option>
+                        <option value="فاطمی">فاطمی</option>
+                        <option value="فرشته">فرشته</option>
+                        <option value="فرمانیه">فرمانیه</option>
+                        <option value="فلکه اول صادقیه">فلکه اول صادقیه</option>
+                        <option value="قزوین">قزوین</option>
+                        <option value="قلهک">قلهک</option>
+                        <option value="قیطریه">قیطریه</option>
+                        <option value="کاشانی">کاشانی</option>
+                        <option value="کامرانیه">کامرانیه</option>
+                        <option value="کریم خان">کریم خان</option>
+                        <option value="کیان شهر">کیان شهر</option>
+                        <option value="گاندی">گاندی</option>
+                        <option value="گیانی">گیانی</option>
+                        <option value="گیشا">گیشا</option>
+                        <option value="لویزان">لویزان</option>
+                        <option value="مجاهدین اسلام">مجاهدین اسلام</option>
+                        <option value="کجیدیه">مجیدیه</option>
+                        <option value="مختاری">مختاری</option>
+                        <option value="مرزداران">مرزداران</option>
+                        <option value="مشیریه">مشیریه</option>
+                        <option value="ملاصدرا">ملاصدرا</option>
+                        <option value="مطهری">مطهری</option>
+                        <option value="مهرآباد">مهراباد</option>
+                        <option value="مولوی">مولوی</option>
+                        <option value="میدان 100">میدان 100</option>
+                        <option value="میدان سپاه">میدان سپاه</option>
+                        <option value="میرداماد">میرداماد</option>
+                        <option value="مینی سیتی">مینی سیتی</option>
+                        <option value="نازی آباد">نازی آباد</option>
+                        <option value="نامجو">نامجو</option>
+                        <option value="نبرد">نبرد</option>
+                        <option value="نواب">نواب</option>
+                        <option value="نیاوران">نیاوران</option>
+                        <option value="نیرو هوایی">نیرو هوایی</option>
+                        <option value="وحدت اسلامی">وحدت اسلامی</option>
+                        <option value="ولنجک">ولنجک</option>
+                        <option value="ولیعصر">ولی عصر</option>
+                        <option value="ونک">ونک</option>
+                        <option value="هاشم آباد">هاشم آباد</option>
+                        <option value="هاشمی">هاشمی</option>
+                        <option value="هفت تیر">هفت تیر</option>
+                        <option value="هلال احمر">هلال احمر</option>
+                        <option value="همت">همت</option>
+                        <option value="یوسف آباد">یوسف آباد</option>
+                    </select>
+                </div>
+                <hr />
+                <div class="row" style="font-size:17px;">
+                    <br />
+                    <br />
+                    <div class="col-md-6">
+                        <span>تلفن: </span> @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                        <span>متراژ: </span> @Html.EditorFor(model => model.area, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                        @if (Model.condition.Equals("فروش"))
+                        {
+                            <span>قیمت کل: </span> @Html.EditorFor(model => model.price_total, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                        }
+                        else
+                        {
+                            <span>قیمت رهن: </span> @Html.EditorFor(model => model.price_prepayment, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <span>ایمیل: </span> @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                        <span>نوع واگذاری: </span> 
+                        <select id="condition" name="condition" class="form-control form-select required">
+                            <option value="فروش">فروش</option>
+                            <option value="رهن">رهن</option>
+                            <option value="اجاره">اجاره</option>
+                        </select>  <br />
+                        @if (Model.condition.Equals("فروش"))
+                        {
+                            <span>قیمت متری: </span> @Html.EditorFor(model => model.price_per_meter, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                        }
+                        else
+                        {
+                            <span>قیمت اجاره: </span> @Html.EditorFor(model => model.price_mortage, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                        }
+                    </div>
+                </div>
+                <hr />
+                <div class="row second-title">
+                    <span style="font-size: 17px;"><i class="glyphicon glyphicon-pushpin"></i>&nbsp; توضیحات</span>
+                    <div class="col-md-12">
+                        <h4> @Html.TextAreaFor(model => model.title2, new {  @class = "form-control", @style = "height: 100px; max-width: 450px;" } )</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div id="sliderFrame">
+                    <div id="slider">
+                        @foreach (var item in imgs)
+                        {
+                            <img src="~/Content/advertise_images/@item" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="padding:40px;">
+                <button class="btn btn-primary text-center" style="min-width:180px;" type="submit" @*onclick="fix_input_formats(); return true;"*@>اعمال تغییرات</button>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script type="text/javascript" src="~/Plugins/JS Image Slider/js-image-slider.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var district = "@Model.district";
+            var cond = "@Model.condition" ;
+
+            $("#district").val(district);
+            $("#condition").val(cond);
+        });
+    </script>
+}

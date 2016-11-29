@@ -9,9 +9,28 @@
     .left{
         text-align:left;
     }
+    .popover-title {
+        text-align:center;
+    }
+
+    /* Popover Body */
+    .popover-content {
+        text-align: right;
+    }
+    .form-select{
+        width: 78% !important;
+    }
+    @@media only screen and (max-width: 985px) {
+        .form-select{
+            width: 100% !important;
+        }
+    }
     @@media only screen and (max-width: 765px){
         .left{
             text-align:right;
+        }
+        .form-select{
+            width: 70% !important;
         }
     }
 </style>
@@ -49,7 +68,7 @@
                         <lable>نوع ملک *</lable>
                     </div>
                     <div class="col-md-8 ">
-                        <select id="condition" name="condition" class="form-control required">
+                        <select id="condition" name="condition" class="form-control form-select required">
                             <option value="فروش">فروش</option>
                             <option value="رهن">رهن</option>
                             <option value="اجاره">اجاره</option>
@@ -82,10 +101,10 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-md-4 left">
-                        <lable>ایمیل</lable>
+                        <lable>ایمیل *</lable>
                     </div>
                     <div class="col-md-8">
-                        @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.email, new { @class = "form-control required" })
                     </div>
                 </div>
                 <div class="row form-group">
@@ -112,7 +131,7 @@
                         <lable>محله *</lable>
                     </div>
                     <div class="col-md-8 ">
-                        <select id="district" name="district" class="form-control required">
+                        <select id="district" name="district" class="form-control form-select required">
                             <option value="">محله</option>
                             <option value="17 شهریور">17شهریور</option>
                             <option value="آذربایجان">آذربایجان</option>
@@ -361,6 +380,22 @@
 
 @section scripts{
     <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                $img = $('<img>').css({ "width": "200px", "height": "140px" });
+                $img.attr('src', "/Content/shared_images/loading_button.gif");
+                $(input).after($img);
+
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $img.attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         function add_image(elem) {
             $(elem).before('<input type="file" name="upload_image" />');
         }
@@ -390,6 +425,12 @@
                 },
             }, ".input-price");
 
+            $("body").on({
+                change: function () {
+                    readURL(this);
+                }
+            }, "input[type=file]");
+
             $("#adver_form").submit(function () {
                 var flag = true;
                 $('.required:enabled').each(function () {
@@ -401,6 +442,12 @@
                         $(this).css('border', '1px solid #cccccc');
                     }
                 });
+                if (flag) {
+                    flag = validateEmail($("#email").val());
+                    if (!flag) {
+                        alert("لطفا ایمیل معتبر وارد نمایید");
+                    }
+                }
                 return flag;
             });
 
@@ -424,6 +471,15 @@
                     $("#price_mortage").removeAttr('disabled');
                 }
             });
+
+            $("#email").popover({
+                title: 'توجه',
+                content: "لطفا ایمیل مناسب قرار دهید. لینک ویرایش آگهی و دیگر اعلان ها به این آدرس ارسال خواهند شد",
+                placement: "left"
+            })
+                .blur(function () {
+                    $(this).popover('hide');
+                });
 
             $("#condition").select2();
             $("#district").select2();

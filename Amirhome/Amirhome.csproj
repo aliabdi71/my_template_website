@@ -778,6 +778,7 @@
     <Content Include="Views\Advertise\AddvertiseDetail.cshtml" />
     <Content Include="Views\Advertise\ManageAddvertisePartial.cshtml" />
     <Content Include="Views\Advertise\SearchAdvertise.cshtml" />
+    <Content Include="Views\Advertise\EditAdvertise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Amirhome.Models;
 using System.Drawing;
+using System.Net.Mail;
 
 namespace Amirhome.Controllers
 {
@@ -56,6 +57,7 @@ namespace Amirhome.Controllers
             model.create_date = DateTime.Now;
             model.expire_date = DateTime.Now.AddMonths(3);
             model.approved = false;
+            model.edit_key = Guid.NewGuid().ToString().Replace("-", "");
             foreach (var item in upload_image)
             {
                 if (item != null)
@@ -87,6 +89,31 @@ namespace Amirhome.Controllers
                         //delete the temp file.
                         newFile.Close();
                         System.IO.File.Delete(Server.MapPath(tempFilePath + "_temp.jpg"));
+                    }
+                    if (!string.IsNullOrEmpty(model.email))
+                    {
+                        string sender = "email@amirhome.ir";
+                        string pass = "emailpass123";
+                        string mail_subject = "مسکن امیر - لینک ویرایش آگهی";
+                        string mail_body = "کاربر گرامی! با تشکر از انتخاب شما، می توانید از طریق لینک زیر آگهی خود را ویرایش نمایید.. \n";
+                        mail_body += "شما تنها یک بار فرصت ویرایش آگهی را خواهید داشت. \n";
+                        mail_body += "http://www.amirhome.ir/Advertise/EditAdvertise?code=" + model.edit_key;
+                        var smtp = new SmtpClient()
+                        {
+                            Host = "amirhome.ir",
+                            Port = 25,
+                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                            Credentials = new System.Net.NetworkCredential(sender, pass),
+                            Timeout = 20000,
+                        };
+                        try
+                        {
+                            smtp.Send(sender, model.email, mail_subject, mail_body);
+                        }
+                        catch
+                        {
+                            ViewBag.ErrMsg = "خطایی در هنگام ارسال لینک آگهی برای شما روی داد";
+                        }
                     }
                     return RedirectToAction("InsertAdvertiseSuccessful", "Advertise");
                 }
@@ -189,6 +216,41 @@ namespace Amirhome.Controllers
 
         public ActionResult SearchAdvertise()
         {
+            return View();
+        }
+
+        public ActionResult EditAdvertise()
+        {
+            string adver_edit_token = Guid.NewGuid().ToString();
+            Session["adver_edit_token"] = adver_edit_token;
+            ViewData["adver_edit_token"] = adver_edit_token;
+
+            if (Request.QueryString.AllKeys.Contains("code"))
+            {
+                string code = Request.QueryString["code"].ToString();
+                var model = _adverManager.getAdvertiseByCode(code);
+                return View(model);
+            }
+            else if (
+                    Request.QueryString.AllKeys.Contains("ID") &&
+                    Session["user_role_id"] != null && 
+                    (Session["user_role_id"].ToString().Equals("1") || Session["user_role_id"].ToString().Equals("2"))
+                    )
+            {
+                string id = Request.QueryString["ID"].ToString();
+                var model = _adverManager.getAdvertiseById(int.Parse(id));
+                return View(model);
+            }
+            else
+                return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public ActionResult EditAdvertise(FreeAdvertise model)
+        {
+            model.create_date = DateTime.Now;
+            model.expire_date = DateTime.Now.AddMonths(3);
+            model.edit_key = Guid.NewGuid().ToString().Replace("-", "");
+            model.approved = false;
             return View();
         }
 

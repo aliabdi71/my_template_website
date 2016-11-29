@@ -58,6 +58,11 @@ function convertToJalaliDate(Gdate) {
     return turn2PersianNumber(j_date.jy + "/" + j_date.jm + "/" + j_date.jd);
 }
 
+function validateEmail(email) {
+    var re = filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return re.test(email);
+}
+
 function fix_numbers() {
     $(".price").each(function () {
         var val = $(this).html().replace('تومان', '');

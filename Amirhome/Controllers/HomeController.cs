@@ -81,16 +81,39 @@ namespace Amirhome.Controllers
         }
         private string createAdvertiseDate(DateTime? date)
         {
-            string final_date = "",
-                       difference = ((int)(DateTime.Now - date.Value).TotalDays).ToString();
-            switch (difference)
+            string final_date = "";
+            int difference = (int)(DateTime.Now - date.Value).TotalDays;
+            if(difference == 0)
             {
-                case "0": final_date = "لحظاتی قبل"; break;
-                case "1": final_date = "یک روز قبل"; break;
-                case "2": final_date = "دو روز قبل"; break;
-                case "3": final_date = "سه روز قبل"; break;
-                case "4": final_date = "چهار روز قبل"; break;
-                default: final_date = gregorianToJalali(date.Value.ToString().Split(' ')[0]); break;
+                final_date = "امروز";   
+            }
+            else if(difference == 1)
+            {
+                final_date = "دیروز";   
+            }
+            else if(difference == 2)
+            {
+                final_date = "دو روز پیش";   
+            }
+            else if(difference == 3)
+            {
+                final_date = "سه روز پیش";   
+            }
+            else if(difference == 4)
+            {
+                final_date = "چهار روز پیش";   
+            }
+            else if(difference >= 5 && difference <= 7)
+            {
+                final_date = "هفته گذشته";   
+            }
+            else if(difference > 7 && difference <= 14)
+            {
+                final_date = "دو هفته پیش";   
+            }
+            else
+            {
+                final_date = "بیش از دو هفته پیش";   
             }
             return final_date;
         }
@@ -141,8 +164,6 @@ namespace Amirhome.Controllers
             Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
-
-
 
         private string gregorianToJalali(string date)
         {

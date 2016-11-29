@@ -32,5 +32,6 @@ namespace Amirhome.Models
         public Nullable<bool> approved { get; set; }
         public string email { get; set; }
         public Nullable<System.DateTime> create_date { get; set; }
+        public string edit_key { get; set; }
     }
 }
