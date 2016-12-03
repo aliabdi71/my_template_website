@@ -57,7 +57,7 @@ namespace Amirhome.Controllers
             model.create_date = DateTime.Now;
             model.expire_date = DateTime.Now.AddMonths(3);
             model.approved = false;
-            model.edit_key = Guid.NewGuid().ToString().Replace("-", "");
+            model.edit_key = "amr" + Guid.NewGuid().ToString().Replace("-", "");
             foreach (var item in upload_image)
             {
                 if (item != null)
@@ -249,9 +249,18 @@ namespace Amirhome.Controllers
         {
             model.create_date = DateTime.Now;
             model.expire_date = DateTime.Now.AddMonths(3);
-            model.edit_key = Guid.NewGuid().ToString().Replace("-", "");
+            model.edit_key = "amr" + Guid.NewGuid().ToString().Replace("-", "");
             model.approved = false;
-            return View();
+            bool res = _adverManager.editAdvertise(model);
+            if (res)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "خطا در به روز رسانی فایل. لطفا مجددا تلاش کنید");
+                return View(model);
+            }
         }
 
         [HttpPost]

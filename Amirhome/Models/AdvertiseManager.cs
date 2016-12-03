@@ -100,8 +100,9 @@ namespace Amirhome.Models
                 }
                 return true;
             }
-            catch
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
             {
+                string a = e.Message;
                 return false;
             }
         }
@@ -201,9 +202,22 @@ namespace Amirhome.Models
                 return ids;
             }
         }
-        public int editAdvertise(FreeAdvertise model)
+        public bool editAdvertise(FreeAdvertise model)
         {
-
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    context.FreeAdvertises.Attach(model);
+                    context.Entry(model).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
         public List<FreeAdvertise> AdverSearch(AdverSearchParams searchParams, int take = 0)
         {

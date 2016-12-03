@@ -43,3 +43,6 @@ ADD CONSTRAINT pk_Features_JNS_ID Primary Key(StateId, ItemId)
 
 ALTER TABLE [dbo].[FreeAdvertise]
 ADD PRIMARY KEY (ID)
+
+ALTER TABLE dbo.FreeAdvertise
+ADD edit_key VARCHAR(35) NULL;

@@ -107,15 +107,6 @@
                         @Html.TextBoxFor(m => m.email, new { @class = "form-control required" })
                     </div>
                 </div>
-                <div class="row form-group">
-                    <div class="col-md-4 left">
-                        <lable>آپلود عکس</lable>
-                    </div>
-                    <div class="col-md-8">
-                        <input type="file" name="upload_image" />
-                        <a href="javascript:void(0)" onclick="add_image(this);">عکس بیشتر</a>
-                    </div>
-                </div>
             </div>
             <div class="col-md-6">
                 <div class="row form-group">
@@ -369,6 +360,35 @@
                     <div class="col-md-8">
                         @Html.TextBoxFor(m => m.phone, new { @class = "form-control required" })
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 left">
+                <lable>آپلود عکس (حداکثر 5 عکس)</lable>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="file" name="upload_image" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="file" name="upload_image" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="file" name="upload_image" />
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="file" name="upload_image" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="file" name="upload_image" />
+                    </div>
+                    <div class="col-md-4"></div>
                 </div>
             </div>
         </div>
