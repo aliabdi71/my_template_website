@@ -86,6 +86,22 @@ $(document).ready(function () {
 
     fix_numbers();
 
+    $('.nav a').click(function () {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+            if (this.href.indexOf("login") > -1) {
+                return;
+            }
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+            if (target.length) {
+                $('html,body').animate({
+                    scrollTop: target.offset().top - 151
+                }, 1000);
+                return false;
+            }
+        }
+    });
+
     $(".sys-msg").show().delay(5000).fadeOut();
 
     $("#login_btn").click(function () {

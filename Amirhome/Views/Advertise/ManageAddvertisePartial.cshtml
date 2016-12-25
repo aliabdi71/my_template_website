@@ -9,6 +9,16 @@
 
 
 <h1>@ViewData["title"].ToString()</h1>
+@{
+    if ((bool)ViewData["onlyNotApr"])
+    {
+        <input type="checkbox" id="notApprovedOnly" onchange="render_content('seE_AdverT', 1);" checked="checked" /> <span>فقط موارد تأیید نشده</span>
+    }
+    else
+    {
+        <input type="checkbox" id="notApprovedOnly" onchange="render_content('seE_AdverT', 1);" /> <span>فقط موارد تأیید نشده</span>
+    }
+}
 <hr />
 
 <table class="estate-table-view" border="1">
@@ -47,7 +57,7 @@
                     <td>@Html.SplitInParts(Model[i].price_mortage.ToString(), 3)</td>
                 }
                 <td>
-                    <a style="color: #551856;" href="/Advertise/AddvertiseDetail?AddvertiseID=@Model[i].ID" title="مشاهده آگهی" target="_blank"><i class="glyphicon glyphicon-eye-open"></i></a>
+                    <a style="color: #551856;" href="/Advertise/EditAdvertise?ID=@Model[i].ID" title="مشاهده آگهی" target="_blank"><i class="glyphicon glyphicon-eye-open"></i></a>
                 </td>
                 <td>
                     <a style="color: #46a545;" href="javascript:void(0)" onclick="extend_addver(@Model[i].ID , this)" title="تمدید آگهی"><i class="glyphicon glyphicon-time"></i></a>

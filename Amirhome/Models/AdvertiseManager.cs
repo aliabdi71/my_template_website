@@ -14,21 +14,21 @@ namespace Amirhome.Models
         [DefaultValue(3000)]
         public int maxArea { get; set; }
         [DefaultValue(0)]
-        public float minTotalPrice { get; set; }
+        public long minTotalPrice { get; set; }
         [DefaultValue(10000000000)]
-        public float maxTotalPrice { get; set; }
+        public long maxTotalPrice { get; set; }
         [DefaultValue(0)]
-        public float minPricePerMeter { get; set; }
+        public long minPricePerMeter { get; set; }
         [DefaultValue(30000000)]
-        public float maxPricePerMeter { get; set; }
+        public long maxPricePerMeter { get; set; }
         [DefaultValue(0)]
-        public float minPricePrepayment { get; set; }
+        public long minPricePrepayment { get; set; }
         [DefaultValue(10000000000)]
-        public float maxPricePrepayment { get; set; }
+        public long maxPricePrepayment { get; set; }
         [DefaultValue(0)]
-        public float minPriceMortage { get; set; }
+        public long minPriceMortage { get; set; }
         [DefaultValue(30000000)]
-        public float maxPriceMortage { get; set; }
+        public long maxPriceMortage { get; set; }
         [DefaultValue("فروش")]
         public string adverCondition { get; set; }
         public string adverDistrict { get; set; }
@@ -79,7 +79,7 @@ namespace Amirhome.Models
                 using (var context = new AmirhomeEntities())
                 {
                     all_advers = (from AD in context.FreeAdvertises
-                                  select AD).ToList();
+                                  select AD).OrderByDescending(AD => AD.create_date).ToList();
                 }
                 return all_advers;
             }
@@ -136,6 +136,27 @@ namespace Amirhome.Models
                     addver.approved = flag;
                     if (flag)
                         addver.create_date = DateTime.Now;
+                    context.FreeAdvertises.Attach(addver);
+                    context.Entry(addver).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool extendAddvertise(int id)
+        {
+            try
+            {
+                using (var context = new AmirhomeEntities())
+                {
+                    FreeAdvertise addver = (from A in context.FreeAdvertises
+                                            where A.ID == id
+                                            select A).First();
+                    addver.expire_date = DateTime.Now.AddMonths(3);
                     context.FreeAdvertises.Attach(addver);
                     context.Entry(addver).State = EntityState.Modified;
                     context.SaveChanges();

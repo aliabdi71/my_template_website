@@ -26,33 +26,34 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="/" >صفحه اصلی</a></li>
-                    <li><a href="/#occasion">موارد ویژه</a></li>
-                    <li><a href="/#about">درباره ما</a></li>
+                <ul class="nav navbar-nav cl-effect-21">
+                    <li><a href="/#search">جستجوی ملک</a></li>
                     <li><a href="/#addvertise">آگهی</a></li>
+                    <li><a href="/#about">درباره ما</a></li>
                     <li><a href="/#contact">تماس با ما</a></li>
                 </ul>
                 <a href="http://www.amirhome.ir" class="brand-image-link navbar-brand"><img src="~/Content/shared_images/logo1.png" /></a>
-                <ul class="nav navbar-nav navbar-nav-left">
+                <ul class="nav navbar-nav navbar-nav-left cl-effect-21">
                     @{
                         if (ViewData["user_name"] == null)
                         {
                             <li><a href="#loginModal" class="navbar-signin" data-toggle="modal" role="button"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;ورود</a></li>
-                             <li><a href='@Url.Action("RegisterView", "Account")' class="navbar-register"><i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;ثبت نام</a></li>
+                            <li><a href='@Url.Action("RegisterView", "Account")' class="navbar-register"><i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;ثبت نام</a></li>
                         }
                         else
                         {
-                            <li><a href='@Url.Action("EditAccountView", "Account")' style="text-align:left;">@*<img  src='@ViewData["user_image_src"].ToString()' style="width:10%"/>*@
+                            <li>
+                                <a href='@Url.Action("EditAccountView", "Account")' style="text-align:left;">
+                                    @*<img  src='@ViewData["user_image_src"].ToString()' style="width:10%"/>*@
                                 &nbsp;
                                 @ViewData["user_name"].ToString()
-                                </a>
-                            </li>
+                            </a>
+                        </li>
                             if (ViewData["user_role_id"] != null)
                             {
                                 <li><a href='@Url.Action("ManagementPanel", "Estate")'><i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;پنل مدیریت</a></li>
                             }
-                            <li><a href='@Url.Action("SignOut", "Home")' class="navbar-signout"><i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;خروج</a></li>  
+                            <li><a href='@Url.Action("SignOut", "Home")' class="navbar-signout"><i class="glyphicon glyphicon-new-window"></i>&nbsp;&nbsp;خروج</a></li>
                         }
                     }
                 </ul>
@@ -61,13 +62,11 @@
     </div>
     @RenderBody()   
     <footer>
-        <div class="row">
-            <h4>
-                اطلاعات موجود در این وب سایت اطلاعاتی است که از طریق کاربران عمومی سایت اعلام و ثبت شده و لذا وبسایت مسکن امیر هیچگونه مسئولیتی در صحت و سقم اطلاعات مذکور ندارد.
-            </h4>
-        </div>
         <section id="contact">
             <div class="row blue">
+                <h4 style="color:white;">
+                    * اطلاعات موجود در این وب سایت اطلاعاتی است که از طریق کاربران عمومی سایت اعلام و ثبت شده و لذا وبسایت مسکن امیر هیچگونه مسئولیتی در صحت و سقم اطلاعات مذکور ندارد.
+                </h4>
                 <div class="col-md-4">
                     <h1><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;آدرس</h1>
                     <h4>شعبه مرکزی: گیشا، بین خیابان پنجم و هفتم، پلاک ۷۲</h4>

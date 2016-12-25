@@ -417,7 +417,12 @@ namespace Amirhome.Controllers
                 case "seE_AdverT":
                     {
                         List<FreeAdvertise> model = _advertiseManager.getALLAdvertises();
+                        if (addver_not_approved)
+                        {
+                            model = model.Where(m => m.approved == false).ToList();
+                        }
                         ViewData["title"] = "آگهی ها";
+                        ViewData["onlyNotApr"] = addver_not_approved;
                         return PartialView("~/views/Advertise/ManageAddvertisePartial.cshtml", model);
                     }
                 default:

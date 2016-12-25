@@ -85,7 +85,7 @@
                         {
                             <span>قیمت متری: </span> <strong>@Html.SplitInParts(Model.price_per_meter.Value.ToString(), 3)</strong><br />
                         }
-                        else
+                        else if (Model.condition.Equals("اجاره"))
                         {
                             <span>قیمت اجاره: </span> <strong>@Html.SplitInParts(Model.price_mortage.Value.ToString(), 3)</strong><br />
                         }

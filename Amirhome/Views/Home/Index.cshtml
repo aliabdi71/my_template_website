@@ -12,99 +12,100 @@
     }
 }
 
-<div class="banner">
-    <div class="banner-content">
-        <h1>مشاورین املاک امیر</h1>
-        <div class="row banner-panel">
-            <div class="col-md-1"></div>
-            <div class="col-md-5">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h2>جستجوی ملک</h2>
-                        <p style="margin:0;">(برای خرید یا اجاره)</p>
-                    </div>
-                    <div class="panel-body">
-                        <table>
-                            <tr>
-                                <td>
-                                    <select id="states">
-                                        <option value="0">استان</option>
-                                        @foreach (var item in prv)
+<section name="search">
+    <div class="banner">
+        <div class="banner-content">
+            <h1>مشاورین املاک امیر</h1>
+            <div class="row banner-panel">
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h2>جستجوی ملک</h2>
+                            <p style="margin:0;">(برای خرید یا اجاره)</p>
+                        </div>
+                        <div class="panel-body">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <select id="states">
+                                            <option value="0">استان</option>
+                                            @foreach (var item in prv)
                                         {
-                                            <option value="@item.id">@item.name</option>
+                                                <option value="@item.id">@item.name</option>
                                         }
-                                    </select>
-                                </td>
-                                <td>
-                                    <select id="city">
-                                        <option value="0">شهر</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select id="district">
-                                        <option value="0">محله</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <select id="condition">
-                                        <option value="0">نوع واگذاری</option>
-                                        <option value="1">فروش</option>
-                                        <option value="2">رهن</option>
-                                        <option value="3">اجاره</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select id="usage">
-                                        <option value="0">نوع کاربری ملک</option>
-                                        <option value="1">مسکونی</option>
-                                        <option value="2">کلنگی و مشارکتی</option>
-                                        <option value="3">تجاری و اداری</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select id="type">
-                                        <option value="0">نوع ملک</option>
-                                        <option value="1">آپارتمان</option>
-                                        <option value="2">ویلا</option>
-                                        <option value="8">سوئیت</option>
-                                        <option value="9">سایر</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td style="text-align:center;">
-                                    <button id="search_estate" style="min-width:100px;" type="button" class="btn btn-primary">جستجو</button>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h2>سپردن ملک</h2>
-                        <p style="margin:0;">(برای خرید یا اجاره)</p>
-                    </div>
-                    <div class="panel-body">
-                        <div class="submit-note">
-                            شما می توانید با ثبت ملک خود در وبسایت مشاورین املاک مسکن امیر از بسیاری از تسهیلات این بنگاه بهره مند شوید. کافیست اطلاعات ملک خود را ثبت نمایید تا مشاورین ما در اولین فرصت با شما ارتباط برقرار نمایند.
-                        </div>
-                        <div class="text-center">
-                            <input style="min-width:100px;" id="submit_estate" type="button" class="btn btn-primary" value="سپردن ملک" />
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="city">
+                                            <option value="0">شهر</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="district">
+                                            <option value="0">محله</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <select id="condition">
+                                            <option value="0">نوع واگذاری</option>
+                                            <option value="1">فروش</option>
+                                            <option value="2">رهن</option>
+                                            <option value="3">اجاره</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="usage">
+                                            <option value="0">نوع کاربری ملک</option>
+                                            <option value="1">مسکونی</option>
+                                            <option value="2">کلنگی و مشارکتی</option>
+                                            <option value="3">تجاری و اداری</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="type">
+                                            <option value="0">نوع ملک</option>
+                                            <option value="1">آپارتمان</option>
+                                            <option value="2">ویلا</option>
+                                            <option value="8">سوئیت</option>
+                                            <option value="9">سایر</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align:center;">
+                                        <button id="search_estate" style="min-width:100px;" type="button" class="btn btn-primary">جستجو</button>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-5">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h2>سپردن ملک</h2>
+                            <p style="margin:0;">(برای خرید یا اجاره)</p>
+                        </div>
+                        <div class="panel-body">
+                            <div class="submit-note">
+                                شما می توانید با ثبت ملک خود در وبسایت مشاورین املاک مسکن امیر از بسیاری از تسهیلات این بنگاه بهره مند شوید. کافیست اطلاعات ملک خود را ثبت نمایید تا مشاورین ما در اولین فرصت با شما ارتباط برقرار نمایند.
+                            </div>
+                            <div class="text-center">
+                                <input style="min-width:100px;" id="submit_estate" type="button" class="btn btn-primary" value="سپردن ملک" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
             </div>
-            <div class="col-md-1"></div>
         </div>
     </div>
-</div>
-
+</section>
 <section id="addvertise" class="addvertise-section">
     @Html.Partial("AdvertisePartialView", ViewData["adverModel"])
 </section>
@@ -197,7 +198,10 @@
 
     $(document).ready(function () {
         //attach banner image to banner section
-        $(".banner").backstretch(['@Url.Content("~/Content/banner_images/bg1.jpg")', '@Url.Content("~/Content/banner_images/bg2.jpg")', '@Url.Content("~/Content/banner_images/bg3.jpg")'], { fade: 550, duration: 4000 });
+        $(".banner").backstretch(['@Url.Content("~/Content/banner_images/bg6.jpg")', '@Url.Content("~/Content/banner_images/bg2.jpg")'
+            , '@Url.Content("~/Content/banner_images/bg9.jpg")', '@Url.Content("~/Content/banner_images/bg7.jpg")'
+            , '@Url.Content("~/Content/banner_images/bg1.jpg")', '@Url.Content("~/Content/banner_images/bg4.jpg")'
+            , '@Url.Content("~/Content/banner_images/bg3.jpg")', '@Url.Content("~/Content/banner_images/bg8.jpg")'], { fade: 550, duration: 4000 });
         $(".banner-panel").fadeIn(550);
         //attach plane image to plane section
         $(".about-banner").backstretch('@Url.Content("~/Content/banner_images/pelan.jpg")');
@@ -286,7 +290,7 @@
             }
         });
 
-            //Occasion Section
+        //Occasion Section
         //getOccasionsFromServer();
 
     });
@@ -306,5 +310,5 @@
         }); $(window).scroll(); //invoke scroll-handler on page-load
     });
 
-    </script>
+</script>
 }

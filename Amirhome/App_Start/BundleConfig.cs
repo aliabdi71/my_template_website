@@ -33,6 +33,7 @@ namespace Amirhome
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-rtl.css",
                       "~/Content/site.css",
+                      "~/Content/LinkEffect.css",
                       "~/Content/font-awesome.css",
                       "~/Plugins/select2/select2.css",
                       "~/Plugins/select2/select2-bootstrap.css"));

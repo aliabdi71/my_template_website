@@ -46,3 +46,5 @@ ADD PRIMARY KEY (ID)
 
 ALTER TABLE dbo.FreeAdvertise
 ADD edit_key VARCHAR(35) NULL;
+
+ALTER TABLE dbo.FreeAdvertise ALTER COLUMN title NVARCHAR (50) NOT NULL;

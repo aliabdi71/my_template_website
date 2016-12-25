@@ -115,7 +115,7 @@ namespace Amirhome.Controllers
                             ViewBag.ErrMsg = "خطایی در هنگام ارسال لینک آگهی برای شما روی داد";
                         }
                     }
-                    return RedirectToAction("InsertAdvertiseSuccessful", "Advertise");
+                    return RedirectToAction("InsertAdvertiseSuccessful", "Advertise", new { @message = "ایمیلی حاوی لینک ویرایش برای آگهی شما نیز ارسال شده است. دقت کنید که تنها یک بار می توانید آگهی خود را ویرایش نمایید." });
                 }
                 ViewBag.ErrMsg = "خطایی در حین ثبت آگهی رخ داده است. لطفا مجددا تلاش نمایید";
                 return View(model);
@@ -126,8 +126,10 @@ namespace Amirhome.Controllers
             }
         }
 
-        public ActionResult InsertAdvertiseSuccessful()
+        public ActionResult InsertAdvertiseSuccessful(string message = null)
         {
+            if (message != null)
+                ViewBag.Msg = message;
             return View();
         }
 
@@ -138,8 +140,8 @@ namespace Amirhome.Controllers
                 _params = (Session["adverParams"] == null) ? new AdverSearchParams() : (Session["adverParams"] as AdverSearchParams);
             else
                 Session["adverParams"] = _params;
-            List<FreeAdvertise> advers = _adverManager.AdverSearch(_params);
-            var Data = advers.Select(A => new
+            List<FreeAdvertise> advers = _adverManager.AdverSearch(_params, page * 12);
+            var data = advers.Select(A => new
             {
                 Title = A.title,
                 Condition = A.condition,
@@ -149,22 +151,55 @@ namespace Amirhome.Controllers
                 Area = A.area,
                 ID = A.ID,
                 ImageUrl = (string.IsNullOrEmpty(A.image)) ? ("no-thumb.png") : (A.image.Split(';')[0]),
-                Date = getAdverDate(A.create_date.Value)
+                Date = getAdverDate(A.create_date)
             }).ToList();
-            return Json(Data);
-        }
-        public string getAdverDate(DateTime date)
-        {
-            string final_date = "",
-                      difference = ((int)(DateTime.Now - date).TotalDays).ToString();
-            switch (difference)
+
+            if (data.Count() < page * 12)
             {
-                case "0": final_date = "لحظاتی قبل"; break;
-                case "1": final_date = "یک روز قبل"; break;
-                case "2": final_date = "دو روز قبل"; break;
-                case "3": final_date = "سه روز قبل"; break;
-                case "4": final_date = "چهار روز قبل"; break;
-                default: final_date = date.ToString().Split(' ')[0]; break;
+                data = data.Skip(Math.Max(0, data.Count() - (data.Count() % 12))).ToList();
+            }
+            else
+            {
+                data = data.Skip(Math.Max(0, data.Count() - 12)).ToList();
+            }
+
+            return Json(data);
+        }
+        public string getAdverDate(DateTime? date)
+        {
+            string final_date = "";
+            int difference = (int)(DateTime.Now - date.Value).TotalDays;
+            if (difference == 0)
+            {
+                final_date = "امروز";
+            }
+            else if (difference == 1)
+            {
+                final_date = "دیروز";
+            }
+            else if (difference == 2)
+            {
+                final_date = "دو روز پیش";
+            }
+            else if (difference == 3)
+            {
+                final_date = "سه روز پیش";
+            }
+            else if (difference == 4)
+            {
+                final_date = "چهار روز پیش";
+            }
+            else if (difference >= 5 && difference <= 7)
+            {
+                final_date = "هفته گذشته";
+            }
+            else if (difference > 7 && difference <= 14)
+            {
+                final_date = "دو هفته پیش";
+            }
+            else
+            {
+                final_date = "بیش از دو هفته پیش";
             }
             return final_date;
         }
@@ -174,7 +209,7 @@ namespace Amirhome.Controllers
             FreeAdvertise model = _adverManager.getAdvertiseById(addID);
             if (!model.approved.Value)
             {
-                if (Session["user_role_access"] == null || !Session["user_role_id"].ToString().Equals("1"))
+                if (Session["user_role_id"] == null || !(Session["user_role_id"].ToString().Equals("1") || Session["user_role_id"].ToString().Equals("2")))
                     return RedirectToAction("Index", "Home");
             }
             if (model != null)
@@ -185,7 +220,7 @@ namespace Amirhome.Controllers
 
         public JsonResult AddvertiseApprovement(int addID, bool flag)
         {
-            if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+            if (Session["user_role_id"] == null || Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
                 return Json("Don't you have a job??");
             bool res = _adverManager.approveAddvertise(addID, flag);
             if (res)
@@ -196,6 +231,8 @@ namespace Amirhome.Controllers
 
         public JsonResult AddvertiseDelete(int addID)
         {
+            if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+                return Json("Don't you have a job??");
             try
             {
                 string imgs_to_delete = _adverManager.deleteAddvertise(addID);
@@ -212,6 +249,17 @@ namespace Amirhome.Controllers
                 return Json("Error", JsonRequestBehavior.AllowGet);
             }
 
+        }
+
+        public JsonResult AddvertiseExtension(int addID)
+        {
+            if (Session["user_role_id"] == null || Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
+                return Json("Don't you have a job??");
+            bool res = _adverManager.extendAddvertise(addID);
+            if (res)
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            else
+                return Json("Error", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult SearchAdvertise()
@@ -249,12 +297,16 @@ namespace Amirhome.Controllers
         {
             model.create_date = DateTime.Now;
             model.expire_date = DateTime.Now.AddMonths(3);
-            model.edit_key = "amr" + Guid.NewGuid().ToString().Replace("-", "");
+            if (Session["user_role_id"] == null || (!Session["user_role_id"].ToString().Equals("1") && !Session["user_role_id"].ToString().Equals("2")))
+                model.edit_key = "amr" + Guid.NewGuid().ToString().Replace("-", "");
             model.approved = false;
             bool res = _adverManager.editAdvertise(model);
             if (res)
             {
-                return RedirectToAction("Index", "Home");
+                if (Session["user_role_id"] == null || (!Session["user_role_id"].ToString().Equals("1") && !Session["user_role_id"].ToString().Equals("2")))
+                    return RedirectToAction("InsertAdvertiseSuccessful", "Advertise");
+                else
+                    return RedirectToAction("ManagementPanel", "Estate");
             }
             else
             {

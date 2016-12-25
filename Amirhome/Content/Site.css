@@ -71,12 +71,13 @@
 
 /* Footer styles starts */
 footer .row{
-    background-color:#c7dbf4;
+    background-image: url("../../Content/shared_images/background.jpg") !important;
     color: black;
     padding:20px 0 20px 0;
     text-align:center;
 }
 footer .row.blue{
+    background-image:none !important;
     background-color:#1F1448;
     color: white;
 }
@@ -184,58 +185,12 @@ footer .row.blue{
 
 /*********************************************/
 
-/* Occasion styles starts */
-.occasion .panel{
-    text-align:center;
+/* Advertise styles starts */
+#addvertise{
+    background-image:url("../../Content/shared_images/background.jpg") !important;
+    border-top: 3px solid #00578F;
 }
-.occasion .panel-heading{
-    padding: 5px 10px;
-}
-.occasion .panel-heading > h3{
-    margin: 0;
-}
-.occasion .panel-body > img{
-    width:100%;
-    height:190px;
-}
-.occasion a:hover{
-    text-decoration:none;
-}
-.occasion .occasion-desc{
-    position:absolute;
-    background-color:rgba(0, 0, 0, 0.6);
-    height:190px;
-    width:81%;
-    color:white;
-    display:none;
-    padding:20px;
-}
-.occasion .occasion-desc > p{
-    margin-top:30px;
-    font-size:18px;
-    white-space:normal;
-}
-.img-count{
-        width:100%;
-        background-color:rgba(0, 0, 0, 0.6);
-        color: white;
-        font-weight:normal;
-        font:small;
-        padding-right:5px;
-}
-.occasion .panel-footer{
-    padding:5px !important;
-}
-.occasion .panel-footer > .main-price{
-    font-size:22px;
-    color:#E22633;
-    margin:0 !important;
-}
-.occasion .panel-footer > .second-price{
-    font-size:16px;
-    color:#E22633;
-}
-/* Occasion styles ends */
+/* Advertise styles ends */
 
 /*********************************************/
 
@@ -245,6 +200,7 @@ footer .row.blue{
 	height: 100%;
 	min-height: 680px;
 	position: relative;
+    border-top: 3px solid #00578F;
 }
 /* Plan Banner styles ends */
 
@@ -267,7 +223,7 @@ body {
     background-color:white;
 }
 
-h1, h2, h3, h4, h5, h6, a, span, label, input{
+h1, h2, h3, h4, h5, h6, a, span, label, input, p{
     font-family:BYekan, Candara;
 }
 

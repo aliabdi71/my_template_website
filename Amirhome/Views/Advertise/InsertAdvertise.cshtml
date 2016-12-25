@@ -47,7 +47,7 @@
                         <lable>عنوان *</lable>
                     </div>
                     <div class="col-md-9 left">
-                        @Html.TextBoxFor(m => m.title, new { @class = "form-control required", @placeholder = "حداکثر ۲۰ کاراکتر", @style = "max-width: 450px;" })
+                        @Html.TextBoxFor(m => m.title, new { @class = "form-control required", @placeholder = "حداکثر ۵۰ کاراکتر", @style = "max-width: 450px;" })
                     </div>
                 </div>
                 <div class="row form-group">
@@ -363,6 +363,8 @@
                 </div>
             </div>
         </div>
+        <br />
+        <br />
         <div class="row">
             <div class="col-md-2 left">
                 <lable>آپلود عکس (حداکثر 5 عکس)</lable>
@@ -462,6 +464,13 @@
                         $(this).css('border', '1px solid #cccccc');
                     }
                 });
+                if($("#title").val().length >= 50){
+                    flag = false;
+                    $("#title").css('border', '2px solid red');
+                }
+                else {
+                    $("#title").css('border', '1px solid #cccccc');
+                }
                 if (flag) {
                     flag = validateEmail($("#email").val());
                     if (!flag) {

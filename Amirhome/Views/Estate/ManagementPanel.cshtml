@@ -63,6 +63,9 @@
             if ($("#serial-input").length && $("#serial-input").val().length) {
                 postData["serial"] = $("#serial-input").val();
             }
+            if ($("#notApprovedOnly").length) {
+                postData["addver_not_approved"] = $("#notApprovedOnly").is(":checked");
+            }
             $("#content").html('<img src="/Content/shared_images/loading.gif" style="margin:0 auto; display:block;" id="loading"/>');
             $("#loading").css('display', 'block');
             $.ajax({
@@ -267,30 +270,33 @@
             });
         }
         function extend_addver(id, elem) {
-            /*var sure = confirm("آیا از تمدید این آگهی اطمینان دارید؟");
+            var sure = confirm("آیا از تمدید این آگهی اطمینان دارید؟");
             if (!sure) {
                 return false;
             }
+            var current_html = $(elem).html();
             $(elem).html('<i class="fa fa-refresh fa-spin"></i>').attr('disabled', 'disabled');
             var postData = { "addID": id };
             $.ajax({
                 type: 'GET',
-                url: "/Advertise/AddvertiseDelete",
+                url: "/Advertise/AddvertiseExtension",
                 dataType: 'json',
                 data: postData,
                 success: function (data) {
                     if (data === "Success") {
-                        $("tr[data-addverid=" + id + "]").fadeOut('slow');
-                        alert('آگهی مورد نظر با موفقیت حذف گردید');
+                        alert('آگهی مورد نظر با موفقیت تمدید گردید');
+                        $(elem).html(current_html);
                     }
                     else {
                         alert("خطا در انجام عملیات");
+                        $(elem).html(current_html);
                     }
                 },
                 error: function (data) {
                     alert("خطا در ارتباط با مرکز");
+                    $(elem).html(current_html);
                 },
-            });*/
+            });
         }
 
         function fix_input_formats() {

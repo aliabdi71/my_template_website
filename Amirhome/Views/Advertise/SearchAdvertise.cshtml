@@ -260,7 +260,7 @@
                         <label style="font-weight:normal; font-size:16px; min-width: 100px;">حداکثر متراژ</label>
                         <input id="maxArea" name="maxArea" class="form-control" />
                     </div>
-                        <input id="adver-search" onclick="doSearch();" class="btn btn-primary" style="min-width:70px; float:left; margin:10px;" value="جستجو" />
+                        <input id="adver-search" onclick="doSearch(1);" class="btn btn-primary" style="min-width:70px; float:left; margin:10px;" value="جستجو" />
                     </div>
             </div>
         </div>
@@ -314,12 +314,12 @@
             $("#adverCondition").select2();
             $("#adverDistrict").select2();
 
-            doSearch();
+            doSearch(1);
         });
 
-        function createAdverResultSection(data) {
+        function createAdverResultSection(data, page) {
             for (var i = 0 ; i < data.length ; i = i + 3) {
-                var $row_div = $('<div>').addClass('row');
+                var $row_div = $('<div>').addClass('row'); //.css('display', 'none');
                 $row_div.append("<br />");
 
                 for (var j = i ; j < i + 3 && j < data.length ; j++) {
@@ -343,14 +343,22 @@
                     $row_div.append($col_1_div);
                 }
                 $row_div.append('<br />');
-                $('.search-result').prepend($row_div).fadeIn('slow');;
+                $(".loading-img").before($row_div);
+                //$row_div.fadeIn('medium');
             }
-            $(".loading-img").css('display', 'none');
+            if (data.length > 0 && mod(data.length, 12) === 0) {
+                doSearch(page + 1);
+            }
+            else {
+                $(".loading-img").css('display', 'none');
+            }
         }
 
-        function doSearch() {
-            $(".search-result").html('<div class="row text-center loading-img" style="display:none;"><img src="/Content/shared_images/loading.gif"/></div>');
-            $(".loading-img").css('display', 'block');
+        function doSearch(page) {
+            if (page === 1) {
+                $(".search-result").html('<div class="row text-center loading-img" style="display:none;"><img src="/Content/shared_images/loading.gif"/></div>');
+                $(".loading-img").css('display', 'block');
+            }
             var adver_search_params = {};
             adver_search_params["minArea"] = $("#minArea").val() == '' ? "0" : $("#minArea").val();
             adver_search_params["maxArea"] = $("#maxArea").val() == '' ? "6000" : $("#maxArea").val();
@@ -374,10 +382,10 @@
                 url: '/Advertise/DoAdverSearch',
                 method: 'POST',
                 dataType: 'json',
-                data: JSON.stringify({ "_params": adver_search_params }), //, "page": page, "order": order }),
+                data: JSON.stringify({ "_params": adver_search_params, "page": page }), //, "page": page, "order": order }),
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-                    createAdverResultSection(data);
+                    createAdverResultSection(data, page);
                 },
                 error: function () {
 

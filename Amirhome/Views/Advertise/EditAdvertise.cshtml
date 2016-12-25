@@ -23,8 +23,8 @@
         <div class="row" style="padding:30px;">
             <div class="col-md-7">
                 <div class="row big-title">
-                    <span>عنوان: </span> <h1> @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })</h1>
-                    <span>شهر: </span> <h4>@Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })</h4>
+                    <span>عنوان: </span> <h1> @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control required" } })</h1>
+                    <span>شهر: </span> <h4>@Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control required" } })</h4>
                     <span>محله: </span> 
                     <select id="district" name="district" class="form-control form-select required">
                         <option value="">محله</option>
@@ -245,33 +245,34 @@
                     <br />
                     <br />
                     <div class="col-md-6">
-                        <span>تلفن: </span> @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } }) <br />
-                        <span>متراژ: </span> @Html.EditorFor(model => model.area, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                        <span>تلفن: </span> @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control required" } }) <br />
                         @if (Model.condition.Equals("فروش"))
                         {
-                            <span>قیمت کل: </span> @Html.EditorFor(model => model.price_total, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                            <span>قیمت کل: </span> @Html.EditorFor(model => model.price_total, new { htmlAttributes = new { @class = "form-control input-price required" } }) <br />
                         }
                         else
                         {
-                            <span>قیمت رهن: </span> @Html.EditorFor(model => model.price_prepayment, new { htmlAttributes = new { @class = "form-control" } }) <br />
+                            <span>قیمت رهن: </span> @Html.EditorFor(model => model.price_prepayment, new { htmlAttributes = new { @class = "form-control input-price required" } }) <br />
                         }
+                        <span>متراژ: </span> @Html.EditorFor(model => model.area, new { htmlAttributes = new { @class = "form-control required" } }) <br />
                     </div>
                     <div class="col-md-6">
                         <span>ایمیل: </span> @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } }) <br />
-                        <span>نوع واگذاری: </span> 
+
+                        @if (Model.condition.Equals("فروش"))
+                        {
+                            <span>قیمت متری: </span> @Html.EditorFor(model => model.price_per_meter, new { htmlAttributes = new { @class = "form-control input-price required" } }) <br />
+                        }
+                        else if (Model.condition.Equals("اجاره"))
+                        {
+                            <span>قیمت اجاره: </span> @Html.EditorFor(model => model.price_mortage, new { htmlAttributes = new { @class = "form-control input-price required" } }) <br />
+                        }
+                        <span>نوع واگذاری: </span>
                         <select id="condition" name="condition" class="form-control form-select required">
                             <option value="فروش">فروش</option>
                             <option value="رهن">رهن</option>
                             <option value="اجاره">اجاره</option>
-                        </select>  <br />
-                        @if (Model.condition.Equals("فروش"))
-                        {
-                            <span>قیمت متری: </span> @Html.EditorFor(model => model.price_per_meter, new { htmlAttributes = new { @class = "form-control" } }) <br />
-                        }
-                        else
-                        {
-                            <span>قیمت اجاره: </span> @Html.EditorFor(model => model.price_mortage, new { htmlAttributes = new { @class = "form-control" } }) <br />
-                        }
+                        </select> 
                     </div>
                 </div>
                 <hr />
@@ -292,9 +293,9 @@
                     </div>
                 </div>
             </div>
-            <div class="text-center" style="padding:40px;">
-                <button class="btn btn-primary text-center" style="min-width:180px;" type="submit" @*onclick="fix_input_formats(); return true;"*@>اعمال تغییرات</button>
-            </div>
+        </div>
+        <div class="text-center" style="padding:40px;">
+            <button class="btn btn-primary text-center" style="min-width:180px;" type="submit" onclick="fix_input_formats(); return true;">اعمال تغییرات</button>
         </div>
     </div>
 }
@@ -303,12 +304,66 @@
     <script type="text/javascript" src="~/Plugins/JS Image Slider/js-image-slider.js"></script>
 
     <script type="text/javascript">
+        function fix_input_formats() {
+            $(".input-price").each(function () {
+                var val = $(this).val().replace(/,/g, '');
+                $(this).val(val);
+            })
+        }
         $(document).ready(function () {
             var district = "@Model.district";
-            var cond = "@Model.condition" ;
+            var cond = "@Model.condition";
 
             $("#district").val(district);
             $("#condition").val(cond);
+
+            $("body").on({
+                keydown: function (e) {
+                    if ((notInRange(e.keyCode, 48, 57) && notInRange(e.keyCode, 96, 105) && e.keyCode !== 8 && e.keyCode !== 9 && e.keyCode !== 46) || e.shiftKey) {
+                        e.preventDefault();
+                    }
+                    return true;
+                },
+                focus: function () {
+                    $(this).select();
+                },
+                keyup: function () {
+                    var $self = $(this);
+                    var new_val = $self.val().replace(/,/g, '');
+                    $self.val(inputNumberWithCommasEnglish(new_val));
+                },
+            }, ".input-price");
+
+            $(".input-price").each(function () {
+                $(this).trigger("keyup");
+            })
+
+            $("form").submit(function () {
+                var flag = true;
+                $('.required:enabled').each(function () {
+                    if ($(this).val() === '') {
+                        flag = false;
+                        $(this).css('border', '2px solid red');
+                    }
+                    else {
+                        $(this).css('border', '1px solid #cccccc');
+                    }
+                });
+                if ($("#title").val().length >= 50) {
+                    flag = false;
+                    $("#title").css('border', '2px solid red');
+                }
+                else {
+                    $("#title").css('border', '1px solid #cccccc');
+                }
+                if (flag) {
+                    flag = validateEmail($("#email").val());
+                    if (!flag) {
+                        alert("لطفا ایمیل معتبر وارد نمایید");
+                    }
+                }
+                return flag;
+            });
         });
     </script>
 }

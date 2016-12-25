@@ -232,6 +232,83 @@ namespace Amirhome
             return js.Serialize(data);
         }
 
+        [WebMethod(Description = "Get Addvertise by its ID!")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetAdvertiseByID(int ID)
+        {
+            AdvertiseManager _adverManager = new AdvertiseManager();
+            FreeAdvertise obj = _adverManager.getAdvertiseById(ID);
+            var data = new
+            {
+                Title = obj.title,
+                Title2 = obj.title2,
+                City = obj.city,
+                Condition = obj.condition,
+                District = obj.district,
+                Email = obj.email,
+                Phone = obj.phone,
+                Images = (string.IsNullOrEmpty(obj.image) ? null : obj.image.Split(';')),
+                Area = obj.area,
+                Date = getAdverDate(obj.create_date),
+                FirstPrice = (obj.condition.Equals("فروش")) ? obj.price_total : obj.price_prepayment,
+                SecondPrice = (obj.condition.Equals("فروش")) ? obj.price_per_meter : obj.price_mortage,
+            };
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(data);
+        }
+
+        [WebMethod(Description = "Search amonge Addvertises!")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string SearchAddvertise(string condition, string district,
+                                       long min_total_price, long max_total_price,
+                                       long min_price_per_meter, long max_price_per_meter,
+                                       long min_price_prepayment, long max_price_prepayment,
+                                       long min_price_mortgage, long max_price_mortgage,
+                                       int min_area, int max_area)
+        {
+
+            return "";
+        }
+
+        private string getAdverDate(DateTime? date)
+        {
+            string final_date = "";
+            int difference = (int)(DateTime.Now - date.Value).TotalDays;
+            if (difference == 0)
+            {
+                final_date = "امروز";
+            }
+            else if (difference == 1)
+            {
+                final_date = "دیروز";
+            }
+            else if (difference == 2)
+            {
+                final_date = "دو روز پیش";
+            }
+            else if (difference == 3)
+            {
+                final_date = "سه روز پیش";
+            }
+            else if (difference == 4)
+            {
+                final_date = "چهار روز پیش";
+            }
+            else if (difference >= 5 && difference <= 7)
+            {
+                final_date = "هفته گذشته";
+            }
+            else if (difference > 7 && difference <= 14)
+            {
+                final_date = "دو هفته پیش";
+            }
+            else
+            {
+                final_date = "بیش از دو هفته پیش";
+            }
+            return final_date;
+        }
+
         [WebMethod(Description = "Authenticate user")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string Login(string email, string password)

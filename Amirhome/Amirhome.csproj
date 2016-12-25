@@ -603,11 +603,17 @@
     <Content Include="Content\banner_images\bg1.jpg" />
     <Content Include="Content\banner_images\bg2.jpg" />
     <Content Include="Content\banner_images\bg3.jpg" />
+    <Content Include="Content\banner_images\bg4.jpg" />
+    <Content Include="Content\banner_images\bg6.jpg" />
+    <Content Include="Content\banner_images\bg7.jpg" />
+    <Content Include="Content\banner_images\bg8.jpg" />
+    <Content Include="Content\banner_images\bg9.jpg" />
     <Content Include="Content\banner_images\pelan.jpg" />
     <Content Include="Content\bootstrap-rtl.css" />
     <Content Include="Content\bootstrap-rtl.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\LinkEffect.css" />
     <Content Include="Content\EstateDetailsStyle.css" />
     <Content Include="Content\estate_images\no-thumb.png" />
     <Content Include="Content\estate_images\sample.jpg" />
