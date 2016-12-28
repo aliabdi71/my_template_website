@@ -14,6 +14,11 @@ namespace Amirhome.Models
     
     public partial class FreeAdvertise
     {
+        public FreeAdvertise()
+        {
+            this.AdverKeywords = new HashSet<AdverKeyword>();
+        }
+    
         public int ID { get; set; }
         public string title { get; set; }
         public string title2 { get; set; }
@@ -33,5 +38,7 @@ namespace Amirhome.Models
         public string email { get; set; }
         public Nullable<System.DateTime> create_date { get; set; }
         public string edit_key { get; set; }
+    
+        public virtual ICollection<AdverKeyword> AdverKeywords { get; set; }
     }
 }

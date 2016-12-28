@@ -129,6 +129,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdverKeyword.cs">
+      <DependentUpon>CoreModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AdvertiseManager.cs" />
     <Compile Include="Models\Affiliate.cs">
       <DependentUpon>CoreModel.tt</DependentUpon>
@@ -642,6 +645,68 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\animations.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\assets\ba.hashchange.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\assets\prettify.css" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\assets\prettify.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\assets\style.css" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\basic.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\callbacks.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\enabledisable.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\filter.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\headers.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\index.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\maxchecked.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\position.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\preselected.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\refresh.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\selectedlist.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\demos\single.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.br.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.cs.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.de.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.es.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.br.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.cs.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.de.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.es.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.fr.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.hu.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.it.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.ja.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.pl.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.ru.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.tr.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.zh-cn.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.filter.zh-tw.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.fr.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.hu.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.it.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.ja.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.pl.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.ru.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.tr.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.zh-cn.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\i18n\jquery.multiselect.zh-tw.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\jquery.multiselect.css" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\jquery.multiselect.filter.css" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\src\jquery.multiselect.filter.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\src\jquery.multiselect.filter.min.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\src\jquery.multiselect.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\src\jquery.multiselect.min.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\unit\core.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\unit\events.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\unit\filter.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\unit\html.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\unit\index.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\unit\methods.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\unit\options.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\unit\qunit.css" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\unit\qunit.js" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\visual\form-reset.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\visual\formsubmission.htm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\visual\style.css" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\visual\widget-containers.htm" />
     <Content Include="Plugins\JS Image Slider\bullet.png" />
     <Content Include="Plugins\JS Image Slider\js-image-slider.css" />
     <Content Include="Plugins\JS Image Slider\js-image-slider.js" />
@@ -650,6 +715,7 @@
     <Content Include="Plugins\rangeslider.js-2.2.1\rangeslider.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
     <Content Include="WebService1.asmx" />
     <EntityDeploy Include="Models\CoreModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -677,6 +743,13 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\GPL-LICENSE" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\MIT-LICENSE" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\package.json" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\README.markdown" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\visual\formsubmission-single.php" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\visual\formsubmission.cfm" />
+    <Content Include="Plugins\jquery-ui-multiselect-widget-master\tests\visual\formsubmission.php" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jalaali.js" />

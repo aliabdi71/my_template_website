@@ -304,6 +304,8 @@
         <AssociationConnector Association="AmirhomeModel.FK_VendorClassification_Vendors" />
         <AssociationConnector Association="AmirhomeModel.FK_WorkflowStates_Workflow" />
         <AssociationConnector Association="AmirhomeModel.FK_Districts_Districts" />
+        <EntityTypeShape EntityType="AmirhomeModel.AdverKeyword" Width="1.5" PointX="13" PointY="6.375" />
+        <AssociationConnector Association="AmirhomeModel.AdverKeyword_jnc" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

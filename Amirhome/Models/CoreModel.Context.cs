@@ -172,5 +172,6 @@ namespace Amirhome.Models
         public virtual DbSet<WebServer> WebServers { get; set; }
         public virtual DbSet<Workflow> Workflows { get; set; }
         public virtual DbSet<WorkflowState> WorkflowStates { get; set; }
+        public virtual DbSet<AdverKeyword> AdverKeywords { get; set; }
     }
 }

@@ -5,6 +5,22 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AmirhomeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AdverKeyword_jnc">
+          <Key>
+            <PropertyRef Name="adver_id" />
+            <PropertyRef Name="keyword_id" />
+          </Key>
+          <Property Name="adver_id" Type="int" Nullable="false" />
+          <Property Name="keyword_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AdverKeywords">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="40" />
+          <Property Name="Wieght" Type="int" />
+        </EntityType>
         <EntityType Name="Affiliates">
           <Key>
             <PropertyRef Name="AffiliateId" />
@@ -2192,6 +2208,18 @@ warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_adver">
+          <End Role="FreeAdvertise" Type="Self.FreeAdvertise" Multiplicity="1" />
+          <End Role="AdverKeyword_jnc" Type="Self.AdverKeyword_jnc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FreeAdvertise">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AdverKeyword_jnc">
+              <PropertyRef Name="adver_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Affiliates_Vendors">
           <End Role="Vendors" Type="Self.Vendors" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -3023,6 +3051,18 @@ warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a
             </Principal>
             <Dependent Role="Journal_Comments">
               <PropertyRef Name="JournalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_keyword">
+          <End Role="AdverKeywords" Type="Self.AdverKeywords" Multiplicity="1" />
+          <End Role="AdverKeyword_jnc" Type="Self.AdverKeyword_jnc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdverKeywords">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AdverKeyword_jnc">
+              <PropertyRef Name="keyword_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4183,6 +4223,8 @@ warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="AmirhomeModelStoreContainer">
+          <EntitySet Name="AdverKeyword_jnc" EntityType="Self.AdverKeyword_jnc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdverKeywords" EntityType="Self.AdverKeywords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Affiliates" EntityType="Self.Affiliates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AnonymousUsers" EntityType="Self.AnonymousUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="aspnet_Applications" EntityType="Self.aspnet_Applications" Schema="dbo" store:Type="Tables" />
@@ -4350,6 +4392,10 @@ warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a
           <AssociationSet Name="FK__aspnet_Us__Appli__73FA27A5" Association="Self.FK__aspnet_Us__Appli__73FA27A5">
             <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_adver" Association="Self.FK_adver">
+            <End Role="FreeAdvertise" EntitySet="FreeAdvertise" />
+            <End Role="AdverKeyword_jnc" EntitySet="AdverKeyword_jnc" />
           </AssociationSet>
           <AssociationSet Name="FK_Affiliates_Vendors" Association="Self.FK_Affiliates_Vendors">
             <End Role="Vendors" EntitySet="Vendors" />
@@ -4598,6 +4644,10 @@ warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a
           <AssociationSet Name="FK_JournalComments_Journal" Association="Self.FK_JournalComments_Journal">
             <End Role="Journal" EntitySet="Journal" />
             <End Role="Journal_Comments" EntitySet="Journal_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_keyword" Association="Self.FK_keyword">
+            <End Role="AdverKeywords" EntitySet="AdverKeywords" />
+            <End Role="AdverKeyword_jnc" EntitySet="AdverKeyword_jnc" />
           </AssociationSet>
           <AssociationSet Name="FK_LanguagePacks_Packages" Association="Self.FK_LanguagePacks_Packages">
             <End Role="Packages" EntitySet="Packages" />
@@ -4997,6 +5047,7 @@ warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a
           <Property Name="email" Type="String" MaxLength="85" FixedLength="false" Unicode="false" />
           <Property Name="create_date" Type="DateTime" Precision="0" />
           <Property Name="edit_key" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AdverKeywords" Relationship="AmirhomeModel.AdverKeyword_jnc" FromRole="FreeAdvertise" ToRole="AdverKeyword" />
         </EntityType>
         <EntityType Name="GoogleMap">
           <Key>
@@ -6072,6 +6123,11 @@ warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a
           <AssociationSet Name="FK_Districts_Districts" Association="AmirhomeModel.FK_Districts_Districts">
             <End Role="District" EntitySet="Districts" />
             <End Role="District1" EntitySet="Districts" />
+          </AssociationSet>
+          <EntitySet Name="AdverKeywords" EntityType="AmirhomeModel.AdverKeyword" />
+          <AssociationSet Name="AdverKeyword_jnc" Association="AmirhomeModel.AdverKeyword_jnc">
+            <End Role="FreeAdvertise" EntitySet="FreeAdvertises" />
+            <End Role="AdverKeyword" EntitySet="AdverKeywords" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Affiliate">
@@ -10184,6 +10240,19 @@ warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AdverKeyword">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FreeAdvertises" Relationship="AmirhomeModel.AdverKeyword_jnc" FromRole="AdverKeyword" ToRole="FreeAdvertise" />
+          <Property Name="Wieght" Type="Int32" />
+        </EntityType>
+        <Association Name="AdverKeyword_jnc">
+          <End Type="AmirhomeModel.FreeAdvertise" Role="FreeAdvertise" Multiplicity="*" />
+          <End Type="AmirhomeModel.AdverKeyword" Role="AdverKeyword" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -12464,6 +12533,23 @@ warning 6002: The table/view 'amirhome_database.dbo.sysdiagrams' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AdverKeywords">
+            <EntityTypeMapping TypeName="AmirhomeModel.AdverKeyword">
+              <MappingFragment StoreEntitySet="AdverKeywords">
+                <ScalarProperty Name="Wieght" ColumnName="Wieght" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AdverKeyword_jnc" TypeName="AmirhomeModel.AdverKeyword_jnc" StoreEntitySet="AdverKeyword_jnc">
+            <EndProperty Name="AdverKeyword">
+              <ScalarProperty Name="ID" ColumnName="keyword_id" />
+            </EndProperty>
+            <EndProperty Name="FreeAdvertise">
+              <ScalarProperty Name="ID" ColumnName="adver_id" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
