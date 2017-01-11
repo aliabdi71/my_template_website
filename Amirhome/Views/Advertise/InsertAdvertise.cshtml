@@ -110,20 +110,6 @@
                         @Html.TextBoxFor(m => m.email, new { @class = "form-control required" })
                     </div>
                 </div>
-                <div class="row form-group">
-                    <div class="col-md-4 left">
-                        <lable>کلیدواژه ها</lable>
-                        <p style="font-size:smaller">لطفا کلیدواژه های مرتبط با ملک خود را انتخاب نمایید.</p> 
-                    </div>
-                    <div class="col-md-8">
-                        <select id="keywords">
-                            <option value="Ali">Ali</option>
-                            <option value="Ali">Ali</option>
-                            <option value="Ali">Ali</option>
-                            <option value="Ali">Ali</option>
-                        </select>
-                    </div>
-                </div>
             </div>
             <div class="col-md-6">
                 <div class="row form-group">
@@ -533,7 +519,7 @@
             $("#condition").select2();
             $("#district").select2();
 
-            $("#keywords").multiselect();
+            //$("#keywords").multiselect();
         });
     </script>
 }

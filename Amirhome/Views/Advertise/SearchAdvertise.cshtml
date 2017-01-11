@@ -314,7 +314,12 @@
             $("#adverCondition").select2();
             $("#adverDistrict").select2();
 
-            doSearch(1);
+            doSearch(0);
+        });
+
+        $(window).unload(function () {
+            var scrollPosition = $(window).scrollTop();
+            localStorage.setItem("scrollPosition", scrollPosition);
         });
 
         function createAdverResultSection(data, page) {
@@ -355,10 +360,6 @@
         }
 
         function doSearch(page) {
-            if (page === 1) {
-                $(".search-result").html('<div class="row text-center loading-img" style="display:none;"><img src="/Content/shared_images/loading.gif"/></div>');
-                $(".loading-img").css('display', 'block');
-            }
             var adver_search_params = {};
             adver_search_params["minArea"] = $("#minArea").val() == '' ? "0" : $("#minArea").val();
             adver_search_params["maxArea"] = $("#maxArea").val() == '' ? "6000" : $("#maxArea").val();
@@ -378,19 +379,48 @@
                 adver_search_params["minPriceMortage"] = $("#minPriceMortage").val() == '' ? "0" : $("#minPriceMortage").val();
                 adver_search_params["maxPriceMortage"] = $("#maxPriceMortage").val() == '' ? "100000000" : $("#maxPriceMortage").val();
             }
-            $.ajax({
-                url: '/Advertise/DoAdverSearch',
-                method: 'POST',
-                dataType: 'json',
-                data: JSON.stringify({ "_params": adver_search_params, "page": page }), //, "page": page, "order": order }),
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    createAdverResultSection(data, page);
-                },
-                error: function () {
+            if (page > 0) {
+                if (page === 1) {
+                    $(".search-result").html('<div class="row text-center loading-img" style="display:none;"><img src="/Content/shared_images/loading.gif"/></div>');
+                    $(".loading-img").css('display', 'block');
+                }
+                $.ajax({
+                    url: '/Advertise/DoAdverSearch',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ "_params": adver_search_params, "page": page }), //, "page": page, "order": order }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        createAdverResultSection(data, page);
+                    },
+                    error: function () {
 
-                },
-            });
+                    },
+                });
+            }
+            else {
+                $(".search-result").html('<div class="row text-center loading-img" style="display:none;"><img src="/Content/shared_images/loading.gif"/></div>');
+                $(".loading-img").css('display', 'block');
+                if (sessionStorage.getItem("username") !== null) {
+                    adver_search_params = sessionStorage.getItem("username");
+                }
+                $.ajax({
+                    url: '/Advertise/DoAdverSearch',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ "_params": adver_search_params, "page": 0 }), //, "page": page, "order": order }),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        createAdverResultSection(data, 1);
+                        if (localStorage.scrollPosition) {
+                            $("div#element").scrollTop(localStorage.getItem("scrollPosition"));
+                        }
+                    },
+                    error: function () {
+
+                    },
+                });
+            }
         }
     </script>
 }

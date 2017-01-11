@@ -154,13 +154,16 @@ namespace Amirhome.Controllers
                 Date = getAdverDate(A.create_date)
             }).ToList();
 
-            if (data.Count() < page * 12)
+            if(page > 0)
             {
-                data = data.Skip(Math.Max(0, data.Count() - (data.Count() % 12))).ToList();
-            }
-            else
-            {
-                data = data.Skip(Math.Max(0, data.Count() - 12)).ToList();
+                if (data.Count() < page * 12)
+                {
+                    data = data.Skip(Math.Max(0, data.Count() - (data.Count() % 12))).ToList();
+                }
+                else
+                {
+                    data = data.Skip(Math.Max(0, data.Count() - 12)).ToList();
+                }
             }
 
             return Json(data);
