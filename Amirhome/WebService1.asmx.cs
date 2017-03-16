@@ -23,12 +23,6 @@ namespace Amirhome
     public class WebService1 : System.Web.Services.WebService
     {
 
-        [WebMethod]
-        public string HelloWorld()
-        {
-            return "Hello World";
-        }
-
         [WebMethod(Description="Returns occasion estates!")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string GetOccasions()
@@ -259,15 +253,63 @@ namespace Amirhome
 
         [WebMethod(Description = "Search amonge Addvertises!")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public string SearchAddvertise(string condition, string district,
+        public string SearchAddvertise(int _condition, int _district,
                                        long min_total_price, long max_total_price,
                                        long min_price_per_meter, long max_price_per_meter,
                                        long min_price_prepayment, long max_price_prepayment,
                                        long min_price_mortgage, long max_price_mortgage,
                                        int min_area, int max_area)
         {
+            string[] districts = new string[] {"", "17شهریور", "17شهریور-پل محلاتی", "آذربایجان",
+                                                "آذری", "آزادی", "آهنگ", "آیت الله سعیدی", "اراج و ازگل", "استادمعین",
+                                                "اشرفی اصفهانی", "افسریه", "اقدسیه", "الهیه", "امام حسین", "امام خمینی",
+                                                "امامت", "امیرآباد", "امیرآباد شمالی", "اندیشه", "بازار", "بریانک", "بلوار بسیج",
+                                                "بلوار فردوس","بنی هاشم",  "بهار", "بهار شیراز", "بهارستان", "پاتریس", "پارک وی",
+                                                "پاسداران", "پردیس", "پونک", "پیچ شمران", "پیروزی", "تلفنخانه", "تهران نو", "تهران ویلا",
+                                                "تهرانپارس", "تهرانسر", "تولیددارو", "جاده ساوه", "جردن", "جلال ال احمد", "جمالزاده", "جمهوری",
+                                                "جنت آباد", "جوادیه", "جی", "جیحون", "چهارراه سیروس", "حافظ", "حکیمیه", "خراسان", "خردمند", "خزانه",
+                                                "خلیج فارس", "خواجه عبدالله", "خواجه نظام", "خوش", "دامپزشکی", "دروس", "دریان نو", "دوراهی قپان",
+                                                "رسالت", "رودکی", "ری", "زعفرانیه", "سبلان", "ستارخان", "سراج", "سعادت آباد", "سی متری", "شاد آباد",
+                                                "شریعتی", "شمس آباد", "شهدا", "شهرآرا", "شهران", "شهرزیبا", "شهرک امید", "شهرک اکباتان",
+                                                "شهرک راه آهن", "شهرک صنعتی سپهر", "شهرک غرب", "شهرک ولی عصر", "شوش", "شیخ بهایی", "صادقیه",
+                                                "طرشت", "ظفر", "عباس آباد", "علی آباد", "فرشته", "فرمانیه", "فلکه اول صادقیه", "قزوین", "قلهک",
+                                                "قیطریه", "کاشانی", "کامرانیه", "کریم خان", "کیان شهر", "گاندی", "گیانی", "گیشا", "لویزان",
+                                                "مجاهدین اسلام", "مجیدیه", "مختاری", "مرزداران", "مشیریه", "ملاصدرا", "مطهری", "مهراباد", "مولوی",
+                                                "میدان 100", "میدان سپاه", "میدان میرداماد", "مینی سیتی", "نازی آباد", "نامجو", "نبرد",
+                                                "نواب", "نیاوران", "نیرو هوایی", "وحدت اسلامی", "ولنجک", "ولی عصر", "هاشم آباد", "هاشمی", "هلال احمر", 
+                                                "همت", "یوسف آباد", "هفت تیر"};
 
-            return "";
+            string[] conditions = new string[] { "فروش", "رهن", "اجاره" };
+            AdverSearchParams _params = new AdverSearchParams();
+            _params.adverCondition = conditions[_condition];
+            _params.adverDistrict = districts[_district];
+            _params.minTotalPrice = min_total_price;
+            _params.maxTotalPrice = max_total_price;
+            _params.minPricePerMeter = min_price_per_meter;
+            _params.maxPricePerMeter = max_price_per_meter;
+            _params.minPricePrepayment = min_price_prepayment;
+            _params.maxPricePrepayment = max_price_prepayment;
+            _params.minPriceMortage = min_price_mortgage;
+            _params.maxPriceMortage = max_price_mortgage;
+            _params.minArea = min_area;
+            _params.maxArea = max_area;
+            AdvertiseManager _adverManager = new AdvertiseManager();
+            List<FreeAdvertise> advers = _adverManager.AdverSearch(_params, 0);
+            var data = advers.Select(A => new
+            {
+                Title = A.title,
+                Condition = A.condition,
+                FirstPrice = (A.condition.Equals("فروش")) ? A.price_total : A.price_prepayment,
+                SecondPrice = (A.condition.Equals("فروش")) ? A.price_per_meter : A.price_mortage,
+                Address = A.district,
+                Area = A.area,
+                ID = A.ID,
+                ImageUrl = (string.IsNullOrEmpty(A.image)) ? ("no-thumb.png") : (A.image.Split(';')[0]),
+                Date = getAdverDate(A.create_date)
+            }).ToList();
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(data);
         }
 
         private string getAdverDate(DateTime? date)
@@ -309,6 +351,84 @@ namespace Amirhome
             return final_date;
         }
 
+
+        #region ManagementSection
+        [WebMethod(Description = "Management Commands!")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void ManagementCommands(string email, string passkey, string command, int id = 0)
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            Dictionary<string, int[]> dict = new Dictionary<string, int[]>();
+            dict.Add("get_users", new int[] { 1 });
+            dict.Add("del_user", new int[] { 1 });
+            dict.Add("get_sales", new int[] { 1,2,3 });
+            dict.Add("get_rents", new int[] { 1, 2, 4 });
+            dict.Add("get_estates", new int[] { 1, 2 });
+            dict.Add("review_estate", new int[] { 1 });
+            dict.Add("approve_estate", new int[] { 1, 2, 3 });
+            dict.Add("del_estate", new int[] { 1, 2, 3 });
+            dict.Add("see_users", new int[] { 1 });
+            UserManager _userManaget = new UserManager();
+            int uid = _userManaget.authenticateUser(email, passkey);
+            if (uid < 0)
+                Context.Response.Write("Authentication Failed");
+            else
+            {
+                UserAccouunt u = _userManaget.getUserByID(uid);
+                int RoleId = u.RoleID.Value;
+            }
+
+            //Context.Response.Write();
+        }
+
+        private object getEstateByID(int id)
+        {
+            EstateManager _estateManager = new EstateManager();
+            var estate = _estateManager.getStateByID(id);
+            AgentManager _agentManager = new AgentManager();
+            var agent = _agentManager.getAgentById(estate.AgentID.Value);
+            var data = new
+            {
+                ID = estate.ID,
+                Area = estate.Area,
+                FirstPrice = (estate.TotalPrice == null || estate.TotalPrice == 0) ? estate.PrepaymentPrice : estate.TotalPrice,
+                SecondPrice = (estate.PricePerMeter == null || estate.PricePerMeter == 0) ? estate.MortgagePrice : estate.PricePerMeter,
+                Date = estate.Date.ToString().Split(' ')[0],
+                Condition = estate.Condition,
+                Dist = estate.District1.name,
+                Serial = estate.Serial.ToString(),
+                Address1 = estate.Address,
+                Address2 = estate.DetailedAddress,
+                Usage = estate.Usage,
+                Bedrooms = estate.Bedrooms,
+                Type = estate.StateType1.types,
+                Age = estate.Age.ToString(),
+                Floor = estate.Floor,
+                AgentName = agent.Name,
+                AgentPhone = agent.Phone,
+                TotalFloors = estate.Floors,
+                Bathroom = estate.Bathrooms,
+                Units = estate.Units,
+                Cabinet = estate.Cabinet,
+                Parking = estate.Parking,
+                PhoneLines = estate.Tells,
+                Facing = estate.Facing,
+                Status = estate.CurrentStatus,
+                Position = estate.StatePosition,
+                Flooring = estate.Floors,
+                ExtraInfo = estate.Description + " " + estate.Occasion,
+                ImgCount = estate.Images.Count,
+                ImgUrls = estate.Images.Count > 0 ? (estate.Images.Select(i => i.url).ToArray()) : null,
+                StreetViewImg = estate.StreetViews.Count > 0 ? estate.StreetViews.First().url : null,
+                PlanImg = estate.Plans.Count > 0 ? estate.Plans.First().url : null,
+                GoogleMapLat = estate.GoogleMaps.Count <= 0 ? "35.688045" : estate.GoogleMaps.First().latitude,
+                GoogleMapLong = estate.GoogleMaps.Count <= 0 ? "51.392884" : estate.GoogleMaps.First().longitude,
+                Features = estate.Features.Select(f => f.Item).ToArray()
+            };
+            return data;
+        }
+        #endregion
+
         [WebMethod(Description = "Authenticate user")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string Login(string email, string password)
@@ -317,7 +437,7 @@ namespace Amirhome
             int id = _userManaget.authenticateUser(email, password);
             if (id < 0)
             {
-                return "false";
+                return "Authentication Failed";
             }
             else
             {

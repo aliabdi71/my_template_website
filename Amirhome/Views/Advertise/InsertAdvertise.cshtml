@@ -410,6 +410,13 @@
     <script type="text/javascript">
         function readURL(input) {
             if (input.files && input.files[0]) {
+                file_type = input.files[0].name.split('.').pop().toLowerCase();
+                var allowed = ["png", "jpg", "jpeg"];
+                if (allowed.indexOf(file_type) === -1) {
+                    alert('فقط فایل های png و jpg مجاز هستند');
+                    input.value = "";
+                    return;
+                }
                 $img = $('<img>').css({ "width": "200px", "height": "140px" });
                 $img.attr('src', "/Content/shared_images/loading_button.gif");
                 $(input).after($img);

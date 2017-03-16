@@ -314,12 +314,22 @@
             $("#adverCondition").select2();
             $("#adverDistrict").select2();
 
-            doSearch(0);
+            if (sessionStorage.getItem("username") !== null){
+                var content = sessionStorage.getItem("searchContent")
+                $(".search-result").html(content);
+                if (localStorage.getItem("scrollPosition") !== null) {
+                    $("div#element").scrollTop(localStorage.getItem("scrollPosition"));
+                }
+            }
+            else
+                doSearch(0);
         });
 
         $(window).unload(function () {
             var scrollPosition = $(window).scrollTop();
+            var searchContent = $(".search-result").html();
             localStorage.setItem("scrollPosition", scrollPosition);
+            localStorage.setItem("searchContent", searchContent);
         });
 
         function createAdverResultSection(data, page) {
@@ -412,9 +422,6 @@
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         createAdverResultSection(data, 1);
-                        if (localStorage.scrollPosition) {
-                            $("div#element").scrollTop(localStorage.getItem("scrollPosition"));
-                        }
                     },
                     error: function () {
 

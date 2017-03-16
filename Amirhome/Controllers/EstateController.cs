@@ -472,7 +472,7 @@ namespace Amirhome.Controllers
         public ActionResult EditEstate(int id)
         {
             if (Session["user_role_id"].ToString().Equals("5") || Session["user_role_id"].ToString().Equals("6"))
-                return Json("We are not stupid you know!!");
+                return Json("Don't you have a job?!!");
             State _estate = _estateManager.getStateByID(id);
             ViewData["Features"] = _estateManager.getAllFeatures();
             ViewBag.Province = new SelectList(_estateManager.getAllProvince(), "id", "name", _estate.Province);
