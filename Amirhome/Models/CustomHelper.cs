@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Globalization;
 
 namespace Amirhome.CustomHelpers
 {
@@ -42,7 +43,11 @@ namespace Amirhome.CustomHelpers
         {
             if (string.IsNullOrEmpty(date))
                 return new MvcHtmlString(String.Empty);
-            string[] splited = date.Split('/');
+            DateTime d = DateTime.Parse(date);
+            PersianCalendar pc = new PersianCalendar();
+            string result = string.Format("{0}/{1}/{2}", pc.GetYear(d), pc.GetMonth(d), pc.GetDayOfMonth(d));
+            return turnToPersianNumber(helper, result);
+            /*string[] splited = date.Split('/');
             int m = int.Parse(splited[0]),
                 d = int.Parse(splited[1]),
                 y = int.Parse(splited[2]);
@@ -75,9 +80,7 @@ namespace Amirhome.CustomHelpers
             }
             int jm = index + 1;
             int jd = j_day_number + 1;
-            string result = jy.ToString() + "/" + jm.ToString() + "/" + jd.ToString();
-
-            return turnToPersianNumber(helper, result);
+            string result = jy.ToString() + "/" + jm.ToString() + "/" + jd.ToString();*/
         }
     }
 }
