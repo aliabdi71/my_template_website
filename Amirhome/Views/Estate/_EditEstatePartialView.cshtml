@@ -2,9 +2,30 @@
 
 @{
     List<Amirhome.Models.Feature> ftrs = ViewData["Features"] as List<Amirhome.Models.Feature>;
+    List<int> current_ftrs = ViewData["SelectedFeatures"] as List<int>;
     List<Amirhome.Models.Image> images = Model.Images.ToList();
     
 }
+
+<style>
+    .features-table{
+    border:1px solid thin;
+    margin:0 auto;
+    overflow-x:auto;
+}
+.features-table td{
+    min-width:80px;
+    text-align:center;
+}
+@@media only screen and (max-width: 960px){
+    .features-table td{
+        min-width:30px;
+    }
+    .features-table{
+        display:block;
+    }
+}
+</style>
 
 <div id="form_target">
 
@@ -323,6 +344,64 @@
                         @Html.TextAreaFor(M => M.Occasion, new { @class = "form-control" })
                     </div>
                 </div>
+            </div>
+
+            <div class="row" style="margin-bottom:3px;">
+                <h3>امکانات ملک</h3>
+                <table border="1" class="features-table">
+                    <tr>
+                        @for (int i = 0; i < 10; i++)
+                        {
+                            if (current_ftrs.Contains(ftrs[i].ItemID))
+                            {
+                                <td><label><input type="checkbox" checked="checked" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                            }
+                            else
+                            {
+                                <td><label><input type="checkbox" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        @for (int i = 10; i < 20; i++)
+                        {
+                            if (current_ftrs.Contains(ftrs[i].ItemID))
+                            {
+                                <td><label><input type="checkbox" checked="checked" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                            }
+                            else
+                            {
+                                <td><label><input type="checkbox" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        @for (int i = 20; i < 30; i++)
+                        {
+                            if (current_ftrs.Contains(ftrs[i].ItemID))
+                            {
+                                <td><label><input type="checkbox" checked="checked" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                            }
+                            else
+                            {
+                                <td><label><input type="checkbox" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        @for (int i = 30; i < 35; i++)
+                        {
+                            if (current_ftrs.Contains(ftrs[i].ItemID))
+                            {
+                                <td><label><input type="checkbox" checked="checked" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                            }
+                            else
+                            {
+                                <td><label><input type="checkbox" name="features" value="@ftrs[i].ItemID" style="margin:2px;" />@ftrs[i].Item</label></td>
+                            }
+                        }
+                    </tr>
+                </table>
             </div>
 
             <div class="form-group">

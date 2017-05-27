@@ -363,7 +363,9 @@ namespace Amirhome.Models
                 throw ex;
             }
         }
-        public bool updateEstate(State model, int[] img_ids, List<Image> images_to_create, List<Plan> plans_to_create, List<StreetView> streets_to_create, out List<string> urls_for_delete)
+        public bool updateEstate(State model, int[] img_ids, List<Image> images_to_create,
+            List<Plan> plans_to_create, List<StreetView> streets_to_create, int[] _features,
+            out List<string> urls_for_delete)
         {
             urls_for_delete = new List<string>();
             try
@@ -405,6 +407,22 @@ namespace Amirhome.Models
                         context.Owners.Attach(model.Owner);
                         context.Entry(model.Owner).State = EntityState.Modified;
                     }
+
+                    if (_features != null)
+                    {
+                        List<int> current_features = model.Features.Select(f => f.ItemID).ToList();
+                        var _current_feature = (from F in context.Features
+                                                where _features.Contains(F.ItemID) && current_features.Contains(F.ItemID)
+                                        select F).ToList();
+                        var _feature = (from F in context.Features
+                                        where _features.Contains(F.ItemID)
+                                        select F).ToList();
+                        foreach (var additem in _current_feature)
+                            model.Features.Remove(additem);
+                        foreach (var item in _feature)
+                            model.Features.Add(item);
+                    }
+
                     model.Date = DateTime.Now;
                     context.States.Attach(model);
                     context.Entry(model).State = EntityState.Modified;

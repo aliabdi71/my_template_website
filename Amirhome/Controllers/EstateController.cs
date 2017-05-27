@@ -475,6 +475,7 @@ namespace Amirhome.Controllers
                 return Json("Don't you have a job?!!");
             State _estate = _estateManager.getStateByID(id);
             ViewData["Features"] = _estateManager.getAllFeatures();
+            ViewData["SelectedFeatures"] = _estate.Features.Select(f => f.ItemID).ToList();
             ViewBag.Province = new SelectList(_estateManager.getAllProvince(), "id", "name", _estate.Province);
             ViewBag.City = new SelectList(_estateManager.getCityByProvince((int)_estate.Province), "id", "name", _estate.City);
             ViewBag.AgentID = new SelectList(_agentManager.getAllAgent(), "ID", "Name", _estate.AgentID);
@@ -628,7 +629,7 @@ namespace Amirhome.Controllers
             return res;
         }
         [HttpPost]
-        public ActionResult SubmitEditEstate(State model, int[] img_ids, HttpPostedFileBase[] added_image, HttpPostedFileBase[] added_street_image, HttpPostedFileBase[] added_plan_image)
+        public ActionResult SubmitEditEstate(State model, int[] img_ids, HttpPostedFileBase[] added_image, HttpPostedFileBase[] added_street_image, HttpPostedFileBase[] added_plan_image, int[] features)
         {
             if (Session["user_role_id"] == null)
                 return Json("هویت شما مورد تأیید نیست");
@@ -703,7 +704,7 @@ namespace Amirhome.Controllers
             }
             #endregion
             //Update the model and get the result
-            bool success = _estateManager.updateEstate(model, img_ids, images_to_create, plans_to_create, streets_to_create, out urls_to_delete);
+            bool success = _estateManager.updateEstate(model, img_ids, images_to_create, plans_to_create, streets_to_create, features, out urls_to_delete);
             if (success)
             {
                 try
