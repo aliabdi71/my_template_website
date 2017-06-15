@@ -629,7 +629,7 @@ namespace Amirhome.Controllers
             return res;
         }
         [HttpPost]
-        public ActionResult SubmitEditEstate(State model, int[] img_ids, HttpPostedFileBase[] added_image, HttpPostedFileBase[] added_street_image, HttpPostedFileBase[] added_plan_image, int[] features)
+        public ActionResult SubmitEditEstate(State model, int[] img_ids, HttpPostedFileBase[] added_image, HttpPostedFileBase[] added_street_image, HttpPostedFileBase[] added_plan_image, int[] new_features)
         {
             if (Session["user_role_id"] == null)
                 return Json("هویت شما مورد تأیید نیست");
@@ -704,7 +704,7 @@ namespace Amirhome.Controllers
             }
             #endregion
             //Update the model and get the result
-            bool success = _estateManager.updateEstate(model, img_ids, images_to_create, plans_to_create, streets_to_create, features, out urls_to_delete);
+            bool success = _estateManager.updateEstate(model, img_ids, images_to_create, plans_to_create, streets_to_create, new_features, out urls_to_delete);
             if (success)
             {
                 try

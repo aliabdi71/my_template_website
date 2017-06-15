@@ -410,17 +410,18 @@ namespace Amirhome.Models
 
                     if (_features != null)
                     {
-                        List<int> current_features = model.Features.Select(f => f.ItemID).ToList();
-                        var _current_feature = (from F in context.Features
-                                                where _features.Contains(F.ItemID) && current_features.Contains(F.ItemID)
-                                        select F).ToList();
-                        var _feature = (from F in context.Features
-                                        where _features.Contains(F.ItemID)
-                                        select F).ToList();
-                        foreach (var additem in _current_feature)
-                            model.Features.Remove(additem);
-                        foreach (var item in _feature)
-                            model.Features.Add(item);
+                        int[] _current_feature = (from F in context.Features.Include("State")
+                                                          where F.States.Any(S => S.ID == model.ID)
+                                                          select F.ItemID).ToArray();
+                        List<Feature> _newfeature = (from F in context.Features
+                                    where _features.Contains(F.ItemID) && !_current_feature.Contains(F.ItemID)
+                                    select F).ToList();
+                        foreach (var item in _newfeature)
+                        {
+                            //model.Features.Add(item);
+                            item.States.Add(model);
+                            context.Entry(item).State = EntityState.Modified;
+                        }
                     }
 
                     model.Date = DateTime.Now;
